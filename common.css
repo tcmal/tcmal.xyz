@@ -26,3 +26,17 @@ body {
 	background-color: rgb(20, 20, 20);
 	color: white;
 }
+.huge-header {
+	font-size: 5rem;
+}
+.align-center {
+	text-align: center;
+}
+
+p {
+	line-height: 2rem;
+}
+
+footer {
+	padding-top: 5rem;
+}

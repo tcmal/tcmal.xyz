@@ -1,0 +1,28 @@
+.links {
+	display: flex;
+	flex-direction: row;
+	align-content: center;
+	justify-content: center;
+}
+
+.links > div {
+	padding: 1rem;
+	font-size: 3rem;
+}
+
+.links a, .links a:visited {
+	color: white;
+}
+
+main {
+	width: 70%;
+	margin: 0 auto;
+	padding-top: 10rem;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 1.2rem;
+	background-color: rgb(20, 20, 20);
+	color: white;
+}

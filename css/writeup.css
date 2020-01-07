@@ -1,0 +1,13 @@
+
+img {
+	display: block;
+	margin: 0 auto;
+}
+
+.codehilite {
+	padding: 0.1rem 1rem;
+}
+
+.codehilite pre {
+	white-space: pre-wrap;	
+}

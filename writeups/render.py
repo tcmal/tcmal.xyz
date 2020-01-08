@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 import markdown
+from markdown.extensions.codehilite import CodeHiliteExtension
 
 def render_file(path):
 	page_name = path.stem
@@ -29,7 +30,7 @@ def render_file(path):
 
 	rendered = ""
 	with open(path, "r") as f:
-		rendered = markdown.markdown(f.read(), extensions=['codehilite', 'fenced_code'])
+		rendered = markdown.markdown(f.read(), extensions=[CodeHiliteExtension(guess_lang=False), 'fenced_code'])
 
 	with open(template, "r") as f:
 		contents = f.read()

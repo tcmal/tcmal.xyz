@@ -16,358 +16,358 @@
   - We should make an HTTP request to the root of the server
   - There's a message left behind by the attacker</p>
 <p>Starting with the first one, this is the response we get:</p>
-<div class="codehilite"><pre><span></span><span class="c1">----------------------------------------------------</span>
-<span class="n">Christmas</span> <span class="n">Cheer</span> <span class="n">Laser</span> <span class="n">Project</span> <span class="n">Web</span> <span class="n">API</span>
-<span class="c1">----------------------------------------------------</span>
-<span class="n">Turn</span> <span class="n">the</span> <span class="n">laser</span> <span class="k">on</span><span class="o">/</span><span class="k">off</span><span class="p">:</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="k">on</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="k">off</span>
+<div class="codehilite"><pre><span></span>----------------------------------------------------
+Christmas Cheer Laser Project Web API
+----------------------------------------------------
+Turn the laser on/off:
+GET http://localhost:1225/api/on
+GET http://localhost:1225/api/off
 
-<span class="k">Check</span> <span class="n">the</span> <span class="k">current</span> <span class="n">Mega</span><span class="o">-</span><span class="n">Jollies</span> <span class="k">of</span> <span class="n">laser</span> <span class="k">output</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="k">output</span>
+Check the current Mega-Jollies of laser output
+GET http://localhost:1225/api/output
 
-<span class="n">Change</span> <span class="n">the</span> <span class="n">lense</span> <span class="n">refraction</span> <span class="n">value</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span><span class="p">):</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">refraction</span><span class="o">?</span><span class="n">val</span><span class="o">=</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span>
+Change the lense refraction value (1.0 - 2.0):
+GET http://localhost:1225/api/refraction?val=1.0
 
-<span class="n">Change</span> <span class="n">laser</span> <span class="n">temperature</span> <span class="k">in</span> <span class="n">degrees</span> <span class="n">Celsius</span><span class="p">:</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">temperature</span><span class="o">?</span><span class="n">val</span><span class="o">=-</span><span class="mi">10</span>
+Change laser temperature in degrees Celsius:
+GET http://localhost:1225/api/temperature?val=-10
 
-<span class="n">Change</span> <span class="n">the</span> <span class="n">mirror</span> <span class="n">angle</span> <span class="n">value</span> <span class="p">(</span><span class="mi">0</span> <span class="o">-</span> <span class="mi">359</span><span class="p">):</span>
-<span class="k">GET</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">angle</span><span class="o">?</span><span class="n">val</span><span class="o">=</span><span class="mi">45</span><span class="p">.</span><span class="mi">1</span>
+Change the mirror angle value (0 - 359):
+GET http://localhost:1225/api/angle?val=45.1
 
-<span class="n">Change</span> <span class="n">gaseous</span> <span class="n">elements</span> <span class="n">mixture</span><span class="p">:</span>
-<span class="n">POST</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1225</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">gas</span>
-<span class="n">POST</span> <span class="n">BODY</span> <span class="n">EXAMPLE</span> <span class="p">(</span><span class="n">gas</span> <span class="n">mixture</span> <span class="n">percentages</span><span class="p">):</span>
-<span class="n">O</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span><span class="n">H</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span><span class="n">He</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span><span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="o">&amp;</span><span class="n">Ne</span><span class="o">=</span><span class="mi">20</span><span class="o">&amp;</span><span class="n">Ar</span><span class="o">=</span><span class="mi">10</span><span class="o">&amp;</span><span class="n">Xe</span><span class="o">=</span><span class="mi">10</span><span class="o">&amp;</span><span class="n">F</span><span class="o">=</span><span class="mi">20</span><span class="o">&amp;</span><span class="n">Kr</span><span class="o">=</span><span class="mi">10</span><span class="o">&amp;</span><span class="n">Rn</span><span class="o">=</span><span class="mi">10</span>
-<span class="c1">----------------------------------------------------</span>
+Change gaseous elements mixture:
+POST http://localhost:1225/api/gas
+POST BODY EXAMPLE (gas mixture percentages):
+O=5&amp;H=5&amp;He=5&amp;N=5&amp;Ne=20&amp;Ar=10&amp;Xe=10&amp;F=20&amp;Kr=10&amp;Rn=10
+----------------------------------------------------
 </pre></div>
 
 
 <p>So presumably we need the right refraction, temperature, angle and elements mixture to get the best power output, which is 5 Mega Jollies per litre.</p>
 <p>Looking at our second clue, although we have a nix directory structure we're clearly in a powershell prompt, so we need to use mostly Windows/PS commands to actually do anything.</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /home/elf&gt; type ../callingcard.txt</span>
-<span class="err">What&#39;s become of your dear laser?</span>
-<span class="err">Fa la la la la, la la la la</span>
-<span class="err">Seems you can&#39;t now seem to raise her!</span>
-<span class="err">Fa la la la la, la la la la</span>
-<span class="err">Could commands hold riddles in hist&#39;ry?</span>
-<span class="err">Fa la la la la, la la la la</span>
-<span class="err">Nay! You&#39;ll ever suffer myst&#39;ry!</span>
-<span class="err">Fa la la la la, la la la la</span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; type ../callingcard.txt
+What&#39;s become of your dear laser?
+Fa la la la la, la la la la
+Seems you can&#39;t now seem to raise her!
+Fa la la la la, la la la la
+Could commands hold riddles in hist&#39;ry?
+Fa la la la la, la la la la
+Nay! You&#39;ll ever suffer myst&#39;ry!
+Fa la la la la, la la la la
 </pre></div>
 
 
 <p>We can look at the command history with the command <code>Get-History</code>. This truncates a couple commands though, so we select the important field then pipe it to <code>Format-List</code> to print it in full:</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /home/elf&gt; Get-History | select CommandLine | Format-List</span>
-<span class="err">CommandLine : Get-Help -Name Get-Process </span>
-<span class="err">CommandLine : Get-Help -Name Get-* </span>
-<span class="err">CommandLine : Set-ExecutionPolicy Unrestricted </span>
-<span class="err">CommandLine : Get-Service | ConvertTo-HTML -Property Name, Status &gt; C:\services.htm </span>
-<span class="err">CommandLine : Get-Service | Export-CSV c:\service.csv </span>
-<span class="err">CommandLine : Get-Service | Select-Object Name, Status | Export-CSV C:\service.csv </span>
-<span class="err">CommandLine : (Invoke-WebRequest http://127.0.0.1:1225/api/angle?val=65.5).RawContent</span>
-<span class="err">CommandLine : Get-EventLog -Log &quot;Application&quot; </span>
-<span class="err">CommandLine : I have many name=value variables that I share to applications system wide. </span>
-<span class="err">              At a command I will reveal my secrets once you Get my Child Items.</span>
-<span class="err">CommandLine : (Invoke-WebRequest -Uri http://localhost:1225/).RawContent</span>
-<span class="err">CommandLine : type callingcard.txt</span>
-<span class="err">CommandLine : type ../callingcard.txt</span>
-<span class="err">CommandLine : Get-History</span>
-<span class="err">CommandLine : Get-History | Format-List</span>
-<span class="err">CommandLine : Get-History | select CommandLine</span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; Get-History | select CommandLine | Format-List
+CommandLine : Get-Help -Name Get-Process 
+CommandLine : Get-Help -Name Get-* 
+CommandLine : Set-ExecutionPolicy Unrestricted 
+CommandLine : Get-Service | ConvertTo-HTML -Property Name, Status &gt; C:\services.htm 
+CommandLine : Get-Service | Export-CSV c:\service.csv 
+CommandLine : Get-Service | Select-Object Name, Status | Export-CSV C:\service.csv 
+CommandLine : (Invoke-WebRequest http://127.0.0.1:1225/api/angle?val=65.5).RawContent
+CommandLine : Get-EventLog -Log &quot;Application&quot; 
+CommandLine : I have many name=value variables that I share to applications system wide. 
+              At a command I will reveal my secrets once you Get my Child Items.
+CommandLine : (Invoke-WebRequest -Uri http://localhost:1225/).RawContent
+CommandLine : type callingcard.txt
+CommandLine : type ../callingcard.txt
+CommandLine : Get-History
+CommandLine : Get-History | Format-List
+CommandLine : Get-History | select CommandLine
 </pre></div>
 
 
 <p>The first thing we see is a call to the api which sets the angle to <code>65.5 degrees</code>. It's possible this is meant to be the correct value of our angle parameter. We also see the services on the system being dumped to <code>C:\service.csv</code> and <code>C:\services.htm</code>. Neither of these files exist anymore, so we'll ignore this for now.</p>
 <p>The actual clue in this history is:</p>
-<div class="codehilite"><pre><span></span><span class="err">I have many name=value variables that I share to applications system wide. </span>
-<span class="err">              At a command I will reveal my secrets once you Get my Child Items.</span>
+<div class="codehilite"><pre><span></span>I have many name=value variables that I share to applications system wide. 
+              At a command I will reveal my secrets once you Get my Child Items.
 </pre></div>
 
 
 <p>This seems to be alluding to <code>$Env</code>, which stores global environment variables such as PATH, HOSTNAME, etc. Powershell lets us address it as a drive, so we can <code>cd</code> into it and <code>ls</code>, except the powershell versions of those.</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="k">Set</span><span class="o">-</span><span class="k">Location</span> <span class="n">Env</span><span class="p">:</span>
-<span class="n">PS</span> <span class="n">Env</span><span class="p">:</span><span class="o">/&gt;</span> <span class="k">Get</span><span class="o">-</span><span class="n">ChildItem</span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; Set-Location Env:
+PS Env:/&gt; Get-ChildItem
 
-<span class="n">Name</span>                           <span class="n">Value</span>
-<span class="c1">----                           -----</span>
-<span class="n">_</span>                              <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">su</span>
-<span class="n">DOTNET_SYSTEM_GLOBALIZATION_I</span><span class="err">…</span> <span class="k">false</span>
-<span class="n">HOME</span>                           <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span>
-<span class="n">HOSTNAME</span>                       <span class="mi">6071085</span><span class="n">c6a89</span>
-<span class="n">LANG</span>                           <span class="n">en_US</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
-<span class="n">LC_ALL</span>                         <span class="n">en_US</span><span class="p">.</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span>
-<span class="n">LOGNAME</span>                        <span class="n">elf</span>
-<span class="n">MAIL</span>                           <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">mail</span><span class="o">/</span><span class="n">elf</span>
-<span class="n">PATH</span>                           <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">microsoft</span><span class="o">/</span><span class="n">powershell</span><span class="o">/</span><span class="mi">6</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">sbin</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">bi</span><span class="err">…</span>
-<span class="n">PSModuleAnalysisCachePath</span>      <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="k">cache</span><span class="o">/</span><span class="n">microsoft</span><span class="o">/</span><span class="n">powershell</span><span class="o">/</span><span class="n">PSModuleAnalysisCache</span><span class="o">/</span><span class="k">Mod</span><span class="err">…</span>
-<span class="n">PSModulePath</span>                   <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="p">.</span><span class="k">local</span><span class="o">/</span><span class="k">share</span><span class="o">/</span><span class="n">powershell</span><span class="o">/</span><span class="n">Modules</span><span class="p">:</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">shar</span><span class="err">…</span>
-<span class="n">PWD</span>                            <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span>
-<span class="n">RESOURCE_ID</span>                    <span class="n">f56c8ff0</span><span class="o">-</span><span class="mi">128</span><span class="n">e</span><span class="o">-</span><span class="mi">48</span><span class="n">f1</span><span class="o">-</span><span class="mi">8</span><span class="n">b91</span><span class="o">-</span><span class="mi">0</span><span class="n">c967f900f22</span>
-<span class="n">riddle</span>                         <span class="n">Squeezed</span> <span class="k">and</span> <span class="n">compressed</span> <span class="n">I</span> <span class="n">am</span> <span class="n">hidden</span> <span class="n">away</span><span class="p">.</span> <span class="n">Expand</span> <span class="n">me</span> <span class="k">from</span> <span class="err">…</span>
-<span class="n">SHELL</span>                          <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">elf</span>
-<span class="n">SHLVL</span>                          <span class="mi">1</span>
-<span class="n">TERM</span>                           <span class="n">xterm</span>
-<span class="k">USER</span>                           <span class="n">elf</span>
-<span class="n">USERDOMAIN</span>                     <span class="n">laserterminal</span>
-<span class="n">userdomain</span>                     <span class="n">laserterminal</span>
-<span class="n">username</span>                       <span class="n">elf</span>
-<span class="n">USERNAME</span>                       <span class="n">elf</span>
+Name                           Value
+----                           -----
+_                              /bin/su
+DOTNET_SYSTEM_GLOBALIZATION_I… false
+HOME                           /home/elf
+HOSTNAME                       6071085c6a89
+LANG                           en_US.UTF-8
+LC_ALL                         en_US.UTF-8
+LOGNAME                        elf
+MAIL                           /var/mail/elf
+PATH                           /opt/microsoft/powershell/6:/usr/local/sbin:/usr/local/bi…
+PSModuleAnalysisCachePath      /var/cache/microsoft/powershell/PSModuleAnalysisCache/Mod…
+PSModulePath                   /home/elf/.local/share/powershell/Modules:/usr/local/shar…
+PWD                            /home/elf
+RESOURCE_ID                    f56c8ff0-128e-48f1-8b91-0c967f900f22
+riddle                         Squeezed and compressed I am hidden away. Expand me from …
+SHELL                          /home/elf/elf
+SHLVL                          1
+TERM                           xterm
+USER                           elf
+USERDOMAIN                     laserterminal
+userdomain                     laserterminal
+username                       elf
+USERNAME                       elf
 </pre></div>
 
 
 <p>Again, we need to format as a list to see the <code>riddle</code> item in full.</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="n">Env</span><span class="p">:</span><span class="o">/&gt;</span> <span class="k">get</span><span class="o">-</span><span class="n">childitem</span> <span class="n">riddle</span> <span class="o">|</span> <span class="n">format</span><span class="o">-</span><span class="n">list</span>
+<div class="codehilite"><pre><span></span>PS Env:/&gt; get-childitem riddle | format-list
 
-<span class="n">Name</span>  <span class="p">:</span> <span class="n">riddle</span>
-<span class="n">Value</span> <span class="p">:</span> <span class="n">Squeezed</span> <span class="k">and</span> <span class="n">compressed</span> <span class="n">I</span> <span class="n">am</span> <span class="n">hidden</span> <span class="n">away</span><span class="p">.</span> <span class="n">Expand</span> <span class="n">me</span> <span class="k">from</span> <span class="n">my</span> <span class="n">prison</span> <span class="k">and</span> <span class="n">I</span> <span class="n">will</span> 
-        <span class="k">show</span> <span class="n">you</span> <span class="n">the</span> <span class="n">way</span><span class="p">.</span> <span class="n">Recurse</span> <span class="n">through</span> <span class="k">all</span> <span class="o">/</span><span class="n">etc</span> <span class="k">and</span> <span class="n">Sort</span> <span class="k">on</span> <span class="n">my</span> <span class="n">LastWriteTime</span> <span class="k">to</span> 
-        <span class="n">reveal</span> <span class="n">im</span> <span class="n">the</span> <span class="n">newest</span> <span class="k">of</span> <span class="k">all</span><span class="p">.</span>
+Name  : riddle
+Value : Squeezed and compressed I am hidden away. Expand me from my prison and I will 
+        show you the way. Recurse through all /etc and Sort on my LastWriteTime to 
+        reveal im the newest of all.
 </pre></div>
 
 
 <p>So first we need to find the newest file in <code>/etc</code>. We can recurse through all subdirectories using <code>Get-ChildItem -Recurse</code>, however this breaks up the output into one list for each folder. If we try to sort this we'll sort based on the newest in each folder. So we extract just the fields we want and, in doing so, flatten the output with <code>select</code>:</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /&gt; Get-ChildItem -Recurse etc | select FullName,LastWriteTime</span>
-<span class="err">[...]</span>
+<div class="codehilite"><pre><span></span>PS /&gt; Get-ChildItem -Recurse etc | select FullName,LastWriteTime
+[...]
 </pre></div>
 
 
 <p>Now we sort based on the LastWriteTime and pull out the first entry. Descending means newest first, since a higher timestamp value is further on.</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /&gt; Get-ChildItem -Recurse etc | select FullName,LastWriteTime | sort -Descending LastWriteTime | select -First 1 FullName</span>
-<span class="err">FullName</span>
-<span class="err">--------</span>
-<span class="err">/etc/apt/archive</span>
+<div class="codehilite"><pre><span></span>PS /&gt; Get-ChildItem -Recurse etc | select FullName,LastWriteTime | sort -Descending LastWriteTime | select -First 1 FullName
+FullName
+--------
+/etc/apt/archive
 </pre></div>
 
 
 <p>So <code>/etc/apt/archive</code> is the archive we need to extract. A quick google shows that the powershell command is actually <code>Expand-Archive</code>, so let's go back home and extract it there.</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="n">Expand</span><span class="o">-</span><span class="n">Archive</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">archive</span>
-<span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="n">Expand</span><span class="o">-</span><span class="n">Archive</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">apt</span><span class="o">/</span><span class="n">archive</span>
-<span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="n">dir</span>                                                           
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; Expand-Archive /etc/apt/archive
+PS /home/elf&gt; Expand-Archive /etc/apt/archive
+PS /home/elf&gt; dir                                                           
 
-<span class="k">Mode</span>                <span class="n">LastWriteTime</span>         <span class="k">Length</span> <span class="n">Name</span>
-<span class="c1">----                -------------         ------ ----</span>
-<span class="n">d</span><span class="c1">-----          12/26/19  1:46 PM                archive</span>
-<span class="n">d</span><span class="o">-</span><span class="n">r</span><span class="c1">---          12/13/19  5:15 PM                depths</span>
-<span class="c1">--r---          12/13/19  4:29 PM           2029 motd</span>
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----          12/26/19  1:46 PM                archive
+d-r---          12/13/19  5:15 PM                depths
+--r---          12/13/19  4:29 PM           2029 motd
 
-<span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="n">dir</span> <span class="n">archive</span>
-
-
-    <span class="n">Directory</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">archive</span>
-
-<span class="k">Mode</span>                <span class="n">LastWriteTime</span>         <span class="k">Length</span> <span class="n">Name</span>
-<span class="c1">----                -------------         ------ ----</span>
-<span class="n">d</span><span class="c1">-----          12/26/19  1:46 PM                refraction</span>
-
-<span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span> <span class="n">dir</span> <span class="p">.</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">refraction</span><span class="o">/</span>
+PS /home/elf&gt; dir archive
 
 
-    <span class="n">Directory</span><span class="p">:</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">archive</span><span class="o">/</span><span class="n">refraction</span>
+    Directory: /home/elf/archive
 
-<span class="k">Mode</span>                <span class="n">LastWriteTime</span>         <span class="k">Length</span> <span class="n">Name</span>
-<span class="c1">----                -------------         ------ ----</span>
-<span class="c1">------           11/7/19 11:57 AM            134 riddle</span>
-<span class="c1">------           11/5/19  2:26 PM        5724384 runme.elf</span>
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----          12/26/19  1:46 PM                refraction
+
+PS /home/elf&gt; dir ./archive/refraction/
+
+
+    Directory: /home/elf/archive/refraction
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+------           11/7/19 11:57 AM            134 riddle
+------           11/5/19  2:26 PM        5724384 runme.elf
 </pre></div>
 
 
 <p>Let's start by running <code>runme</code></p>
-<div class="codehilite"><pre><span></span><span class="err">PS /home/elf/archive/refraction&gt; chmod +x runme.elf</span>
-<span class="err">PS /home/elf/archive/refraction&gt; ./runme.elf</span>
-<span class="err">refraction?val=1.867</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/archive/refraction&gt; chmod +x runme.elf
+PS /home/elf/archive/refraction&gt; ./runme.elf
+refraction?val=1.867
 </pre></div>
 
 
 <p>So now we have the intended value for refraction. Let's look at the riddle:</p>
-<div class="codehilite"><pre><span></span><span class="n">Very</span> <span class="n">shallow</span> <span class="n">am</span> <span class="n">I</span> <span class="k">in</span> <span class="n">the</span> <span class="n">depths</span> <span class="k">of</span> <span class="n">your</span> <span class="n">elf</span> <span class="n">home</span><span class="p">.</span> <span class="n">You</span> <span class="n">can</span> <span class="n">find</span> <span class="n">my</span> <span class="n">entity</span> <span class="k">by</span> <span class="k">using</span> <span class="n">my</span> <span class="n">md5</span> <span class="k">identity</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span>Very shallow am I in the depths of your elf home. You can find my entity by using my md5 identity:
 
-<span class="mi">25520151</span><span class="n">A320B5B0D21561F92C8F6224</span>
+25520151A320B5B0D21561F92C8F6224
 </pre></div>
 
 
 <p>So it looks like we need to search <code>~/depths</code> recursively for a file with the given MD5 Hash. For this we hash every <em>file</em> in it recursively (up to a certain depth since we're just testing right now):</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">depths</span><span class="o">&gt;</span> <span class="k">Get</span><span class="o">-</span><span class="n">ChildItem</span> <span class="o">-</span><span class="n">File</span> <span class="o">-</span><span class="n">Recurse</span> <span class="o">-</span><span class="n">Depth</span> <span class="mi">1</span> <span class="o">|</span> <span class="k">Get</span><span class="o">-</span><span class="n">FileHash</span> <span class="o">-</span><span class="n">Algorithm</span> <span class="n">MD5</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; Get-ChildItem -File -Recurse -Depth 1 | Get-FileHash -Algorithm MD5
 
-<span class="p">[...]</span>
+[...]
 </pre></div>
 
 
 <p>Now we just need to filter for the given hash and read the file it finds:</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">depths</span><span class="o">&gt;</span> <span class="k">Get</span><span class="o">-</span><span class="n">ChildItem</span> <span class="o">-</span><span class="n">File</span> <span class="o">-</span><span class="n">Recurse</span> <span class="o">|</span> <span class="k">Get</span><span class="o">-</span><span class="n">FileHash</span> <span class="o">-</span><span class="n">Algorithm</span> <span class="n">MD5</span> <span class="o">|</span> <span class="k">where</span> <span class="n">Hash</span> <span class="o">-</span><span class="n">eq</span> <span class="ss">&quot;25520151A320B5B0D21561F92C8F6224&quot;</span> <span class="o">|</span> <span class="k">select</span> <span class="n">Path</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; Get-ChildItem -File -Recurse | Get-FileHash -Algorithm MD5 | where Hash -eq &quot;25520151A320B5B0D21561F92C8F6224&quot; | select Path
 
-<span class="n">Path</span>
-<span class="c1">----</span>
-<span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">depths</span><span class="o">/</span><span class="n">produce</span><span class="o">/</span><span class="n">thhy5hll</span><span class="p">.</span><span class="n">txt</span>
+Path
+----
+/home/elf/depths/produce/thhy5hll.txt
 
-<span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">depths</span><span class="o">&gt;</span> <span class="k">type</span> <span class="n">produce</span><span class="o">/</span><span class="n">thhy5hll</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">temperature</span><span class="o">?</span><span class="n">val</span><span class="o">=-</span><span class="mi">33</span><span class="p">.</span><span class="mi">5</span>
+PS /home/elf/depths&gt; type produce/thhy5hll.txt
+temperature?val=-33.5
 
-<span class="n">I</span> <span class="n">am</span> <span class="n">one</span> <span class="k">of</span> <span class="n">many</span> <span class="n">thousand</span> <span class="k">similar</span> <span class="n">txt</span><span class="s1">&#39;s contained within the deepest of /home/elf/depths. Finding me will give you the most strength but doing so will require Piping all the FullName&#39;</span><span class="n">s</span> <span class="k">to</span> <span class="n">Sort</span> <span class="k">Length</span><span class="p">.</span>
+I am one of many thousand similar txt&#39;s contained within the deepest of /home/elf/depths. Finding me will give you the most strength but doing so will require Piping all the FullName&#39;s to Sort Length.
 </pre></div>
 
 
 <p>So now we have every parameter except the elements mix. Now we need to find the longest file path of all the files in depths. For this, we can use <code>sort</code> (actually <code>Sort-Object</code>) with an extra script block:</p>
-<div class="codehilite"><pre><span></span><span class="x">PS /home/elf/depths&gt; Get-ChildItem -File -Recurse | sort -Descending </span><span class="cp">{</span><span class="nv">$_.FullName.length</span><span class="cp">}</span><span class="x"> | select -First 1 FullName | Format-List</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; Get-ChildItem -File -Recurse | sort -Descending {$_.FullName.length} | select -First 1 FullName | Format-List
 
-<span class="x">FullName : /home/elf/depths/larger/cloud/behavior/beauty/enemy/produce/age/chair/unknown/escape/vote/long/writer/behind/ahead/thin/occasionally/explore/tape/wherever/practical/therefore/cool/plate/ice/play/truth/potatoes/beauty/fourth/careful/dawn/adult/either/burn/end/accurate/rubbed/cake/main/she/threw/eager/trip/to/soon/think/fall/is/greatest/become/accident/labor/sail/dropped/fox/0jhj5xz6.txt</span>
+FullName : /home/elf/depths/larger/cloud/behavior/beauty/enemy/produce/age/chair/unknown/escape/vote/long/writer/behind/ahead/thin/occasionally/explore/tape/wherever/practical/therefore/cool/plate/ice/play/truth/potatoes/beauty/fourth/careful/dawn/adult/either/burn/end/accurate/rubbed/cake/main/she/threw/eager/trip/to/soon/think/fall/is/greatest/become/accident/labor/sail/dropped/fox/0jhj5xz6.txt
 </pre></div>
 
 
 <p>Our script block just gets the FullName property of our input (<code>$_</code>), then returns the length property of that, which is interpreted as the number to sort. Again we use descending to put the biggest at the top. We also need to <code>Format-List</code> because it's long enough to get truncated.</p>
 <p>Our next clue is:</p>
-<div class="codehilite"><pre><span></span><span class="k">Get</span> <span class="n">process</span> <span class="n">information</span> <span class="k">to</span> <span class="n">include</span> <span class="n">Username</span> <span class="n">identification</span><span class="p">.</span> <span class="n">Stop</span> <span class="n">Process</span> <span class="k">to</span> <span class="k">show</span> <span class="n">me</span> <span class="n">you</span><span class="err">&#39;</span><span class="n">re</span> <span class="n">skilled</span> <span class="k">and</span> <span class="k">in</span> <span class="n">this</span> <span class="k">order</span> <span class="n">they</span> <span class="n">must</span> <span class="n">be</span> <span class="n">killed</span><span class="p">:</span>
+<div class="codehilite"><pre><span></span>Get process information to include Username identification. Stop Process to show me you&#39;re skilled and in this order they must be killed:
 
-<span class="n">bushy</span>
-<span class="n">alabaster</span>
-<span class="n">minty</span>
-<span class="n">holly</span>
+bushy
+alabaster
+minty
+holly
 
-<span class="k">Do</span> <span class="n">this</span> <span class="k">for</span> <span class="n">me</span> <span class="k">and</span> <span class="k">then</span> <span class="n">you</span> <span class="o">/</span><span class="n">shall</span><span class="o">/</span><span class="n">see</span><span class="p">.</span>
+Do this for me and then you /shall/see.
 </pre></div>
 
 
 <p>We can get all the processes with <code>Get-Process</code>, but we need to add <code>-IncludeUserName</code>, since this needs admin privilleges.</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">/</span><span class="n">depths</span><span class="o">&gt;</span> <span class="k">Get</span><span class="o">-</span><span class="n">Process</span> <span class="o">-</span><span class="n">IncludeUserName</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; Get-Process -IncludeUserName
 
-     <span class="n">WS</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>   <span class="n">CPU</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>      <span class="n">Id</span> <span class="n">UserName</span>                       <span class="n">ProcessName</span>
-     <span class="c1">-----   ------      -- --------                       -----------</span>
-     <span class="mi">27</span><span class="p">.</span><span class="mi">01</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">52</span>       <span class="mi">6</span> <span class="n">root</span>                           <span class="n">CheerLaserServi</span>
-    <span class="mi">182</span><span class="p">.</span><span class="mi">66</span>     <span class="mi">4</span><span class="p">.</span><span class="mi">44</span>      <span class="mi">31</span> <span class="n">elf</span>                            <span class="n">elf</span>
-      <span class="mi">3</span><span class="p">.</span><span class="mi">50</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">03</span>       <span class="mi">1</span> <span class="n">root</span>                           <span class="n">init</span>
-      <span class="mi">0</span><span class="p">.</span><span class="mi">78</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>      <span class="mi">23</span> <span class="n">bushy</span>                          <span class="n">sleep</span>
-      <span class="mi">0</span><span class="p">.</span><span class="mi">72</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>      <span class="mi">25</span> <span class="n">alabaster</span>                      <span class="n">sleep</span>
-      <span class="mi">0</span><span class="p">.</span><span class="mi">72</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>      <span class="mi">27</span> <span class="n">minty</span>                          <span class="n">sleep</span>
-      <span class="mi">0</span><span class="p">.</span><span class="mi">77</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>      <span class="mi">29</span> <span class="n">holly</span>                          <span class="n">sleep</span>
-      <span class="mi">3</span><span class="p">.</span><span class="mi">28</span>     <span class="mi">0</span><span class="p">.</span><span class="mi">00</span>      <span class="mi">30</span> <span class="n">root</span>                           <span class="n">su</span>
+     WS(M)   CPU(s)      Id UserName                       ProcessName
+     -----   ------      -- --------                       -----------
+     27.01     0.52       6 root                           CheerLaserServi
+    182.66     4.44      31 elf                            elf
+      3.50     0.03       1 root                           init
+      0.78     0.00      23 bushy                          sleep
+      0.72     0.00      25 alabaster                      sleep
+      0.72     0.00      27 minty                          sleep
+      0.77     0.00      29 holly                          sleep
+      3.28     0.00      30 root                           su
 </pre></div>
 
 
 <p>Now we just kill them in the right order.</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /home/elf/depths&gt; kill 23 25 27 29</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; kill 23 25 27 29
 </pre></div>
 
 
 <p><code>/shall/see</code> looks like a file path, and sure enough if we read from it we find our next hint:</p>
-<div class="codehilite"><pre><span></span><span class="err">PS /home/elf/depths&gt; type /shall/see</span>
-<span class="err">Get the .xml children of /etc - an event log to be found. Group all .Id&#39;s and the last thing will be in the Properties of the lonely unique event Id.</span>
+<div class="codehilite"><pre><span></span>PS /home/elf/depths&gt; type /shall/see
+Get the .xml children of /etc - an event log to be found. Group all .Id&#39;s and the last thing will be in the Properties of the lonely unique event Id.
 </pre></div>
 
 
 <p>First let's find our file and copy it to our home for convenience:</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span> <span class="o">/&gt;</span> <span class="k">Get</span><span class="o">-</span><span class="n">ChildItem</span> <span class="o">-</span><span class="n">Recurse</span> <span class="o">-</span><span class="n">File</span> <span class="n">etc</span> <span class="o">|</span> <span class="k">where</span> <span class="n">Name</span> <span class="o">-</span><span class="k">match</span> <span class="ss">&quot;.*\.xml&quot;</span>
+<div class="codehilite"><pre><span></span>PS /&gt; Get-ChildItem -Recurse -File etc | where Name -match &quot;.*\.xml&quot;
 
-    <span class="n">Directory</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="k">system</span><span class="o">/</span><span class="n">timers</span><span class="p">.</span><span class="n">target</span><span class="p">.</span><span class="n">wants</span>
+    Directory: /etc/systemd/system/timers.target.wants
 
-<span class="k">Mode</span>                <span class="n">LastWriteTime</span>         <span class="k">Length</span> <span class="n">Name</span>
-<span class="c1">----                -------------         ------ ----</span>
-<span class="c1">--r---          11/18/19  7:53 PM       10006962 EventLog.xml</span>
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+--r---          11/18/19  7:53 PM       10006962 EventLog.xml
 </pre></div>
 
 
 <p>Now we need to parse it as an XML document. Luckily, Powershell lets us do this just by casting it:</p>
-<div class="codehilite"><pre><span></span><span class="n">PS</span><span class="w"> </span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">elf</span><span class="o">&gt;</span><span class="w"> </span><span class="o">[</span><span class="n">xml</span><span class="o">]</span><span class="err">$</span><span class="n">doc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="n">EventLog</span><span class="p">.</span><span class="nc">xml</span><span class="w"></span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; [xml]$doc = type EventLog.xml
 </pre></div>
 
 
 <p>Now we can address our nodes using dotnotation, but first let's take a quick look at our actual document:</p>
 <div class="codehilite"><pre><span></span>PS /home/elf&gt; type EventLog.xml | select -first 10
-<span class="nt">&lt;Objs</span> <span class="na">Version=</span><span class="s">&quot;1.1.0.1&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://schemas.microsoft.com/powershell/2004/04&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;Obj</span> <span class="na">RefId=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;TN</span> <span class="na">RefId=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;T&gt;</span>System.Diagnostics.Eventing.Reader.EventLogRecord<span class="nt">&lt;/T&gt;</span>
-      <span class="nt">&lt;T&gt;</span>System.Diagnostics.Eventing.Reader.EventRecord<span class="nt">&lt;/T&gt;</span>
-      <span class="nt">&lt;T&gt;</span>System.Object<span class="nt">&lt;/T&gt;</span>
-    <span class="nt">&lt;/TN&gt;</span>
-    <span class="nt">&lt;ToString&gt;</span>System.Diagnostics.Eventing.Reader.EventLogRecord<span class="nt">&lt;/ToString&gt;</span>
-    <span class="nt">&lt;Props&gt;</span>
-      <span class="nt">&lt;I32</span> <span class="na">N=</span><span class="s">&quot;Id&quot;</span><span class="nt">&gt;</span>3<span class="nt">&lt;/I32&gt;</span>
+&lt;Objs Version=&quot;1.1.0.1&quot; xmlns=&quot;http://schemas.microsoft.com/powershell/2004/04&quot;&gt;
+  &lt;Obj RefId=&quot;0&quot;&gt;
+    &lt;TN RefId=&quot;0&quot;&gt;
+      &lt;T&gt;System.Diagnostics.Eventing.Reader.EventLogRecord&lt;/T&gt;
+      &lt;T&gt;System.Diagnostics.Eventing.Reader.EventRecord&lt;/T&gt;
+      &lt;T&gt;System.Object&lt;/T&gt;
+    &lt;/TN&gt;
+    &lt;ToString&gt;System.Diagnostics.Eventing.Reader.EventLogRecord&lt;/ToString&gt;
+    &lt;Props&gt;
+      &lt;I32 N=&quot;Id&quot;&gt;3&lt;/I32&gt;
 </pre></div>
 
 
 <p>It's kind of a weird structure but we see that our top level element is an <code>Objs</code> element with a (dead) link to a schema and a bunch of <code>Obj</code> elements inside. The <code>.Id</code> attribute the clue is talking about is presumably at <code>&lt;Obj&gt;.Props.I32</code> where N="Id".</p>
-<div class="codehilite"><pre><span></span><span class="x">PS /home/elf&gt; $doc.Objs.Obj | % </span><span class="cp">{</span><span class="nv">$_.Props.I32.where</span><span class="o">(</span><span class="cp">{</span><span class="nv">$_.N</span> <span class="o">-</span><span class="na">eq</span> <span class="s2">&quot;Id&quot;</span><span class="cp">}</span><span class="o">)</span><span class="cp">}</span><span class="x"> | Group-Object &#39;#text&#39;</span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; $doc.Objs.Obj | % {$_.Props.I32.where({$_.N -eq &quot;Id&quot;})} | Group-Object &#39;#text&#39;
 
-<span class="x">Count Name                      Group</span>
-<span class="x">----- ----                      -----</span>
-<span class="x">    1 1                         </span><span class="cp">{</span><span class="nf">I32</span><span class="cp">}</span><span class="x"></span>
-<span class="x">   39 2                         </span><span class="cp">{</span><span class="nf">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="err">…</span><span class="cp">}</span><span class="x"></span>
-<span class="x">  179 3                         </span><span class="cp">{</span><span class="nf">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="err">…</span><span class="cp">}</span><span class="x"></span>
-<span class="x">    2 4                         </span><span class="cp">{</span><span class="nf">I32</span><span class="o">,</span> <span class="na">I32</span><span class="cp">}</span><span class="x"></span>
-<span class="x">  905 5                         </span><span class="cp">{</span><span class="nf">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="err">…</span><span class="cp">}</span><span class="x"></span>
-<span class="x">   98 6                         </span><span class="cp">{</span><span class="nf">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="o">,</span> <span class="na">I32</span><span class="err">…</span><span class="cp">}</span><span class="x"></span>
+Count Name                      Group
+----- ----                      -----
+    1 1                         {I32}
+   39 2                         {I32, I32, I32, I32…}
+  179 3                         {I32, I32, I32, I32…}
+    2 4                         {I32, I32}
+  905 5                         {I32, I32, I32, I32…}
+   98 6                         {I32, I32, I32, I32…}
 </pre></div>
 
 
 <p>We take in every object, then map each one to its child I32s that have N="Id". At this point we technically have a 2D array, but the pipe then flattens it out so <code>Group-Object</code> just gets an array of <code>I32</code> objects. We then tell it to group by the actual inner text value (the id) and we see we're looking for the only event with ID 1.</p>
 <p>It seems like we could try to read the <code>Group</code> property, but remember that's just our I32 rather than the full context. </p>
 <p>It's possible to filter the parsed XML structure we already have, but since we know we're looking for <code>&lt;I32 N="Id"&gt;1&lt;/I32&gt;</code>, we can just search through the file and read the XML ourselves. After some experimentation with the <code>-Context</code> param,</p>
-<div class="codehilite"><pre><span></span>PS /home/elf&gt; type ./EventLog.xml | select-string &#39;<span class="nt">&lt;I32</span> <span class="na">N=</span><span class="s">&quot;Id&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/I32&gt;</span>&#39; -Context 8,140
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; type ./EventLog.xml | select-string &#39;&lt;I32 N=&quot;Id&quot;&gt;1&lt;/I32&gt;&#39; -Context 8,140
 
-PS /home/elf&gt; type ./EventLog.xml | select-string &#39;<span class="nt">&lt;I32</span> <span class="na">N=</span><span class="s">&quot;Id&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/I32&gt;</span>&#39; -Context 8,140
-    <span class="nt">&lt;Obj</span> <span class="na">RefId=</span><span class="s">&quot;1800&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;TN</span> <span class="na">RefId=</span><span class="s">&quot;1800&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;T&gt;</span>System.Diagnostics.Eventing.Reader.EventLogRecord<span class="nt">&lt;/T&gt;</span>
-        <span class="nt">&lt;T&gt;</span>System.Diagnostics.Eventing.Reader.EventRecord<span class="nt">&lt;/T&gt;</span>
-        <span class="nt">&lt;T&gt;</span>System.Object<span class="nt">&lt;/T&gt;</span>
-      <span class="nt">&lt;/TN&gt;</span>
-      <span class="nt">&lt;ToString&gt;</span>System.Diagnostics.Eventing.Reader.EventLogRecord<span class="nt">&lt;/ToString&gt;</span>
-      <span class="nt">&lt;Props&gt;</span>
-&gt;       <span class="nt">&lt;I32</span> <span class="na">N=</span><span class="s">&quot;Id&quot;</span><span class="nt">&gt;</span>1<span class="nt">&lt;/I32&gt;</span>
-        <span class="nt">&lt;By</span> <span class="na">N=</span><span class="s">&quot;Version&quot;</span><span class="nt">&gt;</span>5<span class="nt">&lt;/By&gt;</span>
+PS /home/elf&gt; type ./EventLog.xml | select-string &#39;&lt;I32 N=&quot;Id&quot;&gt;1&lt;/I32&gt;&#39; -Context 8,140
+    &lt;Obj RefId=&quot;1800&quot;&gt;
+      &lt;TN RefId=&quot;1800&quot;&gt;
+        &lt;T&gt;System.Diagnostics.Eventing.Reader.EventLogRecord&lt;/T&gt;
+        &lt;T&gt;System.Diagnostics.Eventing.Reader.EventRecord&lt;/T&gt;
+        &lt;T&gt;System.Object&lt;/T&gt;
+      &lt;/TN&gt;
+      &lt;ToString&gt;System.Diagnostics.Eventing.Reader.EventLogRecord&lt;/ToString&gt;
+      &lt;Props&gt;
+&gt;       &lt;I32 N=&quot;Id&quot;&gt;1&lt;/I32&gt;
+        &lt;By N=&quot;Version&quot;&gt;5&lt;/By&gt;
 
         [...]
 
-            <span class="nt">&lt;Obj</span> <span class="na">RefId=</span><span class="s">&quot;18016&quot;</span><span class="nt">&gt;</span>
-              <span class="nt">&lt;TNRef</span> <span class="na">RefId=</span><span class="s">&quot;1806&quot;</span> <span class="nt">/&gt;</span>
-              <span class="nt">&lt;ToString&gt;</span>System.Diagnostics.Eventing.Reader.EventProperty<span class="nt">&lt;/ToString&gt;</span>
-              <span class="nt">&lt;Props&gt;</span>
-                <span class="nt">&lt;S</span> <span class="na">N=</span><span class="s">&quot;Value&quot;</span><span class="nt">&gt;</span>C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe 
+            &lt;Obj RefId=&quot;18016&quot;&gt;
+              &lt;TNRef RefId=&quot;1806&quot; /&gt;
+              &lt;ToString&gt;System.Diagnostics.Eventing.Reader.EventProperty&lt;/ToString&gt;
+              &lt;Props&gt;
+                &lt;S N=&quot;Value&quot;&gt;C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe 
 -c &quot;`$correct_gases_postbody = @{`n    O=6`n    H=7`n    He=3`n    N=4`n    Ne=22`n
-Ar=11`n    Xe=10`n    F=20`n    Kr=8`n    Rn=9`n}`n&quot;<span class="nt">&lt;/S&gt;</span>
-              <span class="nt">&lt;/Props&gt;</span>
+Ar=11`n    Xe=10`n    F=20`n    Kr=8`n    Rn=9`n}`n&quot;&lt;/S&gt;
+              &lt;/Props&gt;
 </pre></div>
 
 
 <p>So we now know our final parameters are:</p>
-<div class="codehilite"><pre><span></span><span class="err">temperature = -33.5</span>
-<span class="err">refraction = 1.867</span>
-<span class="err">angle = 65.5</span>
-<span class="err">correct_gases = O=6 H=7 He=3 N=4 Ne=22 Ar=11 Xe=10 F=20 Kr=8 Rn=9</span>
+<div class="codehilite"><pre><span></span>temperature = -33.5
+refraction = 1.867
+angle = 65.5
+correct_gases = O=6 H=7 He=3 N=4 Ne=22 Ar=11 Xe=10 F=20 Kr=8 Rn=9
 </pre></div>
 
 
 <p>So now let's set our properties like the API docs told us to:</p>
-<div class="codehilite"><pre><span></span><span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/refraction?val=1.867&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
-<span class="nt">HTTP</span><span class="o">/</span><span class="nt">1</span><span class="p">.</span><span class="nc">0</span> <span class="nt">200</span> <span class="nt">OK</span>                                                                           
-<span class="nt">Server</span><span class="o">:</span> <span class="nt">Werkzeug</span><span class="o">/</span><span class="nt">0</span><span class="p">.</span><span class="nc">16</span><span class="p">.</span><span class="nc">0</span>                                                                   
-<span class="nt">Server</span><span class="o">:</span> <span class="nt">Python</span><span class="o">/</span><span class="nt">3</span><span class="p">.</span><span class="nc">6</span><span class="p">.</span><span class="nc">9</span>                                                                      
-<span class="nt">Date</span><span class="o">:</span> <span class="nt">Thu</span><span class="o">,</span> <span class="nt">26</span> <span class="nt">Dec</span> <span class="nt">2019</span> <span class="nt">15</span><span class="p">:</span><span class="nd">00</span><span class="p">:</span><span class="nd">33</span> <span class="nt">GMT</span>                                                       
-<span class="nt">Content-Type</span><span class="o">:</span> <span class="nt">text</span><span class="o">/</span><span class="nt">html</span><span class="o">;</span> <span class="nt">charset</span><span class="o">=</span><span class="nt">utf-8</span>
-<span class="nt">Content-Length</span><span class="o">:</span> <span class="nt">87</span>
+<div class="codehilite"><pre><span></span>PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/refraction?val=1.867&#39;).RawContent
+HTTP/1.0 200 OK                                                                           
+Server: Werkzeug/0.16.0                                                                   
+Server: Python/3.6.9                                                                      
+Date: Thu, 26 Dec 2019 15:00:33 GMT                                                       
+Content-Type: text/html; charset=utf-8
+Content-Length: 87
 
-<span class="nt">Updated</span> <span class="nt">Lense</span> <span class="nt">Refraction</span> <span class="nt">Level</span> <span class="nt">-</span> <span class="nt">Check</span> <span class="o">/</span><span class="nt">api</span><span class="o">/</span><span class="nt">output</span> <span class="nt">if</span> <span class="nt">5</span> <span class="nt">Mega-Jollies</span> <span class="nt">per</span> <span class="nt">liter</span> <span class="nt">reached</span><span class="o">.</span>
-<span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/temperature?val=-33.5&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
+Updated Lense Refraction Level - Check /api/output if 5 Mega-Jollies per liter reached.
+PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/temperature?val=-33.5&#39;).RawContent
 
-<span class="cp">[</span><span class="nx">...</span><span class="cp">]</span>
+[...]
 
-<span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/angle?val=65.5&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
-<span class="cp">[</span><span class="nx">...</span><span class="cp">]</span>
-<span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/gas&#39;</span> <span class="nt">-Method</span> <span class="nt">POST</span> <span class="nt">-Body</span> <span class="o">@</span><span class="p">{</span><span class="err">O=6</span><span class="p">;</span> <span class="err">H=7</span><span class="p">;</span> <span class="err">He=3</span><span class="p">;</span> <span class="err">N=4</span><span class="p">;</span> <span class="err">Ne=22</span><span class="p">;</span> <span class="err">Ar=11</span><span class="p">;</span> <span class="err">Xe=10</span><span class="p">;</span> <span class="err">F=20</span><span class="p">;</span> <span class="err">Kr=8</span><span class="p">;</span> <span class="err">Rn=9</span><span class="p">}</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
-<span class="cp">[</span><span class="nx">...</span><span class="cp">]</span>
+PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/angle?val=65.5&#39;).RawContent
+[...]
+PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/gas&#39; -Method POST -Body @{O=6; H=7; He=3; N=4; Ne=22; Ar=11; Xe=10; F=20; Kr=8; Rn=9}).RawContent
+[...]
 
-<span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/on&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
-<span class="cp">[</span><span class="nx">...</span><span class="cp">]</span>
+PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/on&#39;).RawContent
+[...]
 
-<span class="nt">PS</span> <span class="o">/</span><span class="nt">home</span><span class="o">/</span><span class="nt">elf</span><span class="o">&gt;</span> <span class="o">(</span><span class="nt">Invoke-WebRequest</span> <span class="nt">-Uri</span> <span class="s1">&#39;http://localhost:1225/api/output&#39;</span><span class="o">)</span><span class="p">.</span><span class="nc">RawContent</span>
-<span class="nt">HTTP</span><span class="o">/</span><span class="nt">1</span><span class="p">.</span><span class="nc">0</span> <span class="nt">200OK</span>                                                                           
-<span class="nt">Server</span><span class="o">:</span> <span class="nt">Werkzeug</span><span class="o">/</span><span class="nt">0</span><span class="p">.</span><span class="nc">16</span><span class="p">.</span><span class="nc">0</span>                                                                   
-<span class="nt">Server</span><span class="o">:</span> <span class="nt">Python</span><span class="o">/</span><span class="nt">3</span><span class="p">.</span><span class="nc">6</span><span class="p">.</span><span class="nc">9</span>                                                                      
-<span class="nt">Date</span><span class="o">:</span> <span class="nt">Thu</span><span class="o">,</span> <span class="nt">26</span> <span class="nt">Dec</span> <span class="nt">2019</span> <span class="nt">15</span><span class="p">:</span><span class="nd">09</span><span class="p">:</span><span class="nd">31</span> <span class="nt">GMT</span>               
-<span class="nt">Content-Type</span><span class="o">:</span> <span class="nt">text</span><span class="o">/</span><span class="nt">html</span><span class="o">;</span> <span class="nt">charset</span><span class="o">=</span><span class="nt">utf-8</span>
-<span class="nt">Content-Length</span><span class="o">:</span> <span class="nt">200</span>
+PS /home/elf&gt; (Invoke-WebRequest -Uri &#39;http://localhost:1225/api/output&#39;).RawContent
+HTTP/1.0 200OK                                                                           
+Server: Werkzeug/0.16.0                                                                   
+Server: Python/3.6.9                                                                      
+Date: Thu, 26 Dec 2019 15:09:31 GMT               
+Content-Type: text/html; charset=utf-8
+Content-Length: 200
 
-<span class="nt">Success</span><span class="o">!</span> <span class="nt">-</span> <span class="nt">6</span><span class="p">.</span><span class="nc">70</span> <span class="nt">Mega-Jollies</span> <span class="nt">of</span> <span class="nt">Laser</span> <span class="nt">Output</span> <span class="nt">Reached</span><span class="o">!</span>
+Success! - 6.70 Mega-Jollies of Laser Output Reached!
 </pre></div>
 		</main>
 

@@ -1,35 +1,44 @@
 import os
 import sys
-from os import path
+from pathlib import Path
 import markdown
 
-if len(sys.argv) < 2:
-	print("Usage: render.py src/")
+def render_file(path):
+	page_name = path.stem
 
-src_dir = sys.argv[1]
+	search_dir = path.parent
+	template = None
+	for _ in range(0, 3):
+		template = search_dir / ("template-" + page_name + ".html")
+		if template.is_file():
+			break
 
-for file in os.listdir(src_dir):
-	if file.split(".")[-1] != "md":
-		continue
+		template = search_dir / "template.html"
+		if template.is_file():
+			break
 
-	file_path = path.join(src_dir, file)
-	page_name = file.split(".")[0]
+		search_dir = search_dir / ".."
 
-	template_name = path.join(src_dir, "template-" + page_name + ".html")
-	if not path.exists(template_name):
-		template_name = path.join(src_dir, "template.html")
+	if not template.is_file():
+		print("Couldn't find a template for %s" % template)
+		return
 
-	print("Rendering %s with template %s" % (page_name, template_name))
+	print("Rendering %s with template %s" % (path, template))
 
-	dest_name = page_name + ".html"
+	dest_name = path.parent / ".." / (page_name + ".html")
 
 	rendered = ""
-	with open(file_path, "r") as f:
+	with open(path, "r") as f:
 		rendered = markdown.markdown(f.read(), extensions=['codehilite', 'fenced_code'])
 
-	with open(template_name, "r") as f:
+	with open(template, "r") as f:
 		contents = f.read()
 		contents = contents.replace("@title", page_name)
 		contents = contents.replace("@yield", rendered)
 		with open(dest_name, "w") as d:
 			d.write(contents)
+
+
+for src_dir in Path(".").glob("*/src"):
+	for file in src_dir.glob("*.md"):
+		render_file(Path(file))

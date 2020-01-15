@@ -11,3 +11,8 @@ img {
 .codehilite pre {
 	white-space: pre-wrap;	
 }
+
+code {
+	padding: 0.2rem;
+	background: #272822;
+}

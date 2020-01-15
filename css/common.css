@@ -1,3 +1,35 @@
+/* Structure */
+main {
+	width: 70%;
+	margin: 0 auto;
+	padding-top: 10rem;
+}
+
+body {
+	font-family: sans-serif;
+	font-size: 1.2rem;
+	background-color: rgb(20, 20, 20);
+	color: white;
+}
+
+footer {
+	padding-top: 5rem;
+}
+
+@media screen and (max-width: 800px) {
+	main {
+		width: 80%;
+		padding-top: 2rem;
+	}
+	body {
+		font-size: 1rem;
+	}
+	footer {
+		padding-top: 0;
+	}
+}
+
+/* Footer links */
 .links {
 	display: flex;
 	flex-direction: row;
@@ -14,32 +46,29 @@
 	color: white;
 }
 
-
-main {
-	width: 70%;
-	margin: 0 auto;
-	padding-top: 10rem;
-}
-
-body {
-	font-family: sans-serif;
-	font-size: 1.2rem;
-	background-color: rgb(20, 20, 20);
-	color: white;
-}
+/* Typography */
 .huge-header {
 	font-size: 5rem;
+	margin: 2rem 0;
 }
+
 .align-center {
 	text-align: center;
+}
+
+blockquote {
+	border-left: 3px solid grey;
+	box-sizing: border-box;
+	margin: 0;
+	padding-left: 1rem;
 }
 
 p {
 	line-height: 2rem;
 }
 
-footer {
-	padding-top: 5rem;
+li {
+	margin: 0.5rem 0;
 }
 
 a, a:visited {

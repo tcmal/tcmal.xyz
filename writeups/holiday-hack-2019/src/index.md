@@ -18,9 +18,9 @@
   7. [Get Access to the Steam Tunnels](steam-tunnels.html)
   8. Bypassing the Frido Sleigh CAPTEHA
   9. [Retrieve Scraps of paper from Server](paper-scraps.html)
-  10. Recover cleartext document
+  10. [Recover cleartext document](recover-document.html)
   11. [Open the Sleigh Shop door](crate.html)
-  12. Filter out poisoned sources of Weather Data
+  12. [Filter out poisoned sources of Weather Data](endgame.html)
 
 # Side objectives
 

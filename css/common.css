@@ -33,17 +33,24 @@ footer {
 .links {
 	display: flex;
 	flex-direction: row;
-	align-content: center;
 	justify-content: center;
 }
 
-.links > div {
+.links .link {
 	padding: 1rem;
-	font-size: 3rem;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .links a, .links a:visited {
 	color: white;
+	font-size: 0.8rem;
+}
+
+.links .iconify {
+	font-size: 2rem;
+	margin-right: 0.4rem;
 }
 
 /* Typography */

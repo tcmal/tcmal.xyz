@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="We’re given a .exe file, .pdb file, and an encrypted PDF file. We can start by loading up the .exe file and reversing it. I did this using ghidra. It’s important to import the .pdb file before you run">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Recover Cleartext document">
+<meta property="og:url" content="http://tcmal.xyz/recover-document/index.html">
+<meta property="og:site_name" content="tcmal">
+<meta property="og:description" content="We’re given a .exe file, .pdb file, and an encrypted PDF file. We can start by loading up the .exe file and reversing it. I did this using ghidra. It’s important to import the .pdb file before you run">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-01-19T00:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-13T21:27:33.567Z">
+<meta property="article:author" content="tcmal">
+<meta property="article:tag" content="computing">
+<meta property="article:tag" content="infosec">
+<meta property="article:tag" content="development">
+<meta property="article:tag" content="rust">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Recover Cleartext document</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" href="/paper-scraps/"><i class="fas fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" href="/splunk/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/recover-document/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/recover-document/&text=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/recover-document/&is_video=false&description=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Recover Cleartext document&body=Check out this article: http://tcmal.xyz/recover-document/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/recover-document/&name=Recover Cleartext document&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/recover-document/&t=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Recover Cleartext document
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">tcmal</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-01-19T00:00:00.000Z" itemprop="datePublished">2020-01-19</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/Holiday-Hack-2019/">Holiday Hack 2019</a>
+    </div>
+
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>We’re given a <code>.exe</code> file, <code>.pdb</code> file, and an encrypted PDF file.</p>
+<p>We can start by loading up the <code>.exe</code> file and reversing it. I did this using ghidra. It’s important to import the <code>.pdb</code> file before you run auto-analysis, otherwise it’ll mess stuff up. Luckily the <code>.pdb</code> files do a bunch of the work for us.</p>
+<p>First, let’s figure out what the encryption does. Ghidra’s built-in decompiler does a great job of the <code>do_encrypt</code> function, here’s it cleaned up a bit.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">do_encrypt</span><span class="params">(<span class="keyword">int</span> param_1,<span class="keyword">char</span> *param_2,<span class="keyword">char</span> *param_3)</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* [variable declarations] */</span></span><br><span class="line">    <span class="comment">/* [stack protections] */</span></span><br><span class="line">    puVar1 = read_file(param_2,&amp;local_8);</span><br><span class="line">    puVar1 = (uchar *)<span class="built_in">realloc</span>(puVar1,local_8 + <span class="number">0x10</span>);</span><br><span class="line">    iVar2 = CryptAcquireContextA</span><br><span class="line">                (&amp;local_10,<span class="number">0</span>,<span class="string">"Microsoft Enhanced Cryptographic Provider v1.0"</span>,<span class="number">1</span>,<span class="number">0xf0000000</span>);</span><br><span class="line">    <span class="keyword">if</span> (iVar2 == <span class="number">0</span>) &#123;</span><br><span class="line">    fatal_error(<span class="string">"CryptAcquireContext failed"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    generate_key((uchar *)&amp;local_1c);</span><br><span class="line">    print_hex(<span class="string">"Generated an encryption key"</span>,(uchar *)&amp;local_1c,<span class="number">8</span>);</span><br><span class="line">    local_30 = <span class="number">8</span>;</span><br><span class="line">    local_2f = <span class="number">2</span>;</span><br><span class="line">    local_2e = <span class="number">0</span>;</span><br><span class="line">    local_2c = <span class="number">0x6601</span>;</span><br><span class="line">    local_28 = <span class="number">8</span>;</span><br><span class="line">    local_24 = local_1c;</span><br><span class="line">    local_20 = local_18;</span><br><span class="line">    iVar2 = CryptImportKey(local_10,&amp;local_30,<span class="number">0x14</span>,<span class="number">0</span>,<span class="number">1</span>,&amp;local_c);</span><br><span class="line">    <span class="keyword">if</span> (iVar2 == <span class="number">0</span>) &#123;</span><br><span class="line">        fatal_error(<span class="string">"CryptImportKey failed for DES-CBC key"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    iVar2 = CryptEncrypt(local_c,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,puVar1,&amp;local_8,local_8 + <span class="number">8</span>);</span><br><span class="line">    <span class="keyword">if</span> (iVar2 == <span class="number">0</span>) &#123;</span><br><span class="line">        fatal_error(<span class="string">"CryptEncrypt failed"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    store_key(param_1,(uchar *)&amp;local_1c);</span><br><span class="line">    iVar2 = __iob_func(<span class="string">"File successfully encrypted!\n"</span>);</span><br><span class="line">    <span class="comment">/* [print some ascii art] */</span></span><br><span class="line">    write_file(param_3,puVar1,local_8);</span><br><span class="line">    <span class="built_in">free</span>(puVar1);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* [stack protections] */</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So it’s using Microsoft’s built-in encryption with a key from <code>generate_key(&amp;buffer)</code>. From the error message we also know it’s using <code>DES-CBC</code>. DES is deprecated cos the key sizes are comparatively small, but it’s still never been completely cracked. This means we need to figure out the key, presumably by figuring out the random seed used.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">generate_key</span><span class="params">(uchar *param_1)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> iVar1;</span><br><span class="line">    uint local_8;</span><br><span class="line"></span><br><span class="line">    iVar1 = __iob_func(<span class="string">"Our miniature elves are putting together random bits for your secretkey!\n\n"</span>);</span><br><span class="line">    <span class="built_in">fprintf</span>(iVar1 + <span class="number">0x40</span>);</span><br><span class="line"></span><br><span class="line">    iVar1 = time(<span class="number">0</span>);</span><br><span class="line">    super_secure_srand(iVar1);</span><br><span class="line">    </span><br><span class="line">    local_8 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (local_8 &lt; <span class="number">8</span>) &#123;</span><br><span class="line">        iVar1 = super_secure_random();</span><br><span class="line">        param_1[local_8] = (uchar)iVar1;</span><br><span class="line">        local_8 = local_8 + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">super_secure_srand</span><span class="params">(<span class="keyword">int</span> param_1)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> iVar1;</span><br><span class="line">    iVar1 = __iob_func(<span class="string">"Seed = %d\n\n"</span>,param_1);</span><br><span class="line">    <span class="built_in">fprintf</span>(iVar1 + <span class="number">0x40</span>);</span><br><span class="line"></span><br><span class="line">    RAND_SEED = param_1;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">super_secure_random</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">    RAND_SEED = RAND_SEED * <span class="number">0x343fd</span> + <span class="number">0x269ec3</span>;</span><br><span class="line">    <span class="keyword">return</span> RAND_SEED &gt;&gt; <span class="number">0x10</span> &amp; <span class="number">0x7fff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The initial seed is just the result of <code>time()</code> which is the unix timestamp, ie the number of seconds since 01/01/1970 00:00:00AM. The challenge text also tells us it was encrypted <code>06/12/2019 19:00 - 21:00 UTC</code>, converted to unix time:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Start &#x3D; 1575658800</span><br><span class="line">End &#x3D; 1575666000</span><br><span class="line">N &#x3D; 7200</span><br></pre></td></tr></table></figure>
+
+<p>Now we need to be able to generate the key given any seed. I used python to re-create the logic of <code>generate_key()</code>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getKey</span><span class="params">(seed)</span>:</span></span><br><span class="line">    buf = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        seed = seed * <span class="number">0x343fd</span></span><br><span class="line">        seed += <span class="number">0x269ec3</span></span><br><span class="line">        seed = seed &amp; <span class="number">0xffffffff</span></span><br><span class="line"></span><br><span class="line">        buf[i] = (seed &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span></span><br><span class="line">    <span class="keyword">return</span> buf</span><br></pre></td></tr></table></figure>
+
+<p>We need a couple more <code>&amp;</code>s since python won’t limit our integer sizes like C does. Now we can brute-force the encrypted file. <code>pycryptodome</code> is the most common module for this, so we just use its inbuilt <code>DES-CBC</code>.</p>
+<p>We’re pretty sure it’s a pdf file, which means the first 4 bytes are <code>25 50 44 46</code> or <code>%PDF</code>. We just need to try all the seeds in our range and find one where the first 4 bytes are <code>%PDF</code>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> DES</span><br><span class="line"></span><br><span class="line"><span class="comment"># Read the file</span></span><br><span class="line">file = open(<span class="string">"file.enc"</span>, <span class="string">"rb"</span>)</span><br><span class="line">encrypted = file.read()</span><br><span class="line"></span><br><span class="line">encsample = encrypted[:<span class="number">16</span>] <span class="comment"># Only do the first bit</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Bruteforce</span></span><br><span class="line"><span class="keyword">for</span> seed <span class="keyword">in</span> range(<span class="number">1575658800</span>, <span class="number">1575666001</span>):</span><br><span class="line">    <span class="comment"># Get the key</span></span><br><span class="line">    key = bytes([x <span class="keyword">for</span> x <span class="keyword">in</span> getKey(seed)])</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Try decrypting</span></span><br><span class="line">    cipher = DES.new(key, DES.MODE_CBC, iv=<span class="string">b"\0\0\0\0\0\0\0\0"</span>)</span><br><span class="line">    dec = cipher.decrypt(encsample)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Validity check</span></span><br><span class="line">    <span class="keyword">if</span> dec[:<span class="number">4</span>] == <span class="string">b"%PDF"</span>:</span><br><span class="line">        print(<span class="string">" --- FOUND"</span>)</span><br><span class="line">        print(seed, dec)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Now decrypt the full file</span></span><br><span class="line">        cipher = DES.new(key, DES.MODE_CBC, iv=<span class="string">b"\0\0\0\0\0\0\0\0"</span>)</span><br><span class="line">        fulldec = cipher.decrypt(encrypted)</span><br><span class="line">        <span class="keyword">with</span> open(<span class="string">"out.pdf"</span>, <span class="string">"wb"</span>) <span class="keyword">as</span> out:</span><br><span class="line">            out.write(fulldec)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ python brute.py</span><br><span class="line"> --- FOUND</span><br><span class="line">1575663650 b&#39;%PDF-1.3\n%\xc4\xe5\xf2\xe5\xeb\xa7&#39;</span><br></pre></td></tr></table></figure>
+
+<p>Now we have the decrypted file and can read it. The cover subheading is <code>Machine Learning Sleigh Route Finder</code>.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/recover-document/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/recover-document/&text=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/recover-document/&is_video=false&description=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Recover Cleartext document&body=Check out this article: http://tcmal.xyz/recover-document/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/recover-document/&title=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/recover-document/&name=Recover Cleartext document&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/recover-document/&t=Recover Cleartext document" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2019-2020
+    tcmal
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/categories/">Categories</a></li>
+         
+          <li><a href="/archives/">Recent</a></li>
+         
+          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>

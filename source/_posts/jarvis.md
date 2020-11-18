@@ -3,7 +3,7 @@ title: Jarvis
 categories:
   - HackTheBox
 tags: 
-  - Infosec,
+  - Infosec
   - Exploit
   - Web
 date: 2020-01-08

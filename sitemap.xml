@@ -2,6 +2,83 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://tcmal.xyz/laser/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/loopback_intro/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/pagination/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/paper-scraps/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/recover-document/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/splunk/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/steam-tunnels/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/unredact-threatening-document/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/xss-done-right/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/categories/index.html</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/asymmetric-encryption/</loc>
+    
+    <lastmod>2021-02-02</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://tcmal.xyz/braces/</loc>
     
     <lastmod>2021-02-02</lastmod>
@@ -78,76 +155,6 @@
     
   </url>
   
-  <url>
-    <loc>http://tcmal.xyz/laser/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/loopback_intro/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/pagination/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/paper-scraps/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/recover-document/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/splunk/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/steam-tunnels/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/unredact-threatening-document/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/xss-done-right/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/categories/index.html</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
 
   <url>
     <loc>http://tcmal.xyz/</loc>
@@ -156,6 +163,20 @@
     <priority>1.0</priority>
   </url>
 
+  
+  <url>
+    <loc>http://tcmal.xyz/tags/Cryptography/</loc>
+    <lastmod>2021-02-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/tags/Programming/</loc>
+    <lastmod>2021-02-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Linux/</loc>

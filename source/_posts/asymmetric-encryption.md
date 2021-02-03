@@ -37,51 +37,51 @@ can still be multiplied relatively quickly<sup>[1]</sup>.
 It can be shown that every non-prime (composite) number can eventually
 be factorised down to prime numbers, for example:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 2 * 2 * 5 * 5 * 5 = 2^2 * 5^3 = 500
-$$
+{% endkatex %}
 
 Each combination of primes is unique to one composite number, and every
 composite number, by definition, has a prime factorisation. This means
 if we take 2 primes and multiply them together, we know our original
 primes are the only prime factors of that number.
 
-$$
+{% katex '{"displayMode": "true"}' %}
 n = p * q
-$$
+{% endkatex %}
 
-This also makes it easy to calculate $\phi(n)$. Since p and q are prime,
+This also makes it easy to calculate {% katex %}\phi(n){% endkatex %}. Since p and q are prime,
 from Euler’s Totient Theory<sup>[2]</sup>:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 \phi(pq) = (p - 1)(q - 1)
-$$
-We now choose $e$ (not the constant), which is coprime to $\phi(n)$. Then
-we find $d$ such that $de \equiv 1 (\mod \phi(n))$, which we can do using the
+{% endkatex %}
+
+We now choose {% katex %}e{% endkatex %} (not the constant), which is coprime to {% katex %}\phi(n){% endkatex %}. Then
+we find {% katex %}d{% endkatex %} such that {% katex %}de \equiv 1 (\mod \phi(n)){% endkatex %}, which we can do using the
 extended Euclidean algorithm.
 
-This gives us the public key: $(e, n)$ and the private key: $(d,n)$.
+This gives us the public key: {% katex %}(e, n){% endkatex %} and the private key: {% katex %}(d,n){% endkatex %}.
 
-If we have a number $M$ to encrypt ($M < n$), we simply use these
+If we have a number {% katex %}M{% endkatex %} to encrypt ({% katex %}M < n{% endkatex %}), we simply use these
 functions:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 E(M) = M^e (\mod n)
 D(C) = C^d (\mod n)
-$$
+{% endkatex %}
 
-For our uses, signing a number $M$ looks like this:
+For our uses, signing a number {% katex %}M{% endkatex %} looks like this:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 S(M) = M^d (\mod n)
-$$
+{% endkatex %}
 
-And if the following is true, $C$ was encrypted using the private key:
+And if the following is true, {% katex %}C{% endkatex %} was encrypted using the private key:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 C^e (\mod n) = M
-$$
-
+{% endkatex %}
 
 # Finding p and q
 
@@ -90,31 +90,22 @@ so instead tests that give a high probability of a given number being
 prime will be used, and random numbers generated till we get 2 that have
 a high enough probability.
 
-Since every prime takes the form $6n + 1$ or $6n – 1$ (except 2 and 3),
-we can generate $n$ randomly and put it in the above equations until we
+Since every prime takes the form {% katex %}6n + 1{% endkatex %} or {% katex %}6n – 1{% endkatex %} (except 2 and 3),
+we can generate {% katex %}n{% endkatex %} randomly and put it in the above equations until we
 generate our 2 primes.
 
-Fermat’s Theorem dictates that if $x$ is prime,
-$a^x - 1 \equiv 1 (\mod x)$ for any values of $a$ less than
-$x$<sup>[3]</sup> However, it’s possible for a number to pass this test even if it
+Fermat’s Theorem dictates that if {% katex %}x{% endkatex %} is prime, {% katex %}a^x - 1 \equiv 1 (\mod x){% endkatex %} for any values of {% katex %}a{% endkatex %} less than {% katex %}x{% endkatex %}<sup>[3]</sup> However, it’s possible for a number to pass this test even if it
 isn’t prime, so another test is needed.
 
-It can be shown that $x$ is prime if and only if
-$n^2 = 1 (\mod x)$ only when $n = \pm 1$<sup>[4]</sup>. So if we can find
-$n$ such that $n^2 (\mod x) \neq \pm 1$,  $n < x$ , we know
-that $n$ is not prime. If we take $n^2 = a^x - 1$,
-where $a$ is from our previous Fermat Test, we know that if $x$ is prime
-it’s also odd, and thus $x-1$ is even. This means we can also write
-$a^x - 1 = a^{2^sd}$ (d is odd).
-This means that for the sequence:
+It can be shown that {% katex %}x{% endkatex %} is prime if and only if {% katex %}n^2 = 1 (\mod x){% endkatex %} only when {% katex %}n = \pm 1{% endkatex %}<sup>[4]</sup>. So if we can find {% katex %}n{% endkatex %} such that {% katex %}n^2 (\mod x) \neq \pm 1, n < x{% endkatex %} , we know that {% katex %}n{% endkatex %} is not prime. If we take {% katex %}n^2 = a^x - 1{% endkatex %}, where {% katex %}a{% endkatex %} is from our previous Fermat Test, we know that if {% katex %}x{% endkatex %} is prime it’s also odd, and thus {% katex %}x-1{% endkatex %} is even. This means we can also write {% katex %}a^x - 1 = a^{2^sd}{% endkatex %} (d is odd). This means that for the sequence:
 
-$$
+{% katex '{"displayMode": "true"}' %}
 a^{2^sd} \mod x, a^{2^{s-1}d} \mod x,  a^{2^{s-2}d} \mod x, ...,  a^{d} \mod x
-$$
+{% endkatex %}
 
-Each number is a square root of the previous number. If $x$ is prime then
+Each number is a square root of the previous number. If {% katex %}x{% endkatex %} is prime then
 for this sequence, either every number is 1, or the first number that
-isn’t 1 is $x - 1$.
+isn’t 1 is {% katex %}x - 1{% endkatex %}.
 
 These 2 techniques can be combined to generate numbers that are likely
 to be prime at a relatively low computational cost. Since this will only
@@ -123,42 +114,32 @@ is fast.
 
 # Finding e
 
-$e$ being (relatively) small makes encryption more efficient without
-affecting security.
+e being (relatively) small makes encryption more efficient without affecting security.
 
-Most commonly, e is taken as 65,537 and if this isn’t coprime to
-$\phi(n)$, we choose a different p and q. This is because it’s a
-relatively large known prime which can fit well within 32 bits.
+Most commonly, e is taken as 65,537 and if this isn’t coprime to {% katex %}\phi(n){% endkatex %}, we choose a different p and q. This is because it’s a relatively large known prime which can fit well within 32 bits.
 
-An alternative way to do this would be to loop from $t$ up to $\phi(n)$ and
-find the first integer where $gcd(e, \phi(n)) = 1$.
-
-The first method will be used in order to reduce the complexity of the
-code and to put the generation algorithm more in line with accepted
-standards.
+An alternative way to do this would be to loop from {% katex %}t{% endkatex %} up to {% katex %}\phi(n){% endkatex %} and
+find the first integer where {% katex %}gcd(e, \phi(n)) = 1{% endkatex %}.
 
 # Finding d
 
-$d$ can be calculated using the extended Euclidean algorithm<sup>[5]</sup>, which
-we can use to solve $ae + bn = gcd(e, n)$. Since the two are coprime,
-$gcd(x,y) = 1$. If we apply $(\mod n)$ to the whole equation, the $bn$
-disappears so we’re left with $ae = 1 (\mod n)$. This means $a = d$.
+d can be calculated using the extended Euclidean algorithm<sup>[5]</sup>, which we can use to solve {% katex %}ae + bn = gcd(e, n){% endkatex %}. Since the two are coprime, {% katex %}gcd(x,y) = 1{% endkatex %}. If we apply {% katex %}(\mod n){% endkatex %} to the whole equation, the {% katex %}bn{% endkatex %} disappears so we’re left with {% katex %}ae = 1 (\mod n){% endkatex %}. This means {% katex %}a = d{% endkatex %}.
 
 # Data Padding
 
-For RSA to work, Its required that the message $M < n$. An easy way
-to ensure this would be to make sure the number of bits for $M$ is less
-than $n$. If the message is longer than that length, we can split it into
+For RSA to work, Its required that the message {% katex %}M < n{% endkatex %}. An easy way
+to ensure this would be to make sure the number of bits for {% katex %}M{% endkatex %} is less
+than {% katex %}n{% endkatex %}. If the message is longer than that length, we can split it into
 many smaller parts and encrypt these parts individually. For
 convenience, A padding function will be used to make sure every message
 is the same length of bits.
 
 OAEP is the standard padding scheme specified by PKCS\#1 and used by
 most implementations. This requires a function for generating random
-bytes as well as a hashing function. If the final $M$ passed
-to the RSA signing function is $k$ bits long, half of $k$ will be
+bytes as well as a hashing function. If the final {% katex %}M{% endkatex %} passed
+to the RSA signing function is {% katex %}k{% endkatex %} bits long, half of {% katex %}k{% endkatex %} will be
 allocated to the actual message and the other half to the random seed.
-This means $k$ is twice the length of the output from the hash function
+This means {% katex %}k{% endkatex %} is twice the length of the output from the hash function
 used.
 
 If a message spans over more than one padded ‘block’, then the same seed
@@ -168,13 +149,13 @@ seed number will likely be different from the rest of the ‘blocks’.
 
 # Size of numbers
 
-The generally accepted size for the modulus $n$ is 2048 bits. Since
-we’re using a constant for $e$ we know that its only 32 bits. $d$ is likely
+The generally accepted size for the modulus {% katex %}n{% endkatex %} is 2048 bits. Since
+we’re using a constant for {% katex %}e{% endkatex %} we know that its only 32 bits. {% katex %}d{% endkatex %} is likely
 to be closer to the size of the modulus, so we’ll assume its max is the
-same as $n$
+same as {% katex %}n{% endkatex %}
 
-> Max $n$ and $d$: $2^{2048} − 1 \approx 3.23 * 10^{616}$
-> Max e: $2^32 − 1 = 4,294,967,296$
+> Max {% katex %}n{% endkatex %} and {% katex %}d{% endkatex %}: {% katex %}2^{2048} − 1 \approx 3.23 * 10^{616}{% endkatex %}
+> Max e: {% katex %}2^32 − 1 = 4,294,967,296{% endkatex %}
 
 (They are all unsigned integers)
 

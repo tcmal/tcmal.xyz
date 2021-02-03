@@ -2,163 +2,163 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://tcmal.xyz/laser/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/loopback_intro/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/pagination/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/paper-scraps/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/recover-document/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/splunk/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/steam-tunnels/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/unredact-threatening-document/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/xss-done-right/</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://tcmal.xyz/categories/index.html</loc>
-    
-    <lastmod>2021-02-02</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://tcmal.xyz/asymmetric-encryption/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/braces/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/crate/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/determine-attacker-technique/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/determine-compromised-system/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/endgame/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/evaluate-attack-outcome/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/gcp-serverless-endpoints/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/graphs/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/graylog/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/jarvis/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
   <url>
     <loc>http://tcmal.xyz/keypad/</loc>
     
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/laser/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/loopback_intro/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/pagination/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/paper-scraps/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/recover-document/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/splunk/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/steam-tunnels/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/unredact-threatening-document/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/xss-done-right/</loc>
+    
+    <lastmod>2021-02-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://tcmal.xyz/categories/index.html</loc>
+    
+    <lastmod>2021-02-03</lastmod>
     
   </url>
   
 
   <url>
     <loc>http://tcmal.xyz/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -166,203 +166,203 @@
   
   <url>
     <loc>http://tcmal.xyz/tags/Cryptography/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Programming/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Linux/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Network/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Infosec/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Javascript/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Windows/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Forensics/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/PowerShell/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/RITA/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Web/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Serverless/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/development/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/uml/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/db/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Exploit/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Python/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/Puzzle/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/loopback/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/server/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/rest/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/api/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/react/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/mobx/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/prototyping/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/npm/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/security/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/xss/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/tags/exploit/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -371,28 +371,28 @@
   
   <url>
     <loc>http://tcmal.xyz/categories/Holiday-Hack-2019/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/categories/Web-Development/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/categories/Software-Development/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://tcmal.xyz/categories/HackTheBox/</loc>
-    <lastmod>2021-02-02</lastmod>
+    <lastmod>2021-02-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>

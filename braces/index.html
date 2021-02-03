@@ -6,15 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="There’s a lot of resources for learning iptables, this one covers a lot of the common things. First, we clear out all the existing rules: 1sudo iptables -F  Then we make sure we DROP everything by def">
+    <meta name="description" content="There’s a lot of resources for learning iptables, this one covers a lot of the common things. First, we clear out all the existing rules: 1sudo iptables -F Then we make sure we DROP everything by defa">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Smart Braces">
 <meta property="og:url" content="http://tcmal.xyz/braces/index.html">
 <meta property="og:site_name" content="tcmal">
-<meta property="og:description" content="There’s a lot of resources for learning iptables, this one covers a lot of the common things. First, we clear out all the existing rules: 1sudo iptables -F  Then we make sure we DROP everything by def">
+<meta property="og:description" content="There’s a lot of resources for learning iptables, this one covers a lot of the common things. First, we clear out all the existing rules: 1sudo iptables -F Then we make sure we DROP everything by defa">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-19T00:00:00.000Z">
-<meta property="article:modified_time" content="2021-02-03T14:58:13.438Z">
 <meta property="article:author" content="tcmal">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="Network">
@@ -53,7 +52,11 @@
     <!-- rss -->
     
     
-<meta name="generator" content="Hexo 4.2.1"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -71,7 +74,7 @@
          
           <li><a href="/archives/">Recent</a></li>
          
-          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a target="_blank" rel="noopener" href="https://github.com/tcmal">GitHub</a></li>
         
       </ul>
     </span>
@@ -95,17 +98,17 @@
     <br/>
     <div id="share" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/braces/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/braces/&text=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/braces/&is_video=false&description=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/braces/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/braces/&text=Smart Braces"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/braces/&is_video=false&description=Smart Braces"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
   <li><a class="icon" href="mailto:?subject=Smart Braces&body=Check out this article: http://tcmal.xyz/braces/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/braces/&name=Smart Braces&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/braces/&t=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/braces/&name=Smart Braces&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/braces/&t=Smart Braces"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -150,7 +153,7 @@
       
     <div class="article-tag">
         <i class="fas fa-tag"></i>
-        <a class="tag-link" href="/tags/Infosec/" rel="tag">Infosec</a>, <a class="tag-link" href="/tags/Linux/" rel="tag">Linux</a>, <a class="tag-link" href="/tags/Network/" rel="tag">Network</a>
+        <a class="tag-link-link" href="/tags/Infosec/" rel="tag">Infosec</a>, <a class="tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>, <a class="tag-link-link" href="/tags/Network/" rel="tag">Network</a>
     </div>
 
 
@@ -159,28 +162,21 @@
   
 
   <div class="content" itemprop="articleBody">
-    <p>There’s a lot of resources for learning <code>iptables</code>, <a href="https://www.howtogeek.com/177621/the-beginners-guide-to-iptables-the-linux-firewall/" target="_blank" rel="noopener">this one</a> covers a lot of the common things.</p>
+    <p>There’s a lot of resources for learning <code>iptables</code>, <a target="_blank" rel="noopener" href="https://www.howtogeek.com/177621/the-beginners-guide-to-iptables-the-linux-firewall/">this one</a> covers a lot of the common things.</p>
 <p>First, we clear out all the existing rules:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -F</span><br></pre></td></tr></table></figure>
-
 <p>Then we make sure we DROP everything by default for all chains:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -P FORWARD DROP</span><br><span class="line">sudo iptables -P INPUT DROP</span><br><span class="line">sudo iptables -P OUTPUT DROP</span><br></pre></td></tr></table></figure>
-
 <p>We need to accept input and output for connections we’ve already established, which saves us a few rules and gives most packets an early out. <code>-m state</code> includes the connection state module, then <code>--state</code> filters by connection state.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br><span class="line">sudo iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT</span><br></pre></td></tr></table></figure>
-
 <p>Now we accept all incoming traffic from the specified IP and port. Since this is traffic coming in, the destination is the port we’re recieving it on.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -A INPUT -p tcp -s 172.19.0.225 --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
-
 <p>Now we allow incoming connections to ports 21 and 80.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -A INPUT -p tcp --dport 21 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br><span class="line">sudo iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
-
 <p>Finally, we allow any packets that are going out to port 80.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT</span><br></pre></td></tr></table></figure>
-
 <p>As a final note, we should also allow anything on the <code>lo</code> interface, so <code>localhost</code> still works.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo iptables -A INPUT -i lo -j ACCEPT</span><br></pre></td></tr></table></figure>
-
   </div>
 </article>
 
@@ -199,7 +195,7 @@
          
           <li><a href="/archives/">Recent</a></li>
          
-          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a target="_blank" rel="noopener" href="https://github.com/tcmal">GitHub</a></li>
         
       </ul>
     </div>
@@ -210,17 +206,17 @@
 
     <div id="share-footer" style="display: none">
       <ul>
-  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/braces/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://tcmal.xyz/braces/&text=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/braces/&is_video=false&description=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/braces/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/braces/&text=Smart Braces"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/braces/&is_video=false&description=Smart Braces"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
   <li><a class="icon" href="mailto:?subject=Smart Braces&body=Check out this article: http://tcmal.xyz/braces/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/braces/&name=Smart Braces&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/braces/&t=Smart Braces" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/braces/&title=Smart Braces"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/braces/&name=Smart Braces&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/braces/&t=Smart Braces"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -254,7 +250,7 @@
          
           <li><a href="/archives/">Recent</a></li>
          
-          <li><a href="https://github.com/tcmal" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a target="_blank" rel="noopener" href="https://github.com/tcmal">GitHub</a></li>
         
       </ul>
     </nav>
@@ -268,9 +264,6 @@
 
 
 <link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
-
-
-<link rel="stylesheet" href="/katexify/katex.min.css">
 
     <!-- jquery -->
 

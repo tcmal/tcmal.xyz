@@ -1,29 +1,29 @@
 <script lang="ts">
 	import Scene from "./Scene.svelte";
+
+	let sceneW = window.innerWidth,
+		sceneH = window.innerHeight;
 </script>
 
-<main>
-	<Scene />
-</main>
+<svelte:window bind:innerHeight={sceneH} bind:innerWidth={sceneW} />
+<div class="sceneContainer">
+	<Scene w={sceneW} h={sceneH} />
+</div>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	:global(body, html) {
+		padding: 0;
+		margin: 0;
+		overflow-x: hidden;
+		overflow-y: hidden;
 	}
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	.sceneContainer {
+		background: #333;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
 	}
 </style>

@@ -140,6 +140,10 @@ export class VoxelWorld {
                 for (let z = 0; z < this.size; z++) {
                     const voxelVal = this.getVoxel(x, y, z);
                     if (voxelVal !== 0) {
+                        if (ATLAS_DESC.specialBlocks[voxelVal]) {
+                            continue; // TODO: Render special blocks
+                        }
+
                         for (const { dir, corners, uvRow } of FACES) {
                             let neighbourOnSide = this.getVoxel(
                                 x + dir[0],
@@ -156,7 +160,7 @@ export class VoxelWorld {
                                         pos[2] + z
                                     );
                                     uvs.push(
-                                        ...transformUV(uv, voxelVal, uvRow)
+                                        ...transformUV(uv, voxelVal - 1, uvRow)
                                     );
 
                                     normals.push(...dir);

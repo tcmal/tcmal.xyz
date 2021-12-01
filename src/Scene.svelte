@@ -12,7 +12,8 @@
         NearestFilter,
     } from "svelthree";
     import { VoxelWorld } from "./geometry";
-    import { path } from "./atlas";
+    import { path, nameMap } from "./atlas";
+    import level from "./level.json";
 
     export let w: number;
     export let h: number;
@@ -25,8 +26,12 @@
     tex.minFilter = NearestFilter;
 
     // TODO: Build a proper world
-    for (let i = 0; i < 16; i++) {
-        world.setVoxel(i, i, i, i);
+    for (let { x, y, z, name } of level) {
+        if (nameMap[name]) {
+            world.setVoxel(x, y, z, nameMap[name]);
+        } else {
+            console.warn("Unrecognised block name: " + name);
+        }
     }
 
     const geometry = world.getGeometry();

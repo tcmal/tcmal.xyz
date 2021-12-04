@@ -14,16 +14,10 @@ export const nameMap = {
     'minecraft:black_concrete': 10,
     'minecraft:cobblestone': 11,
     'minecraft:red_bed': 12,
-    'minecraft:spruce_stairs': 13,
-    'minecraft:spruce_slab': 14,
+    'minecraft:spruce_stairs': 7,
+    'minecraft:spruce_slab': 7,
 }
 
 export const BED = 1;
 export const STAIRS = 2;
 export const SLAB = 3;
-
-export const specialBlocks = {
-    11: BED,
-    12: STAIRS,
-    13: SLAB,
-};

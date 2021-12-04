@@ -10,6 +10,7 @@
         TextureLoader,
         AmbientLight,
         NearestFilter,
+        DoubleSide,
     } from "svelthree";
     import { VoxelWorld } from "./geometry";
     import { path, nameMap } from "./atlas";
@@ -25,17 +26,18 @@
     tex.magFilter = NearestFilter;
     tex.minFilter = NearestFilter;
 
-    // TODO: Build a proper world
-    for (let { x, y, z, name } of level) {
+    for (let { x, y, z, name, metadata } of level) {
         if (nameMap[name]) {
             world.setVoxel(x, y, z, nameMap[name]);
+            if (Object.keys(metadata).length > 0)
+                world.setExtras(x, y, z, metadata);
         } else {
             console.warn("Unrecognised block name: " + name);
         }
     }
 
     const geometry = world.getGeometry();
-    const material = new MeshLambertMaterial({ map: tex });
+    const material = new MeshLambertMaterial({ map: tex, side: DoubleSide });
 
     // Deal with vatro/svelthree#38
     $: w || h ? changeCanvasSize() : null;

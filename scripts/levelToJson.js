@@ -3,6 +3,10 @@ const Chunk = require('prismarine-chunk')('1.16')
 const Anvil = require('prismarine-provider-anvil').Anvil('1.16')
 const Vec3 = require('vec3')
 
+const BED = 1;
+const STAIRS = 2;
+const SLAB = 3;
+
 const getBlocks = async (world, min, max) => {
     let blocks = [];
     for (let x = min.x; x <= max.x; x++) {
@@ -10,9 +14,18 @@ const getBlocks = async (world, min, max) => {
             for (let z = min.z; z <= max.z; z++) {
                 let block = await world.getBlock(new Vec3(x, y, z));
                 if (block.name !== 'air') {
+                    let specialType = undefined;
+                    if (block.name.includes("bed")) {
+                        specialType = BED;
+                    } else if (block.name.includes("slab")) {
+                        specialType = SLAB;
+                    } else if (block.name.includes("stairs")) {
+                        specialType = STAIRS;
+                    }
                     blocks.push({
                         x, y, z,
                         name: 'minecraft:' + block.name,
+                        metadata: { specialType, ...block.getProperties() }
                     });
                 }
             }

@@ -14,9 +14,45 @@
         "waterlogged": false,
         "shape": "straight",
         "half": "bottom",
+        "facing": "north"
+    }
+}, {
+    "x": 0,
+    "y": 5,
+    "z": 0,
+    "name": "minecraft:spruce_stairs",
+    "metadata": {
+        "specialType": 2,
+        "waterlogged": false,
+        "shape": "straight",
+        "half": "bottom",
         "facing": "south"
     }
 }, {
+    "x": 0,
+    "y": 6,
+    "z": 0,
+    "name": "minecraft:spruce_stairs",
+    "metadata": {
+        "specialType": 2,
+        "waterlogged": false,
+        "shape": "straight",
+        "half": "bottom",
+        "facing": "east"
+    }
+},{
+    "x": 0,
+    "y": 7,
+    "z": 0,
+    "name": "minecraft:spruce_stairs",
+    "metadata": {
+        "specialType": 2,
+        "waterlogged": false,
+        "shape": "straight",
+        "half": "bottom",
+        "facing": "west"
+    }
+},{
     "x": 1,
     "y": 3,
     "z": 0,

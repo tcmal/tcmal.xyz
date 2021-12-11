@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, MathUtils, Vector3 } from "svelthree";
+import { BufferAttribute, BufferGeometry, MathUtils, Vector3, Vector2, Matrix3 } from "svelthree";
 
 import * as ATLAS_DESC from "./atlas.js";
 
@@ -6,6 +6,7 @@ const ATLAS_WIDTH = ATLAS_DESC.tileSize * ATLAS_DESC.nColumns;
 const ATLAS_HEIGHT = ATLAS_DESC.tileSize * 3;
 const TILE_SIZE_SCALED_Y = ATLAS_DESC.tileSize / ATLAS_HEIGHT;
 const TILE_SIZE_SCALED_X = ATLAS_DESC.tileSize / ATLAS_WIDTH;
+const ROT_Y = new Vector3(0, 1, 0);
 
 // Transform a UV coordinate to the space of the entire atlas
 // This assumes texCol and texRow are valid, and uses (0, 0) at the bottom left
@@ -147,11 +148,8 @@ export class VoxelWorld {
         return geometry;
     }
 
-    computeVertices() {
-        const positions = [];
-        const uvs = [];
-        const normals = [];
-        const indices = [];
+    computeVertices(): BufferSet {
+        const buffers = new BufferSet([], [], [], []);
         for (let key in this.blocks) {
             const { x, y, z } = this.xyzFromKey(key);
             const block = this.blocks[key];
@@ -160,7 +158,7 @@ export class VoxelWorld {
             if (block !== 0) {
                 // Alternative drawing for special types
                 if (extras) {
-                    this.alternativeDraw(x, y, z, positions, uvs, normals, indices);
+                    this.alternativeDraw(x, y, z, buffers);
                     continue;
                 }
 
@@ -170,37 +168,38 @@ export class VoxelWorld {
                         z + dir[2]);
                     if (this.blocks[neighbourCoordOffset] === undefined || this.extras[neighbourCoordOffset] !== undefined) {
                         // We need a face riiiight here
-                        const ndx = positions.length / 3;
+                        buffers.setMarker();
 
                         for (const { pos, uv } of corners) {
-                            positions.push(
+                            buffers.addPosition(
                                 pos[0] + x,
                                 pos[1] + y,
                                 pos[2] + z
                             );
-                            uvs.push(
+                            buffers.addUV(
                                 ...transformUV(uv, block - 1, uvRow)
                             );
 
-                            normals.push(...dir);
+                            buffers.addNormal(...dir);
                         }
-                        indices.push(
-                            ndx,
-                            ndx + 1,
-                            ndx + 2,
-                            ndx + 2,
-                            ndx + 1,
-                            ndx + 3
+                        buffers.addIndicesFromMarker(
+                            0,
+                            1,
+                            2,
+                            2,
+                            1,
+                            3
                         );
                     }
                 }
             }
         }
+        console.log(buffers);
 
-        return { positions, normals, indices, uvs };
+        return buffers;
     }
 
-    alternativeDraw(x, y, z, positions, uvs, normals, indices) {
+    alternativeDraw(x, y, z, buffers) {
         const extras = this.getExtras(x, y, z);
         const block = this.getVoxel(x, y, z);
         return ({
@@ -213,45 +212,39 @@ export class VoxelWorld {
                         z + dir[2]);
                     if (this.blocks[neighbourCoordOffset] === undefined || this.extras[neighbourCoordOffset] !== undefined) {
                         // We need a face riiiight here
-                        const ndx = positions.length / 3;
+                        buffers.setMarker();
 
                         for (const { pos, uv } of corners) {
-                            positions.push(
+                            buffers.addPosition(
                                 pos[0] + x,
                                 (pos[1] * .5) + y,
                                 pos[2] + z
                             );
                             if (uvRow === 0) {
-                                uvs.push(
+                                buffers.addUV(
                                     ...transformUV([uv[0], uv[1] * .5], block - 1, uvRow)
                                 );
                             } else { // Top/bottom, dont change UV Y.
-                                uvs.push(
+                                buffers.addUV(
                                     ...transformUV(uv, block - 1, uvRow)
                                 );
                             }
 
 
-                            normals.push(...dir);
+                            buffers.addNormal(...dir);
                         }
-                        indices.push(
-                            ndx,
-                            ndx + 1,
-                            ndx + 2,
-                            ndx + 2,
-                            ndx + 1,
-                            ndx + 3
+                        buffers.addIndicesFromMarker(
+                            0,
+                            1,
+                            2,
+                            2,
+                            1,
+                            3
                         );
                     }
                 }
             },
             [ATLAS_DESC.STAIRS]: () => {
-                const facingVector = {
-                    "south": new Vector3(0, 0, 1),
-                    "north": new Vector3(0, 0, -1),
-                    "east": new Vector3(1, 0, 0),
-                    "west": new Vector3(-1, 0, 0),
-                }[extras.facing];
                 // Faces, constructed facing north (negative Z)
                 const STAIRS_FACES = [
                     // Bottom
@@ -400,48 +393,60 @@ export class VoxelWorld {
                 }
 
                 // Draw each face
-                // TODO: Deal with "facing"
                 // TODO: Deal with "shape"
                 // TODO: Deal with "half"
-                for (let { corners, uvRow, normal } of Object.keys(drawing).map(x => STAIRS_FACES[x])) {
-                    const ndx = positions.length / 3;
+                const [rotationAngle, transformation, uvTransformation] = {
+                    "south": [Math.PI, new Vector3(1, 0, 1), new Vector3(0, -1, 0)],
+                    "north": [0, new Vector3(0, 0, 0), new Vector3(0, 0, 0)],
+                    "east": [Math.PI / 2, new Vector3(0, 0, 1), new Vector3(0, 0, 0)],
+                    "west": [Math.PI / -2, new Vector3(1, 0, 0), new Vector3(0, 0, 0)],
+                }[extras.facing];
 
+                for (let { corners, uvRow, normal } of Object.keys(drawing).map(x => STAIRS_FACES[x])) {
+                    buffers.setMarker();
+
+                    let workingVec = new Vector3(0, 0, 0);
                     for (const { pos, uv } of corners) {
-                        positions.push(
-                            pos[0] + x,
-                            pos[1] + y,
-                            pos[2] + z
+                        workingVec.setX(pos[0]);
+                        workingVec.setY(pos[1]);
+                        workingVec.setZ(pos[2]);
+                        workingVec.applyAxisAngle(ROT_Y, rotationAngle);
+                        buffers.addPosition(
+                            workingVec.x + x + transformation.x,
+                            workingVec.y + y + transformation.y,
+                            workingVec.z + z + transformation.z
                         );
-                        uvs.push(
+
+                        buffers.addUV(
                             ...transformUV(uv, block - 1, uvRow)
                         );
 
-                        normals.push(...normal);
+                        buffers.addNormal(...normal);
                     }
                     if (corners.length == 4) {
-                        indices.push(
-                            ndx,
-                            ndx + 1,
-                            ndx + 2,
-                            ndx + 2,
-                            ndx + 1,
-                            ndx + 3
+                        buffers.addIndicesFromMarker(
+                            0,
+                            1,
+                            2,
+                            2,
+                            1,
+                            3
                         );
                     } else {
-                        indices.push(
+                        buffers.addIndicesFromMarker(
                             // (0, 1, 2), (1, 2, 3), (3, 4, 5) (3, 4, 6)
-                            ndx,
-                            ndx + 1,
-                            ndx + 2,
-                            ndx + 1,
-                            ndx + 2,
-                            ndx + 3,
-                            ndx + 3,
-                            ndx + 4,
-                            ndx + 5,
-                            ndx + 3,
-                            ndx + 4,
-                            ndx + 6,
+                            0,
+                            1,
+                            2,
+                            1,
+                            2,
+                            3,
+                            3,
+                            4,
+                            5,
+                            3,
+                            4,
+                            6,
                         );
                     }
 
@@ -449,4 +454,46 @@ export class VoxelWorld {
             },
         })[extras.specialType]();
     }
+}
+
+class BufferSet {
+    positions: number[]
+    uvs: number[]
+    normals: number[]
+    indices: number[]
+    marker?: number
+
+    constructor(positions, uvs, normals, indices) {
+        this.positions = positions;
+        this.uvs = uvs;
+        this.normals = normals;
+        this.indices = indices;
+    }
+
+    addIndices(...indices) {
+        this.indices.push(...indices);
+    }
+    addNormal(...normals) {
+        this.normals.push(...normals);
+    }
+    addUV(...uvs) {
+        this.uvs.push(...uvs);
+    }
+    addPosition(...positions) {
+        this.positions.push(...positions);
+    }
+
+    setMarker() {
+        this.marker = this.positions.length / 3;
+    }
+
+    addIndicesFromMarker(...indices) {
+        if (this.marker === undefined)
+            throw new Error("Called addIndicesFromMarker without calling setMarker");
+
+        this.addIndices(...indices.map(x => this.marker + x));
+
+        this.marker = undefined;
+    }
+
 }

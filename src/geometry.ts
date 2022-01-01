@@ -102,14 +102,14 @@ export class VoxelWorld {
         const voxelX = MathUtils.euclideanModulo(x, this.size) | 0;
         const voxelY = MathUtils.euclideanModulo(y, this.size) | 0;
         const voxelZ = MathUtils.euclideanModulo(z, this.size) | 0;
-        const voxelOffset = voxelY * this.size * this.size + voxelZ * this.size + voxelX;
+        const voxelOffset = (voxelY * this.size * this.size) + (voxelZ * this.size) + voxelX;
         return voxelOffset;
     };
 
     xyzFromKey = (key) => {
         const x = MathUtils.euclideanModulo(key, this.size) | 0;
-        const z = MathUtils.euclideanModulo(key - x, this.size * this.size) | 0 / this.size;
-        const y = (key - x - (z * this.size)) / (this.size * this.size);
+        const z = (MathUtils.euclideanModulo(key - x, this.size * this.size) | 0) / this.size;
+        const y = (key - x - (z * this.size)) / (this.size * this.size) | 0;
         return { x, y, z };
     }
 
@@ -132,7 +132,7 @@ export class VoxelWorld {
     }
 
     getGeometry() {
-        const { positions, uvs, normals, indices } = this.computeVertices();
+        const { positions, uvs, normals, indices, extras } = this.computeVertices();
         const geometry = new BufferGeometry();
         geometry.setAttribute(
             "position",
@@ -145,11 +145,11 @@ export class VoxelWorld {
         geometry.setAttribute("uv", new BufferAttribute(new Float32Array(uvs), 2));
         geometry.setIndex(indices);
 
-        return geometry;
+        return { geometry, extras };
     }
 
     computeVertices(): BufferSet {
-        const buffers = new BufferSet([], [], [], []);
+        const buffers = new BufferSet([], [], [], [], []);
         for (let key in this.blocks) {
             const { x, y, z } = this.xyzFromKey(key);
             const block = this.blocks[key];
@@ -157,7 +157,7 @@ export class VoxelWorld {
 
             if (block !== 0) {
                 // Alternative drawing for special types
-                if (extras) {
+                if (extras !== undefined && extras.specialType !== 0) {
                     this.alternativeDraw(x, y, z, buffers);
                     continue;
                 }
@@ -194,8 +194,6 @@ export class VoxelWorld {
                 }
             }
         }
-        console.log(buffers);
-
         return buffers;
     }
 
@@ -203,13 +201,35 @@ export class VoxelWorld {
         const extras = this.getExtras(x, y, z);
         const block = this.getVoxel(x, y, z);
         return ({
-            [ATLAS_DESC.BED]: () => [],
+            [ATLAS_DESC.CHEST]: () => [], // TODO
+            [ATLAS_DESC.BED]: () => {
+                if (extras.part != "head")
+                    return;
+
+                const rotationAngle = {
+                    "north": 0,
+                    "south": Math.PI,
+                    "east": Math.PI / 2,
+                    "west": Math.PI / -2,
+                }[extras.facing];
+
+
+                let obj = new ExtraObject(
+                    'bed',
+                );
+                obj.position = new Vector3(x + 0.5, y + 0.5, z);
+                obj.rotation = new Vector3(0, rotationAngle, 0);
+
+                buffers.addExtras(obj);
+            },
+
             [ATLAS_DESC.SLAB]: () => {
                 // Basically normal block rendering, but change our faces array
                 for (const { dir, corners, uvRow } of FACES) {
                     let neighbourCoordOffset = this.keyFromXYZ(x + dir[0],
                         y + dir[1],
                         z + dir[2]);
+                    let modY = extras.type == "top" ? 0.5 : 0;
                     if (this.blocks[neighbourCoordOffset] === undefined || this.extras[neighbourCoordOffset] !== undefined) {
                         // We need a face riiiight here
                         buffers.setMarker();
@@ -217,7 +237,7 @@ export class VoxelWorld {
                         for (const { pos, uv } of corners) {
                             buffers.addPosition(
                                 pos[0] + x,
-                                (pos[1] * .5) + y,
+                                (pos[1] * .5) + y + modY,
                                 pos[2] + z
                             );
                             if (uvRow === 0) {
@@ -396,8 +416,8 @@ export class VoxelWorld {
                 // TODO: Deal with "shape"
                 // TODO: Deal with "half"
                 const [rotationAngle, transformation, uvTransformation] = {
-                    "south": [Math.PI, new Vector3(1, 0, 1), new Vector3(0, -1, 0)],
-                    "north": [0, new Vector3(0, 0, 0), new Vector3(0, 0, 0)],
+                    "north": [Math.PI, new Vector3(1, 0, 1), new Vector3(0, -1, 0)],
+                    "south": [0, new Vector3(0, 0, 0), new Vector3(0, 0, 0)],
                     "east": [Math.PI / 2, new Vector3(0, 0, 1), new Vector3(0, 0, 0)],
                     "west": [Math.PI / -2, new Vector3(1, 0, 0), new Vector3(0, 0, 0)],
                 }[extras.facing];
@@ -456,18 +476,34 @@ export class VoxelWorld {
     }
 }
 
+class ExtraObject {
+    model: string
+    position: Vector3
+    rotation: Vector3
+    scale: Vector3
+
+    constructor(model) {
+        this.model = model;
+        this.position = new Vector3(0, 0, 0);
+        this.rotation = new Vector3(0, 0, 0);
+        this.scale = new Vector3(1, 1, 1);
+    }
+};
+
 class BufferSet {
     positions: number[]
     uvs: number[]
     normals: number[]
     indices: number[]
     marker?: number
+    extras: ExtraObject[]
 
-    constructor(positions, uvs, normals, indices) {
+    constructor(positions, uvs, normals, indices, extras) {
         this.positions = positions;
         this.uvs = uvs;
         this.normals = normals;
         this.indices = indices;
+        this.extras = extras;
     }
 
     addIndices(...indices) {
@@ -481,6 +517,9 @@ class BufferSet {
     }
     addPosition(...positions) {
         this.positions.push(...positions);
+    }
+    addExtras(...extras) {
+        this.extras.push(...extras);
     }
 
     setMarker() {

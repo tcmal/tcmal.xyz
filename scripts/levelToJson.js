@@ -6,6 +6,7 @@ const Vec3 = require('vec3')
 const BED = 1;
 const STAIRS = 2;
 const SLAB = 3;
+const CHEST = 4;
 
 const getBlocks = async (world, min, max) => {
     let blocks = [];
@@ -21,9 +22,13 @@ const getBlocks = async (world, min, max) => {
                         specialType = SLAB;
                     } else if (block.name.includes("stairs")) {
                         specialType = STAIRS;
+                    } else if (block.name.includes("chest")) {
+                        specialType = CHEST;
                     }
                     blocks.push({
-                        x, y, z,
+                        x: x - min.x,
+                        y: y - min.y,
+                        z: z - min.z,
                         name: 'minecraft:' + block.name,
                         metadata: { specialType, ...block.getProperties() }
                     });

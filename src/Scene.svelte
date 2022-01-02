@@ -12,7 +12,6 @@
         NearestFilter,
         DoubleSide,
         GLTFLoader,
-        Geometry,
         BufferGeometry,
     } from "svelthree";
     import { VoxelWorld } from "./geometry";
@@ -116,7 +115,7 @@
             />
         {/each}
 
-        <OrbitControls {scene} enableDamping />
+        <OrbitControls {scene} />
     </Scene>
 
     <WebGLRenderer

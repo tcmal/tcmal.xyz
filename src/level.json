@@ -379,7 +379,9 @@
     "y": 2,
     "z": 7,
     "name": "minecraft:torch",
-    "metadata": {}
+    "metadata": {
+        "specialType": 5
+    }
 }, {
     "x": 4,
     "y": 2,
@@ -701,7 +703,9 @@
     "y": 2,
     "z": 7,
     "name": "minecraft:torch",
-    "metadata": {}
+    "metadata": {
+        "specialType": 5
+    }
 }, {
     "x": 7,
     "y": 2,

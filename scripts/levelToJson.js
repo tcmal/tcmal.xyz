@@ -7,6 +7,7 @@ const BED = 1;
 const STAIRS = 2;
 const SLAB = 3;
 const CHEST = 4;
+const TORCH = 5;
 
 const getBlocks = async (world, min, max) => {
     let blocks = [];
@@ -24,7 +25,10 @@ const getBlocks = async (world, min, max) => {
                         specialType = STAIRS;
                     } else if (block.name.includes("chest")) {
                         specialType = CHEST;
+                    } else if (block.name.includes("torch")) {
+                        specialType = TORCH;
                     }
+                    
                     blocks.push({
                         x: x - min.x,
                         y: y - min.y,

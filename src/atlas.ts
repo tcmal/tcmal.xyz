@@ -16,3 +16,4 @@ export const BED = 1;
 export const STAIRS = 2;
 export const SLAB = 3;
 export const CHEST = 4;
+export const TORCH = 5;

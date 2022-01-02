@@ -202,6 +202,15 @@ export class VoxelWorld {
         const block = this.getVoxel(x, y, z);
         return ({
             [ATLAS_DESC.CHEST]: () => [], // TODO
+            [ATLAS_DESC.TORCH]: () => {
+
+                let obj = new ExtraObject(
+                    'torch',
+                );
+                obj.position = new Vector3(x + .5, y - .75, z + .5);
+                // TODO: Add light
+                buffers.addExtras(obj);
+            },
             [ATLAS_DESC.BED]: () => {
                 if (extras.part != "head")
                     return;

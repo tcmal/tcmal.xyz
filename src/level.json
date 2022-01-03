@@ -447,7 +447,10 @@
     "y": 1,
     "z": 1,
     "name": "minecraft:crafting_table",
-    "metadata": {}
+    "metadata": {
+        "highlight": true,
+        "click": "projects"
+    }
 }, {
     "x": 5,
     "y": 1,

@@ -1,13 +1,10 @@
 <script lang="ts">
 	import Scene from "./Scene.svelte";
-
-	let sceneW = window.innerWidth,
-		sceneH = window.innerHeight;
 </script>
 
-<svelte:window bind:innerHeight={sceneH} bind:innerWidth={sceneW} />
+<svelte:window />
 <div class="sceneContainer">
-	<Scene w={sceneW} h={sceneH} />
+	<Scene />
 </div>
 
 <style>

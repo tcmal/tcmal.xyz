@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, MathUtils, Vector3, Vector2, Matrix3 } from "svelthree";
+import { BufferAttribute, BufferGeometry, Euler, MathUtils, PointLight, Vector3 } from "three";
 
 import * as ATLAS_DESC from "./atlas.js";
 
@@ -97,6 +97,17 @@ export class VoxelWorld {
         this.extras = {};
     }
 
+    fromLevelJson(json) {
+        for (let { x, y, z, name, metadata } of json) {
+            if (ATLAS_DESC.nameMap[name]) {
+                this.setVoxel(x, y, z, ATLAS_DESC.nameMap[name]);
+                if (Object.keys(metadata).length > 0)
+                    this.setExtras(x, y, z, metadata);
+            } else {
+                console.warn("Unrecognised block name: " + name);
+            }
+        }
+    }
 
     keyFromXYZ = (x, y, z) => {
         const voxelX = MathUtils.euclideanModulo(x, this.size) | 0;
@@ -157,7 +168,7 @@ export class VoxelWorld {
 
             if (block !== 0) {
                 // Alternative drawing for special types
-                if (extras !== undefined && extras.specialType !== 0) {
+                if (extras !== undefined && extras.specialType !== undefined) {
                     this.alternativeDraw(x, y, z, buffers);
                     continue;
                 }
@@ -204,12 +215,18 @@ export class VoxelWorld {
             [ATLAS_DESC.CHEST]: () => [], // TODO
             [ATLAS_DESC.TORCH]: () => {
 
-                let obj = new ExtraObject(
+                let obj = new ExtraModel(
                     'torch',
                 );
-                obj.position = new Vector3(x + .5, y - .75, z + .5);
-                // TODO: Add light
-                buffers.addExtras(obj);
+                obj.position.set(x + .5, y - .75, z + .5);
+                obj.ignoreLighting = true;
+
+                let light = new ExtraLight(LightType.Point);
+                light.position.set(x + .5, y + .5, z + .5);
+                light.color = 0xFFFDCF;
+                light.intensity = 1.0;
+
+                buffers.addExtras(obj, light);
             },
             [ATLAS_DESC.BED]: () => {
                 if (extras.part != "head")
@@ -223,11 +240,11 @@ export class VoxelWorld {
                 }[extras.facing];
 
 
-                let obj = new ExtraObject(
+                let obj = new ExtraModel(
                     'bed',
                 );
-                obj.position = new Vector3(x + 0.5, y + 0.5, z);
-                obj.rotation = new Vector3(0, rotationAngle, 0);
+                obj.position.set(x + 0.5, y + 0.5, z);
+                obj.rotation.set(0, rotationAngle, 0);
 
                 buffers.addExtras(obj);
             },
@@ -485,19 +502,61 @@ export class VoxelWorld {
     }
 }
 
-class ExtraObject {
-    model: string
+
+abstract class ExtraObject {
     position: Vector3
-    rotation: Vector3
+    rotation: Euler
     scale: Vector3
 
-    constructor(model) {
-        this.model = model;
+    constructor() {
         this.position = new Vector3(0, 0, 0);
-        this.rotation = new Vector3(0, 0, 0);
+        this.rotation = new Euler(0, 0, 0);
         this.scale = new Vector3(1, 1, 1);
     }
-};
+}
+
+export class ExtraModel extends ExtraObject {
+    model: string
+    ignoreLighting = false
+
+    constructor(model) {
+        super();
+
+        this.model = model;
+    }
+}
+
+export enum LightType {
+    Point
+}
+
+export class ExtraLight extends ExtraObject {
+    type: LightType;
+
+    distance?: number;
+    color?: number;
+    intensity?: number;
+    decay?: number;
+
+    constructor(type) {
+        super();
+
+        this.type = type;
+    }
+
+    toLight() {
+        let light;
+        if (this.type == LightType.Point) {
+            light = new PointLight(this.color, this.intensity, this.distance, this.decay);
+        }
+
+        light.position.copy(this.position);
+        light.rotation.copy(this.rotation);
+        light.scale.copy(this.scale);
+
+        return light;
+    }
+}
 
 class BufferSet {
     positions: number[]

@@ -25,10 +25,11 @@ nav:
 # (see https://fontawesome.com/icons?d=gallery&s=brands);
 # only 'mail' is an exception.
 social_links:
+  gitlab: https://gitlab.com/tcmal
   github: https://github.com/tcmal
-  twitter: https://twitter.com/ayyLeMal
+  mastodon: https://mastodon.lol/web/accounts/107526887531186617
   discord: https://discord.com/channels/@me/145306944117145600/
-  mail: mailto:oscar.shrimpton.personal@gmail.com
+  mail: mailto:s2080441@ed.ac.uk
 
 # Customize the overview with displaying a tagcloud on the index page.
 # Options: https://hexo.io/docs/helpers.html#tagcloud

@@ -1,18 +1,27 @@
 [
     {
-       "name":"Frogger",
-       "url":"https://github.com/tcmal/frogger-back/",
-       "desc":"A reddit clone created in 7 days"
-    },
-    {
-       "name":"Popcorn",
-       "url":"http://github.com/tcmal/popcorn/",
-       "desc":"A WIP Kernel"
-    },
-    {
       "name": "Stockton",
-      "url": "https://github.com/tcmal/stockton/",
-      "desc": "A WIP Quake-Style Engine"
-    }
-
+      "url": "https://gitlab.com/tcmal/stockton/",
+      "desc": "A 3D Engine using Rust + Vulkan."
+    },
+    {
+      "name": "Advent of Code",
+      "url": "https://gitlab.com/tcmal/advent-of-code-2021",
+      "desc": "Solutions for 2020 & 2021"
+    },
+    {
+      "name": "Dotfiles",
+      "url": "https://gitlab.com/tcmal/dots/",
+      "desc": "XMonad and a lot of custom themes. Managed with NixOS & home-manager."
+    },
+    {
+      "name": "Hack the Burgh 8",
+      "url": "https://2022.hacktheburgh.com",
+      "desc": "Part of the IT team."
+    },
+    {
+      "name":"Frogger",
+      "url":"https://gitlab.com/tcmal/frogger-back/",
+      "desc":"A reddit clone using React + MobX + Loopback."
+   }
 ]

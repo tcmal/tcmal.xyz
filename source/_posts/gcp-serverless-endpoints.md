@@ -1,5 +1,5 @@
 ---
-title: Cloud Functions on a proper domain
+title: Google Cloud Functions on a custom domain
 tags: 
   - Serverless
 categories:

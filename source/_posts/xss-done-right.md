@@ -1,5 +1,5 @@
 ---
-title: No more XSS attacks.
+title: Client-side input sanitisation.
 tags:
   - react
   - security

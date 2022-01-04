@@ -1,5 +1,5 @@
 ---
-title: DIY Pagination for Dummies
+title: Pagination for Dummies
 date: 2020-04-04 12:00:00
 tags:
   - react

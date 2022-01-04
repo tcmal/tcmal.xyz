@@ -1,5 +1,5 @@
 ---
-title: Planning projects with UML and ERDs
+title: Graph Safari
 date: 2020-04-03 12:00:00
 tags:
   - development

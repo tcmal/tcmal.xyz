@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="Before we start a project we want to know what it is we’re actually going to develop. That’s what UML (Universal Modelling Language) is for -  In case you’re not used to UML, the little stick figure r">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Planning projects with UML and ERDs">
+<meta property="og:title" content="Graph Safari">
 <meta property="og:url" content="http://tcmal.xyz/graphs/index.html">
 <meta property="og:site_name" content="tcmal">
 <meta property="og:description" content="Before we start a project we want to know what it is we’re actually going to develop. That’s what UML (Universal Modelling Language) is for -  In case you’re not used to UML, the little stick figure r">
@@ -44,7 +44,7 @@
         
     
     <!-- title -->
-    <title>Planning projects with UML and ERDs</title>
+    <title>Graph Safari</title>
     <!-- styles -->
     
 <link rel="stylesheet" href="/css/style.css">
@@ -62,7 +62,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -105,16 +105,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/graphs/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/graphs/&text=Planning projects with UML and ERDs"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/graphs/&is_video=false&description=Planning projects with UML and ERDs"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Planning projects with UML and ERDs&body=Check out this article: http://tcmal.xyz/graphs/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/graphs/&name=Planning projects with UML and ERDs&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/graphs/&t=Planning projects with UML and ERDs"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/graphs/&text=Graph Safari"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/graphs/&is_video=false&description=Graph Safari"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Graph Safari&body=Check out this article: http://tcmal.xyz/graphs/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/graphs/&name=Graph Safari&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/graphs/&t=Graph Safari"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -131,7 +131,7 @@
   <header>
     
     <h1 class="posttitle" itemprop="name headline">
-        Planning projects with UML and ERDs
+        Graph Safari
     </h1>
 
 
@@ -217,16 +217,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://tcmal.xyz/graphs/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/graphs/&text=Planning projects with UML and ERDs"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/graphs/&is_video=false&description=Planning projects with UML and ERDs"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Planning projects with UML and ERDs&body=Check out this article: http://tcmal.xyz/graphs/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/graphs/&title=Planning projects with UML and ERDs"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/graphs/&name=Planning projects with UML and ERDs&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/graphs/&t=Planning projects with UML and ERDs"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://tcmal.xyz/graphs/&text=Graph Safari"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://tcmal.xyz/graphs/&is_video=false&description=Graph Safari"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Graph Safari&body=Check out this article: http://tcmal.xyz/graphs/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://tcmal.xyz/graphs/&title=Graph Safari"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://tcmal.xyz/graphs/&name=Graph Safari&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://tcmal.xyz/graphs/&t=Graph Safari"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -247,7 +247,7 @@
     Copyright &copy;
     
     
-    2019-2021
+    2019-2022
     tcmal
   </div>
   <div class="footer-right">

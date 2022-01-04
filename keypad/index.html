@@ -56,7 +56,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.3.0"></head>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.0"></head>
 
 <body class="max-width mx-auto px3 ltr">
     
@@ -170,8 +170,10 @@
 </ul>
 <p>From the first clue, our code is some combination of <code>&#123;1,3,7,3&#125;, &#123;1,3,7,1&#125;, &#123;1,3,7,7&#125;</code>. This means our keyspace is all permutations of these 3 sets unioned (concatenated). We’ll also filter out the duplicates:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> permutations</span><br><span class="line"></span><br><span class="line"><span class="comment"># Union</span></span><br><span class="line">keyspace = []</span><br><span class="line">keyspace += <span class="built_in">list</span>(permutations([<span class="number">1</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">1</span>]))</span><br><span class="line">keyspace += <span class="built_in">list</span>(permutations([<span class="number">1</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">3</span>]))</span><br><span class="line">keyspace += <span class="built_in">list</span>(permutations([<span class="number">1</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">7</span>]))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Filter unique and make them numbers while we&#x27;re at it</span></span><br><span class="line">keyspace = [<span class="built_in">int</span>(<span class="string">&quot;&quot;</span>.join(<span class="built_in">str</span>(a) <span class="keyword">for</span> a <span class="keyword">in</span> x)) <span class="keyword">for</span> i,x <span class="keyword">in</span> <span class="built_in">enumerate</span>(keyspace) <span class="keyword">if</span> keyspace.index(x) == i]</span><br><span class="line"></span><br><span class="line">print(<span class="built_in">len</span>(keyspace)) <span class="comment"># 36</span></span><br><span class="line">print(keyspace[<span class="number">0</span>]) <span class="comment"># 1371 (int)</span></span><br></pre></td></tr></table></figure>
+
 <p>36 is reasonable, but still a bit much to brute-force. Luckily, we can still filter out some using the second clue:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_prime</span>(<span class="params">x</span>):</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, x):</span><br><span class="line">		<span class="keyword">if</span> x % i == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">keyspace = [x <span class="keyword">for</span> x <span class="keyword">in</span> keyspace <span class="keyword">if</span> is_prime(x)]</span><br><span class="line"></span><br><span class="line">print(keyspace) <span class="comment"># [1373, 1733, 3137, 3371, 7331]</span></span><br></pre></td></tr></table></figure>
+
 <p>Since they’re all pretty small numbers, we don’t care about the terrible performance of our is_prime implementation, especially since I was doing this mostly from the REPL. Now we know there’s only 5 combinations our code could possibly be, which is very easy to just manually check each one. </p>
 <p>The answer is 7331.</p>
 
@@ -235,7 +237,7 @@
     Copyright &copy;
     
     
-    2019-2021
+    2019-2022
     tcmal
   </div>
   <div class="footer-right">

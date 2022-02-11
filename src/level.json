@@ -913,4 +913,15 @@
     "z": 7,
     "name": "minecraft:oak_planks",
     "metadata": {}
+}, {
+    "x": 3,
+    "y": 1,
+    "z": 7,
+    "name": "tcmal:computer",
+    "metadata": {
+        "specialType": 6,
+        "model": "computer",
+        "highlight": true,
+        "highlightScale": 2
+    }
 }]

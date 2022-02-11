@@ -11,7 +11,7 @@ const MODEL_ROOT = "/models";
 // Basic scene setup
 const scene = new Scene();
 const D = 4;
-const camera = new OrthographicCamera(-D*1, D*1, D, -D, 1, 1000);
+const camera = new OrthographicCamera(-D * 1, D * 1, D, -D, 1, 1000);
 camera.position.set(0, 6, 0);
 camera.lookAt(new Vector3(3, 4, 3));
 
@@ -47,12 +47,13 @@ let extrasByModel = groupBy(
 );
 let modelLoader = new GLTFLoader();
 for (let model in extrasByModel) {
+    console.log(model);
     modelLoader.load(
         `${MODEL_ROOT}/${model}.glb`,
         (res) => {
             let geometry: BufferGeometry = (res.scene.children[0] as any)
                 .geometry;
-
+            console.log(res.scene);
             // Fix for flipped UV y of GLTF
             let uvs = geometry.attributes.uv.array as any;
             for (let i = 1; i < uvs.length; i += 2) {
@@ -70,6 +71,7 @@ for (let model in extrasByModel) {
                 mesh.rotation.copy(extra.rotation);
                 mesh.scale.copy(extra.scale);
 
+                console.log(mesh);
                 scene.add(mesh);
             }
         },
@@ -98,14 +100,16 @@ export const createScene = (canvas, activeHighlightContainer) => {
     window.addEventListener('resize', resize);
 
     animate();
+
+    updateHighlights();
 };
 
 export const resize = () => {
     renderer.setSize(window.innerWidth, window.innerHeight)
-    
+
     let aspect = window.innerWidth / window.innerHeight;
-    camera.left = -D*aspect;
-    camera.right = D*aspect;
+    camera.left = -D * aspect;
+    camera.right = D * aspect;
     camera.top = D;
     camera.bottom = -D;
     camera.updateProjectionMatrix();
@@ -113,20 +117,10 @@ export const resize = () => {
     highlightContainer.setAttribute('width', window.innerWidth.toString());
     highlightContainer.setAttribute('height', window.innerHeight.toString());
     highlightContainer.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
-    highlightContainer.replaceChildren(highlightContainer.children[0]);
-    for (let hi of highlights) {
-        highlightBlock(hi);
-    }
 };
 
 export const animate = () => {
     requestAnimationFrame(animate);
-
-    // highlightContainer.replaceChildren(highlightContainer.children[0]);
-    // for (let hi of highlights) {
-    //     highlightBlock(hi);
-    // }
-
     renderer.render(scene, camera);
 };
 
@@ -134,16 +128,25 @@ export const handleBlockClick = (target) => (e) => {
     console.log(target, e);
 };
 
+
+export const updateHighlights = () => {
+    highlightContainer.replaceChildren(highlightContainer.children[0]);
+    for (let hi of highlights) {
+        highlightBlock(hi);
+    }
+}
+
 export const highlightBlock = (block) => {
     const { x, y, z } = block;
 
+    let scale = block.metadata.highlightScale || 1;
     let corners = [
         [x, y, z],
-        [x + 1, y, z],
-        [x + 1, y + 1, z],
-        [x + 1, y + 1, z + 1],
-        [x, y + 1, z + 1],
-        [x, y, z + 1]
+        [x + scale, y, z],
+        [x + scale, y + scale, z],
+        [x + scale, y + scale, z + scale],
+        [x, y + scale, z + scale],
+        [x, y, z + scale]
     ];
 
     let pos = new Vector3();
@@ -163,7 +166,7 @@ export const highlightBlock = (block) => {
     points = points.trim();
 
     // Using createElement doesn't work for some reason
-    highlightContainer.innerHTML += `<polygon points="${points}" fill="red"/>`;
+    highlightContainer.innerHTML += `<polygon data-block="${[x, y, z]}" points="${points}" fill="red"/>`;
     let el = highlightContainer.lastElementChild;
     el.addEventListener('click', (e) => {
         console.log(e);

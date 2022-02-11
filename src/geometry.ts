@@ -213,6 +213,11 @@ export class VoxelWorld {
         const block = this.getVoxel(x, y, z);
         return ({
             [ATLAS_DESC.CHEST]: () => [], // TODO
+            [ATLAS_DESC.MODEL]: () => {
+                let obj = new ExtraModel(extras.model);
+                obj.position.set(x, y, z);
+                buffers.addExtras(obj);
+            },
             [ATLAS_DESC.TORCH]: () => {
 
                 let obj = new ExtraModel(

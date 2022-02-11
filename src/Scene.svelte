@@ -10,6 +10,7 @@
 </script>
 
 <div>
+    <canvas bind:this={canvas} />
     <svg
         version="2"
         xmlns="http://www.w3.org/2000/svg"
@@ -19,13 +20,13 @@
         <style>
             polygon {
                 fill: red;
+                opacity: 0.2;
             }
             polygon:hover {
                 fill: blue;
             }
         </style>
     </svg>
-    <canvas bind:this={canvas} />
 </div>
 
 <style>
@@ -47,7 +48,6 @@
 
     .highlightContainer {
         position: absolute;
-        z-index: 2;
         top: 0;
         bottom: 0;
         left: 0;

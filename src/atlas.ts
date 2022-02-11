@@ -9,7 +9,8 @@ export const nameMap = {
     'minecraft:oak_slab': 1,
     'minecraft:torch': 2,
     'minecraft:crafting_table': 4,
-    'minecraft:red_bed': -1
+    'minecraft:red_bed': -1,
+    'tcmal:computer': -1,
 };
 
 export const BED = 1;
@@ -17,3 +18,4 @@ export const STAIRS = 2;
 export const SLAB = 3;
 export const CHEST = 4;
 export const TORCH = 5;
+export const MODEL = 6;

@@ -230,6 +230,7 @@ export class VoxelWorld {
                 light.position.set(x + .5, y + .5, z + .5);
                 light.color = 0xFFFDCF;
                 light.intensity = 1.0;
+                light.hasParticles = true;
 
                 buffers.addExtras(obj, light);
             },
@@ -542,6 +543,7 @@ export class ExtraLight extends ExtraObject {
     color?: number;
     intensity?: number;
     decay?: number;
+    hasParticles?: boolean;
 
     constructor(type) {
         super();

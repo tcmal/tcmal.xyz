@@ -19,7 +19,7 @@
     >
         <style>
             polygon {
-                fill: red;
+                fill: white;
                 opacity: 0.2;
             }
             polygon:hover {

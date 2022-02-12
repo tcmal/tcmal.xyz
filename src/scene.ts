@@ -50,13 +50,11 @@ let extrasByModel = groupBy(
 );
 let modelLoader = new GLTFLoader();
 for (let model in extrasByModel) {
-  console.log(model);
   modelLoader.load(
     `${MODEL_ROOT}/${model}.glb`,
     (res) => {
       let geometry: BufferGeometry = (res.scene.children[0] as any)
         .geometry;
-      console.log(res.scene);
       // Fix for flipped UV y of GLTF
       let uvs = geometry.attributes.uv.array as any;
       for (let i = 1; i < uvs.length; i += 2) {
@@ -74,7 +72,6 @@ for (let model in extrasByModel) {
         mesh.rotation.copy(extra.rotation);
         mesh.scale.copy(extra.scale);
 
-        console.log(mesh);
         scene.add(mesh);
       }
     },
@@ -153,6 +150,9 @@ export const resize = () => {
   highlightContainer.setAttribute('width', window.innerWidth.toString());
   highlightContainer.setAttribute('height', window.innerHeight.toString());
   highlightContainer.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`);
+
+
+  updateHighlights();
 };
 
 let lastTime = 0;
@@ -238,9 +238,9 @@ export const highlightBlock = (block) => {
   points = points.trim();
 
   // Using createElement doesn't work for some reason
-  highlightContainer.innerHTML += `<polygon data-block="${[x, y, z]}" points="${points}" fill="red"/>`;
-  let el = highlightContainer.lastElementChild;
-  el.addEventListener('click', (e) => {
-    console.log(e);
-  })
+  let el = document.createElementNS("http://www.w3.org/2000/svg", 'polygon');
+  el.setAttribute('points', points);
+  el.addEventListener('click', handleBlockClick(block))
+
+  highlightContainer.appendChild(el);
 }
